@@ -255,6 +255,47 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Дневник путешественника</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+    /* Стиль для модального окна */
+.modal {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    z-index: 1; /* Слой поверх всего */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0); /* Полупрозрачный фон */
+    background-color: rgba(0, 0, 0, 0.9); /* Черный с прозрачностью */
+}
+
+/* Модальное изображение */
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+}
+
+/* Кнопка закрытия */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
 </head>
 <body>
 <h1>Дневник путешественника</h1>
@@ -442,10 +483,41 @@ document.getElementById('requestTravelerRole').addEventListener('click', functio
         </h2>
     <?php endif; ?> -->
 
+<!-- Модальное окно -->
+<div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
+</div>
 
+<script>
+    // Получаем модальное окно
+var modal = document.getElementById("myModal");
 
+// Получаем изображение, которое нужно открыть в модальном окне
+var img = document.querySelectorAll("img"); // выбираем все изображения
 
-    
+// Получаем элемент <span>, который закрывает модальное окно
+var span = document.getElementsByClassName("close")[0];
+
+// Для каждого изображения добавляем обработчик клика
+img.forEach(function(image) {
+    image.onclick = function() {
+        modal.style.display = "block"; // Показываем модальное окно
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+        modalImg.src = this.src; // Устанавливаем src изображения в модальном окне
+        captionText.innerHTML = this.alt; // Устанавливаем alt как описание
+    };
+});
+
+// Когда пользователь нажимает на <span> (кнопка закрытия), скрыть модальное окно
+span.onclick = function() {
+    modal.style.display = "none";
+};
+
+</script>
+
 </body>
 
 </html>
