@@ -32,9 +32,11 @@ h2 {
 }
 
 .user-avatar {
-    max-width: 100px; /* Ограничиваем максимальную ширину */
-    height: auto; /* Сохраняем пропорции */
+    width: 100px; /* Ограничиваем максимальную ширину */
+    height:  100px;
     border-radius: 50%; /* Делает изображение круглым */
+    display: block;
+    object-fit: cover;
 }
 
 
@@ -75,7 +77,15 @@ nav a:hover {
     
     margin-left: 5px; /* Отступ между кн   опками */
 }
+    /* Основной стиль для картинок */
+    .recipe-image {
+        max-width: 150px;
+        width: 150px;  /* Фиксированная ширина */
+        height: 150px; /* Фиксированная высота */
+        object-fit: cover; /* Обрезка изображения по центру, сохраняя пропорции */
+    }
 
+   
 /* Убираем увеличение кнопки при наведении */
 .add-recipe-btn:hover {
     background-color: #45a049;
@@ -232,6 +242,13 @@ input[type="submit"]:hover {
     background-color: #45a049;
 }
 
+    /* Основной стиль для картинок */
+    .recipe-image {
+        width: 150px;  /* Фиксированная ширина */
+        height: 150px; /* Фиксированная высота */
+        object-fit: cover; /* Обрезка изображения по центру, сохраняя пропорции */
+    }
+
 /* Общие стили для блока лайков */
 .likes-column {
     text-align: center;
@@ -244,7 +261,11 @@ input[type="submit"]:hover {
 .likes-count {
     font-weight: bold;
     color: #333;
-    margin-right: 8px;
+}
+
+.comment-count {
+    font-weight: bold;
+    color: #333;
 }
 
 /* Стили для кнопки "сердечко" */

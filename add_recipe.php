@@ -173,8 +173,9 @@ textarea {
                 ?>
             </select>
 
-            <label for="images">Прикрепить файлы:</label>
-            <input type="file" id="images" name="images[]" multiple>
+            <label for="images">Прикрепить файл:</label>
+            <input type="file" id="images" name="images[]" accept=".jpg,.jpeg,.png,.gif" onchange="validateFileCount()" required>
+
 
             <input type="submit" value="Добавить рецепт" class="submit-btn">
         </form>

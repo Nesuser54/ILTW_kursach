@@ -1,4 +1,4 @@
-    <?php
+<?php
     include 'db.php';
     include 'auth.php';
 
@@ -108,7 +108,7 @@
     <body>
         <h1>Комментарии к рецепту</h1>
         <!-- Кнопка для возврата на главную страницу -->
-        <a class=add-recipe-btn onclick="window.history.back()">Вернуться назад </a>
+        <a href="view_recipes.php" class="add-recipe-btn">Вернуться на главную страницу</a>
 
         <!-- Таблица с информацией о посте -->
         <table>
@@ -140,7 +140,7 @@
 
                         if ($image_result->num_rows > 0) {
                             while ($image_row = $image_result->fetch_assoc()) {
-                                echo '<img src="data:image/jpeg;base64,' . base64_encode($image_row['image']) . '" alt="Изображение">';
+                                echo '<img src="data:image/jpeg;base64,' . base64_encode($image_row['image']) . '" alt="Изображение" class="recipe-image">';
                             }
                         } else {
                             echo "Изображения не найдены";
@@ -207,4 +207,3 @@
         </script>
     </body>
     </html>
-

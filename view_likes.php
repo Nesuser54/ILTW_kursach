@@ -111,7 +111,7 @@ $result = $stmt->get_result();
 
 <div class="container">
     <h1>Лайки на рецепте</h1>
-    <a class="add-recipe-btn" onclick="window.history.back()">Вернуться назад</a>
+    <a href="view_recipes.php" class="add-recipe-btn">Вернуться на главную страницу</a>
 
     <table>
         <thead>

@@ -129,6 +129,10 @@ table th, table td {
     border-bottom: 1px solid #ddd;
 }
 
+
+th:nth-child(2), td:nth-child(7) {
+    min-width: 39px; /* Минимальная ширина второго столбца */
+}
 </style>
 <h1>Избранные рецепты</h1>
 <a href="view_recipes.php" class="add-recipe-btn">Вернуться на главную страницу</a>
