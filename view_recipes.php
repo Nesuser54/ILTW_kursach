@@ -7,11 +7,6 @@ include 'auth.php';
 
 $message = ''; 
 
-
-$selectedLanguage = $_COOKIE['language'] ?? 'ru';
-
-
-
 if (isset($_SESSION['user_id'])) {
     $username = $_SESSION['username'];
     $userRole = $_SESSION['role'] ?? 'user';
@@ -101,7 +96,14 @@ if (isset($_GET['delete'])) {
         // Проверяем, является ли пользователь администратором или владельцем поста
         if (isset($_SESSION['user_id'])) {
             if ($recipeRow['user_id'] == $_SESSION['user_id'] || $_SESSION['role'] == 'admin') {
-                // Если совпадает, удаляем пост
+                // Удаляем связанные комментарии
+                $deleteCommentsSql = "DELETE FROM comments WHERE recipe_id = ?";
+                $deleteCommentsStmt = $conn->prepare($deleteCommentsSql);
+                $deleteCommentsStmt->bind_param("i", $deleteId);
+                $deleteCommentsStmt->execute();
+                $deleteCommentsStmt->close();
+
+                // Удаляем пост
                 $deleteSql = "DELETE FROM recipes WHERE id = ?";
                 $deleteStmt = $conn->prepare($deleteSql);
                 $deleteStmt->bind_param("i", $deleteId);
@@ -123,6 +125,7 @@ if (isset($_GET['delete'])) {
         exit();
     }
 }
+
 
 // Обработка лайка
 if (isset($_GET['like']) && isset($_SESSION['user_id'])) {
@@ -254,7 +257,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Дневник путешественника</title>
+    <title>Мамины рецепты</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -262,12 +265,10 @@ try {
 </head>
 <style>
     /* Основной стиль для картинок */
-.recipe-image {
+    .recipe-image {
     width: 150px;  /* Фиксированная ширина */
     height: 150px; /* Фиксированная высота */
     object-fit: cover; /* Обрезка изображения по центру, сохраняя пропорции */
-    display: inline-block; /* Размещение изображений в одну линию */
-    margin: 5px; /* Небольшие отступы между изображениями */
 }
 
 /* Стили для изображения в таблице */
@@ -287,6 +288,10 @@ table th, table td {
     border-bottom: 1px solid #ddd;
 }
 
+input[type="submit"] {
+    margin-bottom: 0px; /* Отступ снизу */
+}
+
 </style>
     <body>
         <h1>Мамины рецепты</h1>
@@ -294,8 +299,8 @@ table th, table td {
             <!-- Отображение аватарки пользователя -->
             <img src="<?php echo htmlspecialchars($avatar); ?>" alt="Аватар" class="user-avatar">
             <div class="header">
-                <h2 style="color: <?php echo ($selectedLanguage === 'eng') ? 'red' : 'green'; ?>;">
-                    <?php echo ($selectedLanguage === 'eng') ? "Welcome back, " . htmlspecialchars($username) . "!" : "Добро пожаловать обратно, " . htmlspecialchars($username) . "!"; ?>
+                <h2 style="color: <?php echo 'green'; ?>;">
+                    <?php echo  "Добро пожаловать, " . htmlspecialchars($username) . "!"; ?>
                 </h2>
             </div>
         <?php endif; ?>
@@ -347,7 +352,7 @@ table th, table td {
         <?php endif; ?>
         <?php if (isset($_SESSION['user_id']) && $userRole === 'admin'): ?>
             <a href="view_role_requests.php" class="add-recipe-btn">Посмотреть заявки на роль</a>
-            <a href="add_recipe_type.php" class="add-recipe-btn">Добавить вид блюда</a>
+            <a href="add_recipe_type.php" class="add-recipe-btn">Управление видами блюд</a>
         <?php endif; ?>
         <?php if (isset($_SESSION['user_id'])): ?>
             <!-- <h2>Привет, <?php echo htmlspecialchars($username); ?>!</h2> -->
@@ -355,12 +360,11 @@ table th, table td {
         <?php endif; ?>
         <?php
         // Проверка, что пользователь вошел в аккаунт
-        if (isset($_SESSION['user_id'])) {
-            // Показываем кнопки для настроек и выхода
-            echo '<a href="setting.php" class="add-recipe-btn">Настройки</a>';
-            echo '<a href="logout.php" class="add-recipe-btn">Выход</a>';
-        }
-        ?>
+        if (isset($_SESSION['user_id'])): ?>
+            <a href="setting.php" class="add-recipe-btn">Настройки</a>
+            <a href="logout.php" class="add-recipe-btn">Выход</a>
+        <?php endif; ?>
+       
 
         <!-- Форма поиска -->
         <form action="view_recipes.php" method="GET" class="search">
@@ -376,7 +380,7 @@ table th, table td {
                 <tr>
                     <th>Название</th>
                     <th>Вид блюда</th>
-                    <th>Рецепт</th>
+                    <th>Текст рецепта</th>
                     <th>Дата</th>
                     <th>Автор</th>
                     <th>Изображения</th>

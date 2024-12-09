@@ -21,8 +21,8 @@ if (isset($_SESSION['user_id'])) {
     if ($userResult->num_rows > 0) {
         $userRow = $userResult->fetch_assoc();
         $avatar = $userRow['avatar'] ? $userRow['avatar'] : 'uploads/avatar.png';
-        $username = $userRow['username'];
-        $userRole = $userRow['role'] ?? 'user';
+        $_SESSION['username'] = $userRow['username']; // Добавляем в сессию
+        $_SESSION['role'] = $userRow['role'] ?? 'user'; // Добавляем в сессию
     } 
 } elseif (isset($_COOKIE['auth_token'])) {
     // Проверка токена
@@ -44,8 +44,8 @@ if (isset($_SESSION['user_id'])) {
         if ($userResult->num_rows > 0) {
             $userRow = $userResult->fetch_assoc();
             $avatar = $userRow['avatar'] ? $userRow['avatar'] : 'uploads/avatar.png';
-            $username = $userRow['username'];
-            $userRole = $userRow['role'] ?? 'user';
+            $_SESSION['username'] = $userRow['username']; // Добавляем в сессию
+            $_SESSION['role'] = $userRow['role'] ?? 'user'; // Добавляем в сессию
         }
     } else {
         // Если токен недействителен, удаляем куки и перенаправляем на страницу входа
@@ -54,4 +54,5 @@ if (isset($_SESSION['user_id'])) {
         exit();
     }
 } 
+
 ?>

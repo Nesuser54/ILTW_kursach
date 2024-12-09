@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Генерация токена
                 $token = bin2hex(random_bytes(16));
                 setcookie('auth_token', $token, time() + 3600, "/"); 
-                setcookie("language", $user['lang'], time() + 3600, "/");
+                
 
                 // Сохраните токен в базе данных для текущего пользователя
                 $updateTokenSql = "UPDATE users SET auth_token = ? WHERE id = ?";

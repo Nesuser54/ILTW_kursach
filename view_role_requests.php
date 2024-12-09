@@ -113,129 +113,128 @@ $result = $stmt->get_result();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Заявки на роль</title>
-    <link rel="stylesheet" href="style.css">
     <style>
-       /* Общий стиль страницы */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7fc;
-    margin: 0;
-    padding: 0;
-    color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    flex-direction: column;
-}
+        /* Общий стиль страницы */
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-/* Стиль заголовка */
-h1 {
-    font-size: 2.5rem;
-    color: #333;
-    text-align: center;
-    margin-bottom: 30px;
-}
+        /* Заголовок */
+        h1 {
+            font-size: 2.5rem;
+            color: #222;
+            margin-bottom: 20px;
+        }
 
-/* Стиль для кнопки "Вернуться на главную страницу" */
-a.add-recipe-btn {
-            display: inline-block;
+        /* Кнопка возврата */
+        a.add-recipe-btn {
             background-color: #007bff;
-            color: white;
+            color: #fff;
             padding: 10px 20px;
-            text-align: center;
-            border-radius: 5px;
+            border-radius: 8px;
             text-decoration: none;
-            margin-top: 20px;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            margin-bottom: 20px;
         }
 
         a.add-recipe-btn:hover {
             background-color: #0056b3;
         }
 
-/* Центрирование таблицы */
-table {
-    width: 80%;
-    margin: 20px auto;
-    border-collapse: collapse;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
+        /* Таблица */
+        table {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px 0;
+            border-collapse: collapse;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #fff;
+        }
 
-/* Стиль заголовков таблицы */
-table th {
-    background-color: #2196f3;
-    color: white;
-    padding: 12px 15px;
-    text-align: center;
-    font-size: 1.1rem;
-}
+        table th, table td {
+            padding: 15px 20px;
+            text-align: center;
+        }
 
-/* Стиль строк таблицы */
-table td {
-    padding: 12px 15px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-}
+        table th {
+            background-color: #007bff;
+            color: #fff;
+            font-size: 1.1rem;
+        }
 
-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
 
-table tr:hover {
-    background-color: #f1f1f1;
-}
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
 
-/* Стилизация кнопок действий (одобрить/отклонить) */
-.action-btns a {
-    font-size: 1.5rem;
-    margin: 0 10px;
-    text-decoration: none;
-    display: inline-block;
-    padding: 8px;
-    border-radius: 50%;
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.action-btns a:hover {
-    transform: scale(1.2);
-}
-
-.action-btns .approve {
-    color: #28a745; /* Зеленый цвет для одобрения */
-}
-
-.action-btns .deny {
-    color: #dc3545; /* Красный цвет для отклонения */
-}
-
-/* Стиль для пустой таблицы */
-table td[colspan="4"] {
-    text-align: center;
-    font-style: italic;
-    color: #888;
-}
-
-/* Мобильные стили */
-@media (max-width: 768px) {
-    table {
-        width: 100%;
-    }
-
-    .add-recipe-btn {
-        width: 100%;
-        font-size: 1rem;
-    }
-}
+        table td {
+            font-size: 1rem;
+            color: #555;
+            border-bottom: 1px solid #ddd;
 
 
 
+        }
+
+        th, td {
+            width: 33%;
+        }
+
+        /* Кнопки действий */
+        .action-btns a {
+            font-size: 1.5rem;
+            margin: 0 10px;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .action-btns a.approve {
+            color: #28a745;
+        }
+
+        .action-btns a.deny {
+            color: #dc3545;
+        }
+
+        .action-btns a:hover {
+            transform: scale(1.2);
+        }
+
+        /* Мобильная адаптация */
+        @media (max-width: 768px) {
+            table {
+                font-size: 0.9rem;
+            }
+
+            table th, table td {
+                padding: 10px;
+            }
+
+            .add-recipe-btn {
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 <body>
     <h1>Заявки на роль</h1>
-    <a href="view_recipes.php" class="add-recipe-btn">Вернуться на главную страницу</a>
+    <a href="view_recipes.php" class="add-recipe-btn">Вернуться на главную</a>
     <table>
         <thead>
             <tr>
@@ -251,22 +250,17 @@ table td[colspan="4"] {
                         <td><?php echo htmlspecialchars($row['username']); ?></td>
                         <td><?php echo htmlspecialchars($row['created_at']); ?></td>
                         <td class="action-btns">
-                            <a href="?action=approve&id=<?php echo $row['id']; ?>" title="Одобрить">&#128077;</a> <!-- Смайлик зеленой галочки -->
-                            <a href="?action=deny&id=<?php echo $row['id']; ?>" title="Отклонить">&#10060;</a> <!-- Смайлик красного креста -->
+                            <a href="?action=approve&id=<?php echo $row['id']; ?>" class="approve" title="Одобрить">✔</a>
+                            <a href="?action=deny&id=<?php echo $row['id']; ?>" class="deny" title="Отклонить">✖</a>
                         </td>
                     </tr>
                 <?php endwhile; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="4">Нет заявок на роль.</td>
+                    <td colspan="3">Нет заявок на роль.</td>
                 </tr>
             <?php endif; ?>
         </tbody>
     </table>
 </body>
 </html>
-
-<?php
-$stmt->close();
-$conn->close();
-?>

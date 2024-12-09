@@ -15,7 +15,7 @@
             text-align: center;
             border-radius: 5px;
             text-decoration: none;
-            margin-top: 20px;
+            margin-top: 10px;
             margin-bottom: -30px; /* Уменьшили отступ */
         }
 
@@ -37,6 +37,7 @@ body {
     width: 90%;
     max-width: 800px;
     margin: 0 auto;
+    margin-top: 20px;
     padding: 20px;
     background-color: white;
     border-radius: 8px;

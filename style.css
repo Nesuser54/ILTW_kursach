@@ -37,12 +37,7 @@ h2 {
     border-radius: 50%; /* Делает изображение круглым */
 }
 
-img {
-    max-width: 150px; /* Ограничиваем ширину картинки */
-    height: auto; /* Сохраняем пропорции */
-    display: inline-block; /* Убираем возможные отступы снизу */
-    margin: 0 auto; /* Центрируем картинку */
-}
+
 
 /* Стили для навигации */
 nav {
@@ -66,12 +61,7 @@ nav a:hover {
     background-color: #0d8bf0;
 }
 
-.recipe-image {
-    max-width: 100%; /* Ограничиваем ширину до 100% от родительского элемента */
-    height: auto; /* Сохраняем пропорции */
-    display: inline-block; /* Убираем отступы снизу */
-    margin: 0 auto; /* Центрируем картинку */
-}
+
 
 .add-recipe-btn {
     cursor: pointer;
@@ -82,8 +72,8 @@ nav a:hover {
     border-radius: 5px;
     transition: background-color 0.3s; /* Убираем увеличение */
     display: inline-block; /* Чтобы кнопка оставалась в строке */
-    margin-bottom: 10px; /* Отступ снизу для кнопок, чтобы они не накладывались */
-    margin-right: 5px; /* Отступ между кн   опками */
+    
+    margin-left: 5px; /* Отступ между кн   опками */
 }
 
 /* Убираем увеличение кнопки при наведении */
@@ -183,7 +173,7 @@ table tr:hover {
 }
 
 /* Стиль для кнопок */
-button, .add-recipe-btn, .like-btn, .unlike-btn {
+button,  .like-btn, .unlike-btn {
     border: none;
     border-radius: 5px;
     padding: 10px 20px;

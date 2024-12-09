@@ -5,8 +5,7 @@ include 'auth.php';
 
 try {
 
-    $languages = ['ru' => 'Русский', 'eng' => 'English'];
-    $selectedLanguage = $_COOKIE['language'] ?? 'ru';
+    
     $userRole = $_SESSION['role'] ?? 'user';
 
     // Проверка на наличие сообщений
@@ -32,22 +31,7 @@ try {
     }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Изменение языка
-        if (isset($_POST['language'])) {
-            $selectedLanguage = $_POST['language'];
-            setcookie("language", $selectedLanguage, time() + 1440, "/");
-            if (isset($_SESSION['user_id'])) {
-                $userId = $_SESSION['user_id'];
-                $updateLangSql = "UPDATE users SET lang = ? WHERE id = ?";
-                $stmt = $conn->prepare($updateLangSql);
-                $stmt->bind_param("si", $selectedLanguage, $userId);
-                $stmt->execute();
-                $stmt->close();
-            }
-
-            header("Location: setting.php");
-            exit();
-        }
+        
 
         // Обработка загрузки аватарки
         if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == 0) {
@@ -64,7 +48,7 @@ try {
             }
 
             // Проверка размера файла
-            $maxFileSize = 8 * 1024 * 1024; // 8 МБ
+            $maxFileSize = 100 * 1024 * 1024; // 8 МБ
             if ($avatarFile['size'] > $maxFileSize) {
                 $_SESSION['error'] = "Размер файла превышает 8 МБ. Пожалуйста, загрузите меньший файл";
                 header("Location: setting.php");
@@ -91,11 +75,10 @@ try {
     $_SESSION['error'] = "Ошибка " . $exp->getMessage();
 }
 
-// $greeting = ($selectedLanguage === 'eng') ? 'Welcome!' : 'Добро пожаловать!';
 ?>
 
 <!DOCTYPE html>
-<html lang="<?php echo $selectedLanguage; ?>">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8">
@@ -189,7 +172,8 @@ try {
             text-align: center;
             border-radius: 5px;
             text-decoration: none;
-            margin-top: 20px;
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
 
         a.add-recipe-btn:hover {
@@ -228,19 +212,7 @@ try {
             <div class="message_success"><?php echo $success; ?></div>
         <?php endif; ?>
         
-        <!-- Форма для выбора языка -->
-        <form action="setting.php" method="POST">
-            <label for="language">Выберите язык приветствия:</label>
-            <select name="language" id="language">
-                <?php foreach ($languages as $code => $name): ?>
-                    <option value="<?php echo $code; ?>" <?php echo ($selectedLanguage === $code) ? 'selected' : ''; ?>>
-                        <?php echo $name; ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <input type="submit" value="Сохранить">
-        </form>
-
+        
         <!-- Форма для загрузки аватарки -->
         <form action="setting.php" method="POST" enctype="multipart/form-data">
             <label for="avatar">Загрузить аватарку:</label>

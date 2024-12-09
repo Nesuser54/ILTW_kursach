@@ -194,9 +194,10 @@ table th, table td {
 
                 // Секция с комментариями
                 echo "<div class='comment-btn-container'>";
-                echo "<span class='comment-count'>" . $commentsCount . "</span> ";  // Счетчик комментариев
+                echo "<span class='comment-count'>" . $commentsCount . "</span> ";  // Счетчик комментариев с пробелом
                 echo "<a href='comments.php?recipe_id=" . $row['id'] . "' class='comment-btn' title='Комментарии'>💬</a>";
                 echo "</div>";
+                echo "<a href='view_likes.php?recipe_id=" . $row['id'] . "' class='view-likes-btn' title='Посмотреть, кто лайкнул'>👥</a>";
 
                 echo "</td>";
 

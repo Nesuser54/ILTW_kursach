@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 }
 
 // Обработка добавления нового вида блюда
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['recipe_type_name'])) {
     $recipe_typeName = trim($_POST['recipe_type_name']);
     
     if (!empty($recipe_typeName)) {
@@ -21,96 +21,99 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $checkResult = $checkStmt->get_result();
 
         if ($checkResult->num_rows > 0) {
-            // вид блюда уже существует
-            header("Location: add_recipe_type.php?message=exists");
-            exit();
+            header("Location: add_recipe_type.php?add_message=exists");
         } else {
-            // Добавление нового вида блюда
             $sql = "INSERT INTO recipe_type (name) VALUES (?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("s", $recipe_typeName);
             
             if ($stmt->execute()) {
-                header("Location: add_recipe_type.php?message=success");
-                exit();
+                header("Location: add_recipe_type.php?add_message=success");
             } else {
-                header("Location: add_recipe_type.php?message=error");
-                exit();
+                header("Location: add_recipe_type.php?add_message=error");
             }
         }
+        exit();
     }
 }
+
+// Обработка удаления вида блюда
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_recipe_type_id'])) {
+    $recipeTypeId = intval($_POST['delete_recipe_type_id']);
+    $deleteTypeSql = "DELETE FROM recipe_type WHERE id = ?";
+    $deleteTypeStmt = $conn->prepare($deleteTypeSql);
+    $deleteTypeStmt->bind_param("i", $recipeTypeId);
+    
+    if ($deleteTypeStmt->execute()) {
+        header("Location: add_recipe_type.php?delete_message=deleted");
+    } else {
+        header("Location: add_recipe_type.php?delete_message=delete_error");
+    }
+    exit();
+}
+
+
+
 ?>
 
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" recipe_text="width=device-width, initial-scale=1.0">
-    <title>Добавить вид блюда</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<style>
-    /* Стиль для страницы */
-body {
-    font-family: 'Arial', sans-serif;
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление видами блюд</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 0;
     background-color: #f4f7fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-/* Заголовок */
-h1 {
-    color: #333;
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-
-/* Кнопка возврата */
-.add-recipe-btn {
-    display: inline-block;
-    padding: 12px 24px;
-    background-color: #4CAF50;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    transition: background-color 0.3s;
-}
-
-.add-recipe-btn:hover {
-    background-color: #45a049;
-}
-
-/* Стиль формы */
-.form {
-    max-width: 400px;
-    margin: 0 auto;
-    background-color: white;
+.container {
+    max-width: 600px;
+    width: 100%;
     padding: 20px;
+    background-color: white;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Поля ввода */
-.input-field {
-    width: 100%;
+h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form {
+    margin-bottom: 20px;
+}
+
+.input-field,
+.select-field,
+.submit-btn {
+    width: 100%; /* Выровнять все элементы по ширине формы */
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+    box-sizing: border-box; /* Учитывать padding в общей ширине */
 }
 
-/* Кнопка отправки */
+.input-field::placeholder {
+    color: #aaa; /* Цвет плейсхолдера */
+}
+
 .submit-btn {
-    width: 100%;
-    padding: 10px;
     background-color: #4CAF50;
     color: white;
     border: none;
-    border-radius: 5px;
-    font-size: 16px;
     cursor: pointer;
 }
 
@@ -118,17 +121,13 @@ h1 {
     background-color: #45a049;
 }
 
-/* Стиль сообщений */
 .message {
-    border-radius: 10px; /* Закругленные углы */
-    max-width: 400px; /* Увеличена ширина для удобства */
-    margin: 20px auto; /* Центрирование по горизонтали */
-    text-align: center; /* Центрирование текста */
+    text-align: center;
     font-weight: bold;
-    font-size: 16px; /* Размер текста */
-    background-color: #d4edda; /* Светло-зеленый фон */
-    color: #155724; /* Темно-зеленый текст */
-    border: 1px solid #c3e6cb; /* Обводка */
+    font-size: 16px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
 }
 
 .success {
@@ -146,7 +145,7 @@ h1 {
     color: #721c24;
 }
 
-    a.add-recipe-btn {
+        a.add-recipe-btn {
             display: inline-block;
             background-color: #007bff;
             color: white;
@@ -154,38 +153,63 @@ h1 {
             text-align: center;
             border-radius: 5px;
             text-decoration: none;
-            margin-top: 20px;
+            margin-bottom: 20px;
         }
 
         a.add-recipe-btn:hover {
             background-color: #0056b3;
         }
-
-</style>
+    </style>
+</head>
 <body>
-    <a href="view_recipes.php" class="add-recipe-btn">Вернуться на главную страницу</a>
-    <h1>Добавить новый вид блюда</h1>
+    <div class="container">
+        <h1>Управление видами блюд</h1>
+        <a href="view_recipes.php" class="add-recipe-btn">Вернуться на главную страницу</a>
+        <!-- Сообщения -->
+        <?php if (isset($_GET['add_message'])): ?>
+            <div class="message <?php 
+                echo ($_GET['add_message'] === 'success') ? 'success' : 
+                     (($_GET['add_message'] === 'exists') ? 'warning' : 'error'); ?>">
+                <?php 
+                echo ($_GET['add_message'] === 'success') ? 'Вид блюда успешно добавлен!' : 
+                     (($_GET['add_message'] === 'exists') ? 'Такой вид блюда уже существует!' : 
+                     'Ошибка при добавлении.'); 
+                ?>
+            </div>
+        <?php elseif (isset($_GET['delete_message'])): ?>
+            <div class="message <?php 
+                echo ($_GET['delete_message'] === 'deleted') ? 'success' : 'error'; ?>">
+                <?php 
+                echo ($_GET['delete_message'] === 'deleted') ? 'Вид блюда успешно удалён!' : 
+                     'Ошибка при удалении. Вид блюда связан с другими данными.'; 
+                ?>
+            </div>
+        <?php endif; ?>
 
-    <!-- Сообщение об успехе или ошибке -->
-<?php if (isset($_GET['message'])): ?>
-    <div class="message">
-        <p class="<?php 
-            echo ($_GET['message'] === 'success') ? 'success' : 
-                 (($_GET['message'] === 'exists') ? 'warning' : 'error'); ?>">
-            <?php 
-            echo ($_GET['message'] === 'success') ? 'Вид блюда успешно добавлен!' : 
-                 (($_GET['message'] === 'exists') ? 'Такой вид блюда уже существует!' : 
-                 'Ошибка при добавлении.'); 
-            ?>
-        </p>
+        <!-- Форма для добавления -->
+        <form action="add_recipe_type.php" method="POST" class="form">
+            <input type="text" name="recipe_type_name" placeholder="Название вида блюда" required class="input-field">
+            <input type="submit" value="Добавить" class="submit-btn">
+        </form>
+
+        <!-- Форма для удаления -->
+        <form action="add_recipe_type.php" method="POST" class="form">
+            <select name="delete_recipe_type_id" required class="input-field">
+                <option value="" disabled selected>Выберите вид блюда для удаления</option>
+                <?php
+                $typesSql = "SELECT id, name FROM recipe_type";
+                $typesResult = $conn->query($typesSql);
+                if ($typesResult->num_rows > 0) {
+                    while ($row = $typesResult->fetch_assoc()) {
+                        echo "<option value='{$row['id']}'>{$row['name']}</option>";
+                    }
+                } else {
+                    echo "<option value='' disabled>Виды блюда отсутствуют</option>";
+                }
+                ?>
+            </select>
+            <input type="submit" value="Удалить" class="submit-btn">
+        </form>
     </div>
-<?php endif; ?>
-
-
-    <!-- Форма для добавления вида блюда -->
-    <form action="add_recipe_type.php" method="POST" class="form">
-        <input type="text" name="recipe_type_name" placeholder="Название вида блюда" required class="input-field">
-        <input type="submit" value="Добавить" class="submit-btn">
-    </form>
 </body>
 </html>
