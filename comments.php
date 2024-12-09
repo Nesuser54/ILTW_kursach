@@ -2,30 +2,30 @@
     include 'db.php';
     include 'auth.php';
 
-    $post_id = $_GET['post_id'] ?? null;
+    $recipe_id = $_GET['recipe_id'] ?? null;
 
-    if (!$post_id) {
-        header("Location: view_posts.php?message=post_not_found");
+    if (!$recipe_id) {
+        header("Location: view_recipes.php?message=recipe_not_found");
         exit();
     }
 
     // Получение данных поста
-    $post_sql = "SELECT p.*, u.username FROM posts p JOIN users u ON p.user_id = u.id WHERE p.id = ?";
-    $post_stmt = $conn->prepare($post_sql);
-    $post_stmt->bind_param("i", $post_id);
-    $post_stmt->execute();
-    $post_result = $post_stmt->get_result();
-    $post = $post_result->fetch_assoc();
+    $recipe_sql = "SELECT p.*, u.username FROM recipes p JOIN users u ON p.user_id = u.id WHERE p.id = ?";
+    $recipe_stmt = $conn->prepare($recipe_sql);
+    $recipe_stmt->bind_param("i", $recipe_id);
+    $recipe_stmt->execute();
+    $recipe_result = $recipe_stmt->get_result();
+    $recipe = $recipe_result->fetch_assoc();
 
-    if (!$post) {
-        header("Location: view_posts.php?message=post_not_found");
+    if (!$recipe) {
+        header("Location: view_recipes.php?message=recipe_not_found");
         exit();
     }
 
     // Получение комментариев
-    $comments_sql = "SELECT c.*, u.username FROM comments c JOIN users u ON c.user_id = u.id WHERE c.post_id = ? ORDER BY c.created_at ASC";
+    $comments_sql = "SELECT c.*, u.username FROM comments c JOIN users u ON c.user_id = u.id WHERE c.recipe_id = ? ORDER BY c.created_at ASC";
     $comments_stmt = $conn->prepare($comments_sql);
-    $comments_stmt->bind_param("i", $post_id);
+    $comments_stmt->bind_param("i", $recipe_id);
     $comments_stmt->execute();
     $comments_result = $comments_stmt->get_result();
     ?>
@@ -90,7 +90,7 @@
     .msg {
     padding-left: 10px;  /* Добавляет отступ слева */
     }
-    a.add-post-btn {
+    a.add-recipe-btn {
             display: inline-block;
             background-color: #007bff;
             color: white;
@@ -100,7 +100,7 @@
             text-decoration: none;
             margin-top: 20px;
         }
-        a.add-post-btn:hover {
+        a.add-recipe-btn:hover {
             background-color: #0056b3;
         }
 
@@ -108,14 +108,14 @@
     <body>
         <h1>Комментарии к рецепту</h1>
         <!-- Кнопка для возврата на главную страницу -->
-        <a class=add-post-btn onclick="window.history.back()">Вернуться назад </a>
+        <a class=add-recipe-btn onclick="window.history.back()">Вернуться назад </a>
 
         <!-- Таблица с информацией о посте -->
         <table>
             <thead>
                 <tr>
                     <th>Заголовок</th>
-                    <th>Местоположение</th>
+                    <th>Вид блюда</th>
                     <th>Содержимое</th>
                     <th>Дата создания</th>
                     <th>Автор</th>
@@ -124,17 +124,17 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><?= htmlspecialchars($post['title']) ?></td>
-                    <td><?= htmlspecialchars($post['location']) ?></td>
-                    <td><?= nl2br(htmlspecialchars($post['content'])) ?></td>
-                    <td><?= htmlspecialchars($post['created_at']) ?></td>
-                    <td><?= htmlspecialchars($post['username']) ?></td>
+                    <td><?= htmlspecialchars($recipe['title']) ?></td>
+                    <td><?= htmlspecialchars($recipe['recipe_type']) ?></td>
+                    <td><?= nl2br(htmlspecialchars($recipe['recipe_text'])) ?></td>
+                    <td><?= htmlspecialchars($recipe['created_at']) ?></td>
+                    <td><?= htmlspecialchars($recipe['username']) ?></td>
                     <td>
                         <?php
                         // Изображения поста
-                        $image_sql = "SELECT image FROM post_images WHERE post_id = ?";
+                        $image_sql = "SELECT image FROM recipe_images WHERE recipe_id = ?";
                         $image_stmt = $conn->prepare($image_sql);
-                        $image_stmt->bind_param("i", $post_id);
+                        $image_stmt->bind_param("i", $recipe_id);
                         $image_stmt->execute();
                         $image_result = $image_stmt->get_result();
 
@@ -163,9 +163,9 @@
         <p><small class="comment-meta">Автор: <?= htmlspecialchars($comment['username']) ?> | <?= htmlspecialchars($comment['created_at']) ?></small></p>
         
         <!-- Проверка на авторизацию пользователя или права на удаление -->
-        <?php if (isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $comment['user_id'] || $_SESSION['role'] === 'admin' || $_SESSION['user_id'] == $post['user_id'])): ?>
+        <?php if (isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $comment['user_id'] || $_SESSION['role'] === 'admin' || $_SESSION['user_id'] == $recipe['user_id'])): ?>
             <!-- Если пользователь авторизован, то кнопка работает -->
-            <a href="delete_comment.php?id=<?= $comment['id'] ?>&post_id=<?= $post_id ?>" 
+            <a href="delete_comment.php?id=<?= $comment['id'] ?>&recipe_id=<?= $recipe_id ?>" 
                onclick="return confirm('Вы уверены, что хотите удалить?');" 
                class="delete-btn">
                 <i class="fa fa-trash"></i> <!-- Иконка мусорного ведра -->
@@ -185,7 +185,7 @@
     <?php if (isset($_SESSION['user_id'])): ?>
         <form action="add_comment.php" method="POST">
             <textarea id="commentContent" name="content" rows="3" placeholder="Напишите ваш комментарий..." maxlength="100" required></textarea>
-            <input type="hidden" name="post_id" value="<?= $post_id ?>">
+            <input type="hidden" name="recipe_id" value="<?= $recipe_id ?>">
             <button type="submit">Отправить</button>
             <div id="charCount" class="char-count">0/100</div>
         </form>

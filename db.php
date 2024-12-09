@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "root"; 
-$dbname = "itiv_laba1"; 
+$dbname = "kursach"; 
 
 // Создание подключения
 try {

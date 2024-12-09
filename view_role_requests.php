@@ -3,7 +3,7 @@ include 'db.php'; // Подключение к базе данных
 session_start();
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header("Location: view_posts.php"); // Перенаправление, если не админ
+    header("Location: view_recipes.php"); // Перенаправление, если не админ
     exit();
 }
 
@@ -19,7 +19,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
         $updateStmt->bind_param("i", $requestId);
         $updateStmt->execute();
         
-        // Присвоение роли "traveler" запрашивающему пользователю
+        // Присвоение роли "publisher" запрашивающему пользователю
         $userIdSql = "SELECT user_id FROM role_requests WHERE id = ?";
         $userIdStmt = $conn->prepare($userIdSql);
         $userIdStmt->bind_param("i", $requestId);
@@ -31,7 +31,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
             $userId = $userRow['user_id'];
 
             // Обновление роли пользователя
-            $updateUserRoleSql = "UPDATE users SET role = 'traveler' WHERE id = ?";
+            $updateUserRoleSql = "UPDATE users SET role = 'publisher' WHERE id = ?";
             $updateUserRoleStmt = $conn->prepare($updateUserRoleSql);
             $updateUserRoleStmt->bind_param("i", $userId);
             $updateUserRoleStmt->execute();
@@ -138,7 +138,7 @@ h1 {
 }
 
 /* Стиль для кнопки "Вернуться на главную страницу" */
-a.add-post-btn {
+a.add-recipe-btn {
             display: inline-block;
             background-color: #007bff;
             color: white;
@@ -149,7 +149,7 @@ a.add-post-btn {
             margin-top: 20px;
         }
 
-        a.add-post-btn:hover {
+        a.add-recipe-btn:hover {
             background-color: #0056b3;
         }
 
@@ -223,7 +223,7 @@ table td[colspan="4"] {
         width: 100%;
     }
 
-    .add-post-btn {
+    .add-recipe-btn {
         width: 100%;
         font-size: 1rem;
     }
@@ -235,7 +235,7 @@ table td[colspan="4"] {
 </head>
 <body>
     <h1>Заявки на роль</h1>
-    <a href="view_posts.php" class="add-post-btn">Вернуться на главную страницу</a>
+    <a href="view_recipes.php" class="add-recipe-btn">Вернуться на главную страницу</a>
     <table>
         <thead>
             <tr>

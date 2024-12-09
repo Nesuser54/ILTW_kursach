@@ -23,11 +23,7 @@ if (isset($_SESSION['user_id'])) {
         $avatar = $userRow['avatar'] ? $userRow['avatar'] : 'uploads/avatar.png';
         $username = $userRow['username'];
         $userRole = $userRow['role'] ?? 'user';
-    } /* else {
-        // Если данные не найдены, перенаправляем на страницу входа
-        header("Location: login.php");
-        exit();
-    } */
+    } 
 } elseif (isset($_COOKIE['auth_token'])) {
     // Проверка токена
     $authToken = $_COOKIE['auth_token'];
@@ -57,9 +53,5 @@ if (isset($_SESSION['user_id'])) {
         header("Location: login.php");
         exit();
     }
-} /* else {
-    // Если ни сессия, ни токен не найдены, перенаправляем на страницу входа
-    header("Location: login.php");
-    exit();
-} */
+} 
 ?>

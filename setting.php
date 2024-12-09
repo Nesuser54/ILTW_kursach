@@ -18,16 +18,16 @@ try {
     unset($_SESSION['success']);
 
     $weight_author = 0.5;
-    $weight_location = 0.3;
+    $weight_recipe_type = 0.3;
     $weight_likes = 0.2;
 
-    $sql = "SELECT weight_likes, weight_location, weight_author FROM ranking_weights WHERE id = 1";
+    $sql = "SELECT weight_likes, weight_recipe_type, weight_author FROM ranking_weights WHERE id = 1";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $weight_author = $row['weight_author'];
-        $weight_location = $row['weight_location'];
+        $weight_recipe_type = $row['weight_recipe_type'];
         $weight_likes = $row['weight_likes'];
     }
 
@@ -181,7 +181,7 @@ try {
             color: #721c24;
         }
 
-        a.add-post-btn {
+        a.add-recipe-btn {
             display: inline-block;
             background-color: #007bff;
             color: white;
@@ -192,7 +192,7 @@ try {
             margin-top: 20px;
         }
 
-        a.add-post-btn:hover {
+        a.add-recipe-btn:hover {
             background-color: #0056b3;
         }
 
@@ -208,7 +208,9 @@ try {
     background-color: #d4edda;
     color: #155724;
     border: 1px solid #c3e6cb;
-    padding: 5px;
+    padding: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
     </style>
 </head>
@@ -217,8 +219,15 @@ try {
 
     <div class="container">
         <h1>Настройки</h1>
-        <a href="view_posts.php" class="add-post-btn">Вернуться на главную страницу</a>
-   
+        <a href="view_recipes.php" class="add-recipe-btn">Вернуться на главную страницу</a>
+        <?php if (isset($error)): ?>
+            <div class="message_error"><?php echo $error; ?></div>
+        <?php endif; ?>
+
+        <?php if (isset($success)): ?>
+            <div class="message_success"><?php echo $success; ?></div>
+        <?php endif; ?>
+        
         <!-- Форма для выбора языка -->
         <form action="setting.php" method="POST">
             <label for="language">Выберите язык приветствия:</label>
@@ -245,21 +254,14 @@ try {
                 <label for="weight_author">Коэффициент авторов:</label>
                 <input type="number" step="0.1" name="weight_author" id="weight_author" value="<?php echo $weight_author; ?>" required>
 
-                <label for="weight_location">Коэффициент местоположения:</label>
-                <input type="number" step="0.1" name="weight_location" id="weight_location" value="<?php echo $weight_location; ?>" required>
+                <label for="weight_recipe_type">Коэффициент вида блюда:</label>
+                <input type="number" step="0.1" name="weight_recipe_type" id="weight_recipe_type" value="<?php echo $weight_recipe_type; ?>" required>
 
                 <label for="weight_likes">Коэффициент количества лайков:</label>
                 <input type="number" step="0.1" name="weight_likes" id="weight_likes" value="<?php echo $weight_likes; ?>" required>
 
                 <input type="submit" value="Сохранить">
             </form>
-        <?php endif; ?>
-        <?php if (isset($error)): ?>
-            <div class="message_error"><?php echo $error; ?></div>
-        <?php endif; ?>
-
-        <?php if (isset($success)): ?>
-            <div class="message_success"><?php echo $success; ?></div>
         <?php endif; ?>
         
     </div>

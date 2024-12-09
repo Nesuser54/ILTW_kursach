@@ -4,22 +4,22 @@ include 'db.php';
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: add_post.php?message=login_error");
+    header("Location: add_recipe.php?message=login_error");
     exit();
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $title = $_POST['title'];
-    $location = $_POST['location'];
-    $content = $_POST['content'];
+    $recipe_type = $_POST['recipe_type'];
+    $recipe_text = $_POST['recipe_text'];
 
     if (strlen($title) > 50) {
-        header("Location: add_post.php?message=title_error");
+        header("Location: add_recipe.php?message=title_error");
         exit();
     }
 
-    if (strlen($location) > 50) {
-        header("Location: add_post.php?message=location_error");
+    if (strlen($recipe_type) > 50) {
+        header("Location: add_recipe.php?message=recipe_type_error");
         exit();
     }
 
@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $imgData = file_get_contents($tmp_name);
                     $images[] = $imgData; // Сохраняем изображение для дальнейшей вставки
                 } else {
-                    header("Location: add_post.php?message=image_error");
+                    header("Location: add_recipe.php?message=image_error");
                     exit();
                 }
             }
@@ -49,19 +49,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Добавляем user_id в SQL-запрос
-    $sql = "INSERT INTO posts (title, location, content, user_id) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO recipes (title, recipe_type, recipe_text, user_id) VALUES (?, ?, ?, ?)";
     $stmt = mysqli_prepare($link, $sql);
-    mysqli_stmt_bind_param($stmt, "sssi", $title, $location, $content, $_SESSION['user_id']); // Передаем user_id
+    mysqli_stmt_bind_param($stmt, "sssi", $title, $recipe_type, $recipe_text, $_SESSION['user_id']); // Передаем user_id
 
     if (mysqli_stmt_execute($stmt)) {
         // Получаем ID последнего вставленного поста
-        $post_id = mysqli_insert_id($link);
+        $recipe_id = mysqli_insert_id($link);
 
         // Вставка изображений в базу данных
         foreach ($images as $imgData) {
-            $image_sql = "INSERT INTO post_images (post_id, image) VALUES (?, ?)";
+            $image_sql = "INSERT INTO recipe_images (recipe_id, image) VALUES (?, ?)";
             $image_stmt = mysqli_prepare($link, $image_sql);
-            mysqli_stmt_bind_param($image_stmt, "is", $post_id, $imgData);
+            mysqli_stmt_bind_param($image_stmt, "is", $recipe_id, $imgData);
 
             // Выполнение запроса
             if (!mysqli_stmt_execute($image_stmt)) {
@@ -73,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Закрытие подготовленного запроса и соединения
         mysqli_stmt_close($stmt);
         mysqli_close($link);
-        header("Location: view_posts.php?message=success");
+        header("Location: view_recipes.php?message=success");
         exit(); // Завершаем выполнение скрипта
     } else {
         echo "Ошибка при создании публикации: " . mysqli_error($link);

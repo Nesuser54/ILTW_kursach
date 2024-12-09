@@ -156,11 +156,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="form-group">
                 <input type="password" name="password" placeholder="Пароль" required>
             </div>
-            <input type="submit" value="Зарегистрироваться" class="add-post-btn">
+            <input type="submit" value="Зарегистрироваться" class="add-recipe-btn">
         </form>
-        <a href="login.php" class="add-post-btn"> Уже есть аккаунт? Войти</a>
+        <a href="login.php" class="add-recipe-btn"> Уже есть аккаунт? Войти</a>
         <!-- Кнопка возвращения на главную страницу -->
-        <a class="add-post-btn" href="view_posts.php">Вернуться на главную</a>
+        <a class="add-recipe-btn" href="view_recipes.php">Вернуться на главную</a>
     </div>
 </body>
 </html>

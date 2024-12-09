@@ -4,37 +4,37 @@ include 'auth.php';
 // session_start();
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header("Location: view_posts.php?message=access_denied");
+    header("Location: view_recipes.php?message=access_denied");
     exit();
 }
 
-// Обработка добавления нового местоположения
+// Обработка добавления нового вида блюда
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $locationName = trim($_POST['location_name']);
+    $recipe_typeName = trim($_POST['recipe_type_name']);
     
-    if (!empty($locationName)) {
-        // Проверка на существование местоположения
-        $checkSql = "SELECT * FROM locations WHERE name = ?";
+    if (!empty($recipe_typeName)) {
+        // Проверка на существование вида блюда
+        $checkSql = "SELECT * FROM recipe_type WHERE name = ?";
         $checkStmt = $conn->prepare($checkSql);
-        $checkStmt->bind_param("s", $locationName);
+        $checkStmt->bind_param("s", $recipe_typeName);
         $checkStmt->execute();
         $checkResult = $checkStmt->get_result();
 
         if ($checkResult->num_rows > 0) {
-            // Местоположение уже существует
-            header("Location: add_location.php?message=exists");
+            // вид блюда уже существует
+            header("Location: add_recipe_type.php?message=exists");
             exit();
         } else {
-            // Добавление нового местоположения
-            $sql = "INSERT INTO locations (name) VALUES (?)";
+            // Добавление нового вида блюда
+            $sql = "INSERT INTO recipe_type (name) VALUES (?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("s", $locationName);
+            $stmt->bind_param("s", $recipe_typeName);
             
             if ($stmt->execute()) {
-                header("Location: add_location.php?message=success");
+                header("Location: add_recipe_type.php?message=success");
                 exit();
             } else {
-                header("Location: add_location.php?message=error");
+                header("Location: add_recipe_type.php?message=error");
                 exit();
             }
         }
@@ -46,8 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Добавить местоположение</title>
+    <meta name="viewport" recipe_text="width=device-width, initial-scale=1.0">
+    <title>Добавить вид блюда</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <style>
@@ -67,7 +67,7 @@ h1 {
 }
 
 /* Кнопка возврата */
-.add-post-btn {
+.add-recipe-btn {
     display: inline-block;
     padding: 12px 24px;
     background-color: #4CAF50;
@@ -78,7 +78,7 @@ h1 {
     transition: background-color 0.3s;
 }
 
-.add-post-btn:hover {
+.add-recipe-btn:hover {
     background-color: #45a049;
 }
 
@@ -119,11 +119,16 @@ h1 {
 }
 
 /* Стиль сообщений */
-.message p {
-    padding: 10px;
-    border-radius: 5px;
-    text-align: center;
+.message {
+    border-radius: 10px; /* Закругленные углы */
+    max-width: 400px; /* Увеличена ширина для удобства */
+    margin: 20px auto; /* Центрирование по горизонтали */
+    text-align: center; /* Центрирование текста */
     font-weight: bold;
+    font-size: 16px; /* Размер текста */
+    background-color: #d4edda; /* Светло-зеленый фон */
+    color: #155724; /* Темно-зеленый текст */
+    border: 1px solid #c3e6cb; /* Обводка */
 }
 
 .success {
@@ -141,7 +146,7 @@ h1 {
     color: #721c24;
 }
 
-    a.add-post-btn {
+    a.add-recipe-btn {
             display: inline-block;
             background-color: #007bff;
             color: white;
@@ -152,33 +157,34 @@ h1 {
             margin-top: 20px;
         }
 
-        a.add-post-btn:hover {
+        a.add-recipe-btn:hover {
             background-color: #0056b3;
         }
 
 </style>
 <body>
-    <a href="view_posts.php" class="add-post-btn">Вернуться на главную страницу</a>
-    <h1>Добавить новое местоположение</h1>
+    <a href="view_recipes.php" class="add-recipe-btn">Вернуться на главную страницу</a>
+    <h1>Добавить новый вид блюда</h1>
 
     <!-- Сообщение об успехе или ошибке -->
-    <?php if (isset($_GET['message'])): ?>
-        <div class="message">
-            <p class="<?php 
-                echo ($_GET['message'] === 'success') ? 'success' : 
-                     (($_GET['message'] === 'exists') ? 'warning' : 'error'); ?>">
-                <?php 
-                echo ($_GET['message'] === 'success') ? 'Местоположение успешно добавлено!' : 
-                     (($_GET['message'] === 'exists') ? 'Такое местоположение уже существует!' : 
-                     'Ошибка при добавлении.'); 
-                ?>
-            </p>
-        </div>
-    <?php endif; ?>
+<?php if (isset($_GET['message'])): ?>
+    <div class="message">
+        <p class="<?php 
+            echo ($_GET['message'] === 'success') ? 'success' : 
+                 (($_GET['message'] === 'exists') ? 'warning' : 'error'); ?>">
+            <?php 
+            echo ($_GET['message'] === 'success') ? 'Вид блюда успешно добавлен!' : 
+                 (($_GET['message'] === 'exists') ? 'Такой вид блюда уже существует!' : 
+                 'Ошибка при добавлении.'); 
+            ?>
+        </p>
+    </div>
+<?php endif; ?>
 
-    <!-- Форма для добавления местоположения -->
-    <form action="add_location.php" method="POST" class="form">
-        <input type="text" name="location_name" placeholder="Название местоположения" required class="input-field">
+
+    <!-- Форма для добавления вида блюда -->
+    <form action="add_recipe_type.php" method="POST" class="form">
+        <input type="text" name="recipe_type_name" placeholder="Название вида блюда" required class="input-field">
         <input type="submit" value="Добавить" class="submit-btn">
     </form>
 </body>

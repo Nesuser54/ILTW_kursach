@@ -11,21 +11,21 @@ if (!isset($_SESSION['user_id'])) {
 $userId = $_SESSION['user_id'];
 
 if (isset($_GET['like']) && isset($_SESSION['user_id'])) {
-    $likePostId = intval($_GET['like']);
+    $likerecipeId = intval($_GET['like']);
     $userId = $_SESSION['user_id'];
 
     // Проверяем, уже ли пользователь лайкнул этот пост
-    $checkLikeSql = "SELECT * FROM likes WHERE user_id = ? AND post_id = ?";
+    $checkLikeSql = "SELECT * FROM likes WHERE user_id = ? AND recipe_id = ?";
     $checkLikeStmt = $conn->prepare($checkLikeSql);
-    $checkLikeStmt->bind_param("ii", $userId, $likePostId);
+    $checkLikeStmt->bind_param("ii", $userId, $likerecipeId);
     $checkLikeStmt->execute();
     $likeResult = $checkLikeStmt->get_result();
 
     if ($likeResult->num_rows == 0) {
         // Если лайка еще нет, добавляем его
-        $insertLikeSql = "INSERT INTO likes (user_id, post_id) VALUES (?, ?)";
+        $insertLikeSql = "INSERT INTO likes (user_id, recipe_id) VALUES (?, ?)";
         $insertLikeStmt = $conn->prepare($insertLikeSql);
-        $insertLikeStmt->bind_param("ii", $userId, $likePostId);
+        $insertLikeStmt->bind_param("ii", $userId, $likerecipeId);
         $insertLikeStmt->execute();
         $insertLikeStmt->close();
     }
@@ -37,13 +37,13 @@ if (isset($_GET['like']) && isset($_SESSION['user_id'])) {
 
 // Обработка удаления лайка
 if (isset($_GET['unlike']) && isset($_SESSION['user_id'])) {
-    $unlikePostId = intval($_GET['unlike']);
+    $unlikerecipeId = intval($_GET['unlike']);
     $userId = $_SESSION['user_id'];
 
     // Удаление лайка
-    $deleteLikeSql = "DELETE FROM likes WHERE user_id = ? AND post_id = ?";
+    $deleteLikeSql = "DELETE FROM likes WHERE user_id = ? AND recipe_id = ?";
     $deleteLikeStmt = $conn->prepare($deleteLikeSql);
-    $deleteLikeStmt->bind_param("ii", $userId, $unlikePostId);
+    $deleteLikeStmt->bind_param("ii", $userId, $unlikerecipeId);
     $deleteLikeStmt->execute();
     $deleteLikeStmt->close();
 
@@ -53,25 +53,21 @@ if (isset($_GET['unlike']) && isset($_SESSION['user_id'])) {
 }
 
 try {
-    $sql = "SELECT posts.*, users.username, 
-    (SELECT COUNT(*) FROM likes WHERE post_id = posts.id) AS likes_count,
-    (SELECT COUNT(*) FROM likes WHERE user_id = ? AND post_id = posts.id) AS user_liked,
-    (SELECT COUNT(*) FROM likes l INNER JOIN posts p ON l.post_id = p.id 
-     WHERE l.user_id IN (SELECT user_id FROM likes WHERE user_id = ?)
-     AND p.user_id = posts.user_id) AS user_favorite_count,
-    (SELECT COUNT(*) FROM likes l 
-     JOIN posts p ON l.post_id = p.id 
-     WHERE l.user_id = ? AND p.location = posts.location) AS liked_location_count
-FROM posts 
-JOIN users ON posts.user_id = users.id
-";
+    // Получаем user_id из сессии
+    $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+
+    // Получаем только лайкнутые рецепты
+    $sql = "SELECT recipes.*, users.username, 
+            (SELECT COUNT(*) FROM likes WHERE recipe_id = recipes.id) AS likes_count,
+            (SELECT COUNT(*) FROM likes WHERE user_id = ? AND recipe_id = recipes.id) AS user_liked
+        FROM recipes 
+        JOIN users ON recipes.user_id = users.id 
+        LEFT JOIN likes ON recipes.id = likes.recipe_id 
+        WHERE likes.user_id = ? 
+        ORDER BY created_at DESC";  // Сортировка по дате создания
+
     $stmt = $conn->prepare($sql);
-
-    // Параметры для запроса
-    $params = [$userId, $userId, $userId];
-    $types = "iii"; // типы параметров (int, int, int)
-
-    $stmt->bind_param($types, ...$params);
+    $stmt->bind_param("ii", $userId, $userId);
 
     $stmt->execute();
     $result = $stmt->get_result();
@@ -79,6 +75,7 @@ JOIN users ON posts.user_id = users.id
     error_log($e->getMessage());
     die("Ошибка: " . $e->getMessage());
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -91,7 +88,7 @@ JOIN users ON posts.user_id = users.id
 </head>
 <body>
 <style>
-    a.add-post-btn {
+    a.add-recipe-btn {
             display: inline-block;
             background-color: #007bff;
             color: white;
@@ -102,23 +99,49 @@ JOIN users ON posts.user_id = users.id
             margin-top: 20px;
         }
 
-        a.add-post-btn:hover {
+        a.add-recipe-btn:hover {
             background-color: #0056b3;
         }
-        
+
+    /* Основной стиль для картинок */
+.recipe-image {
+    width: 150px;  /* Фиксированная ширина */
+    height: 150px; /* Фиксированная высота */
+    object-fit: cover; /* Обрезка изображения по центру, сохраняя пропорции */
+    display: inline-block; /* Размещение изображений в одну линию */
+    margin: 5px; /* Небольшие отступы между изображениями */
+}
+
+/* Стили для изображения в таблице */
+table td {
+    text-align: center; /* Центрирование контента внутри ячеек */
+}
+
+/* Стили для таблицы */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
 </style>
 <h1>Избранные рецепты</h1>
-<a href="view_posts.php" class="add-post-btn">Вернуться на главную страницу</a>
+<a href="view_recipes.php" class="add-recipe-btn">Вернуться на главную страницу</a>
 <table>
     <thead>
         <tr>
-            <th>Заголовок</th>
-            <th>Местоположение</th>
-            <th>Содержимое</th>
-            <th>Дата создания</th>
+            <th>Название</th>
+            <th>Вид блюда</th>
+            <th>Рецепт</th>
+            <th>Дата</th>
             <th>Автор</th>
             <th>Изображения</th>
-            <th>Лайки</th>
+            <th>&#9829; и 💬</th>
         </tr>
     </thead>
     <tbody>
@@ -127,23 +150,23 @@ JOIN users ON posts.user_id = users.id
             while ($row = $result->fetch_assoc()) {
                 echo '<tr>';
                 echo "<td>" . htmlspecialchars($row['title']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['location']) . "</td>";
-                echo "<td>" . nl2br(htmlspecialchars($row['content'])) . "</td>";
+                echo "<td>" . htmlspecialchars($row['recipe_type']) . "</td>";
+                echo "<td>" . nl2br(htmlspecialchars($row['recipe_text'])) . "</td>";
                 echo "<td>" . htmlspecialchars($row['created_at']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['username']) . "</td>";
 
-                // Получение изображений для текущего поста
-                $post_id = $row['id'];
-                $image_sql = "SELECT image FROM post_images WHERE post_id = ?";
+                // Вывод изображений
+                $recipe_id = $row['id'];
+                $image_sql = "SELECT image FROM recipe_images WHERE recipe_id = ?";
                 $image_stmt = $conn->prepare($image_sql);
-                $image_stmt->bind_param("i", $post_id);
+                $image_stmt->bind_param("i", $recipe_id);
                 $image_stmt->execute();
                 $image_result = $image_stmt->get_result();
 
                 if ($image_result->num_rows > 0) {
                     echo '<td>';
                     while ($image_row = $image_result->fetch_assoc()) {
-                        echo '<img src="data:image/jpeg;base64,' . base64_encode($image_row['image']) . '" alt="Изображение">';
+                        echo '<img src="data:image/jpeg;base64,' . base64_encode($image_row['image']) . '" alt="Изображение" class="recipe-image">';
                     }
                     echo '</td>';
                 } else {
@@ -151,19 +174,17 @@ JOIN users ON posts.user_id = users.id
                 }
 
                 // Получаем количество комментариев для поста
-                $commentsCountQuery = "SELECT COUNT(*) AS comments_count FROM comments WHERE post_id = " . $row['id'];
+                $commentsCountQuery = "SELECT COUNT(*) AS comments_count FROM comments WHERE recipe_id = " . $row['id'];
                 $commentsCountResult = mysqli_query($conn, $commentsCountQuery);
                 $commentsCount = mysqli_fetch_assoc($commentsCountResult)['comments_count'];
 
-                // Отображаем количество лайков и комментариев для всех пользователей
+                // Лайки и комментарии
                 echo "<td class='likes-column'>";
                 echo "<span class='likes-count'>" . htmlspecialchars($row['likes_count']) . "</span> ";  // Количество лайков
 
-                // Если пользователь не авторизован, показываем статичный значок сердечка
                 if (!isset($_SESSION['user_id'])) {
                     echo "<span class='like-button static-like' title='Лайкнуть'>&#9829;</span>"; // Статичное серое сердечко для неавторизованных
                 } else {
-                    // Если пользователь авторизован, показываем кнопки лайков
                     if ($row['user_liked'] > 0) {
                         echo "<a href='?unlike=" . $row['id'] . "' class='like-button unlike' title='Убрать лайк'>&#10084;</a>"; // Убрать лайк
                     } else {
@@ -173,21 +194,22 @@ JOIN users ON posts.user_id = users.id
 
                 // Секция с комментариями
                 echo "<div class='comment-btn-container'>";
-                echo "<span class='comment-count'>" . $commentsCount . "</span> ";  // Счетчик комментариев с пробелом
-                echo "<a href='comments.php?post_id=" . $row['id'] . "' class='comment-btn' title='Комментарии'>💬</a>";
+                echo "<span class='comment-count'>" . $commentsCount . "</span> ";  // Счетчик комментариев
+                echo "<a href='comments.php?recipe_id=" . $row['id'] . "' class='comment-btn' title='Комментарии'>💬</a>";
                 echo "</div>";
-                echo "<a href='view_likes.php?post_id=" . $row['id'] . "' class='view-likes-btn' title='Посмотреть, кто лайкнул'>👥</a>";
+
                 echo "</td>";
+
+                echo '</tr>';
             }
         } else {
-            echo "<tr><td colspan='8'>Нет рецептов, соответствующих вашему запросу.</td></tr>";
+            echo "<tr><td colspan='8'>Нет лайкнутых рецептов.</td></tr>";
         }
-
-        $stmt->close();
-        $conn->close();
         ?>
     </tbody>
 </table>
+
+
 
 <!-- Модальное окно -->
 <div id="myModal" class="modal">

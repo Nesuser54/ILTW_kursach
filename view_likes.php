@@ -1,21 +1,15 @@
 <?php
 include 'db.php'; // Подключение к базе данных
 include 'auth.php';
-// session_start();
 
-// if (!isset($_SESSION['user_id'])) {
-//     header("Location: login.php");
-//     exit();
-// }
-
-$post_id = isset($_GET['post_id']) ? intval($_GET['post_id']) : 0;
+$recipe_id = isset($_GET['recipe_id']) ? intval($_GET['recipe_id']) : 0;
 
 // Получение пользователей, поставивших лайки с их ролями
-$sql = "SELECT users.username, users.role FROM likes 
+$sql = "SELECT users.username, users.role, likes.liked_at FROM likes 
         JOIN users ON likes.user_id = users.id 
-        WHERE likes.post_id = ?";
+        WHERE likes.recipe_id = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $post_id);
+$stmt->bind_param("i", $recipe_id);
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
@@ -73,11 +67,11 @@ $result = $stmt->get_result();
 
         /* Равные ширины столбцов (50% на каждый) */
         th, td {
-            width: 50%;
+            width: 33%;
         }
 
         /* Стили для кнопки */
-        a.add-post-btn {
+        a.add-recipe-btn {
             display: inline-block;
             background-color: #007bff;
             color: white;
@@ -89,7 +83,7 @@ $result = $stmt->get_result();
             font-size: 16px;
         }
 
-        a.add-post-btn:hover {
+        a.add-recipe-btn:hover {
             background-color: #0056b3;
         }
 
@@ -117,26 +111,44 @@ $result = $stmt->get_result();
 
 <div class="container">
     <h1>Лайки на рецепте</h1>
-    <a class="add-post-btn" onclick="window.history.back()">Вернуться назад</a>
+    <a class="add-recipe-btn" onclick="window.history.back()">Вернуться назад</a>
 
     <table>
         <thead>
             <tr>
                 <th>Пользователь</th>
                 <th>Роль</th>
+                <th>Дата</th>
             </tr>
         </thead>
         <tbody>
             <?php
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
+                    // Преобразуем роль в читаемый формат
+                    switch ($row['role']) {
+                        case 'admin':
+                            $role = 'Админ';
+                            break;
+                        case 'publisher':
+                            $role = 'Публикатор';
+                            break;
+                        case 'user':
+                            $role = 'Пользователь';
+                            break;
+                        default:
+                            $role = 'Неизвестная роль';
+                            break;
+                    }
+
                     echo '<tr>';
                     echo "<td>" . htmlspecialchars($row['username']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['role']) . "</td>";
+                    echo "<td>" . htmlspecialchars($role) . "</td>"; // Выводим роль
+                    echo "<td>" . htmlspecialchars($row['liked_at']) . "</td>";
                     echo '</tr>';
                 }
             } else {
-                echo "<tr><td colspan='2' class='no-likes'>Нет лайков на этом рецепте.</td></tr>";
+                echo "<tr><td colspan='3' class='no-likes'>Нет лайков на этом рецепте.</td></tr>";
             }
 
             $stmt->close();

@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $updateTokenStmt->bind_param("si", $token, $_SESSION['user_id']);
                 $updateTokenStmt->execute();
             }
-            header("Location: view_posts.php?message=login");
+            header("Location: view_recipes.php?message=login");
             exit();
         } else {
             $error = "Неверный пароль";
@@ -173,7 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <a href="register.php">Нет аккаунта? Зарегистрироваться</a>
 
         <!-- Кнопка возвращения на главную страницу -->
-        <a href="view_posts.php">Вернуться на главную</a>
+        <a href="view_recipes.php">Вернуться на главную</a>
     </div>
 
 </body>

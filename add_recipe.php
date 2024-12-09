@@ -7,6 +7,22 @@
     <link rel="stylesheet" href="style.css"> 
 </head>
 <style>
+ a.add-recipe-btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+            margin-bottom: -30px; /* Уменьшили отступ */
+        }
+
+        a.add-recipe-btn:hover {
+            background-color: #0056b3;
+        }
+
     /* Общие стили для страницы */
 body {
     font-family: 'Arial', sans-serif;
@@ -34,24 +50,6 @@ h1 {
     color: #333;
     margin-bottom: 20px;
 }
-
-/* Кнопка возврата */
-.add-post-btn {
-    display: inline-block;
-    padding: 12px 24px;
-    background-color: #4CAF50;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-bottom: -30px; /* Уменьшили отступ */
-    transition: background-color 0.3s;
-}
-
-.add-post-btn:hover {
-    background-color: #45a049;
-}
-
-
 /* Стиль для сообщений об ошибках */
 .message {
     margin: 20px 0;
@@ -68,7 +66,7 @@ h1 {
 }
 
 /* Форма добавления поста */
-.post-form {
+.recipe-form {
     display: grid;
     gap: 15px;
 }
@@ -82,9 +80,17 @@ label {
 /* Поля ввода */
 input[type="text"],
 textarea,
-select,
+
 input[type="file"] {
-    width: 100%;
+    width: 99%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+select{
+    width: 102%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -93,7 +99,9 @@ input[type="file"] {
 
 /* Текстовое поле */
 textarea {
-    height: 150px;
+    height: 100px;
+    width: 99%;
+    resize: none;  
 }
 
 /* Кнопка отправки */
@@ -118,7 +126,7 @@ textarea {
         <h1>Добавить новый рецепт на сайт</h1>
 
         <!-- Кнопка возврата на таблицу -->
-        <a href="view_posts.php" class="add-post-btn">Вернуться на главную страницу</a>
+        <a href="view_recipes.php" class="add-recipe-btn">Вернуться на главную страницу</a>
 
         <!-- Сообщения об ошибках -->
         <div class="message">
@@ -127,8 +135,8 @@ textarea {
                     <?php
                     if ($_GET['message'] === 'title_error') {
                         echo "Заголовок не должен превышать 50 символов.";
-                    } elseif ($_GET['message'] === 'location_error') {
-                        echo "Местоположение не должно превышать 50 символов.";
+                    } elseif ($_GET['message'] === 'recipe_type_error') {
+                        echo "Вид блюда не должно превышать 50 символов.";
                     } elseif ($_GET['message'] === 'image_error') {
                         echo "Прикрепляемый файл должен быть изображением (JPEG, PNG, GIF, JPG).";
                     } elseif ($_GET['message'] === 'error') {
@@ -144,22 +152,22 @@ textarea {
         </div>
 
         <!-- Форма для добавления поста -->
-        <form action="submit_post.php" method="post" enctype="multipart/form-data" class="post-form">
+        <form action="submit_recipe.php" method="POST" enctype="multipart/form-data" class="recipe-form">
             <label for="title">Заголовок:</label>
             <input type="text" id="title" name="title" required maxlength="50">
 
-            <label for="content">Текст рецепта:</label>
-            <textarea id="content" name="content" required></textarea>
+            <label for="recipe_text">Текст рецепта:</label>
+            <textarea id="recipe_text" name="recipe_text" required></textarea>
 
-            <label for="location">Местоположение:</label>
-            <select id="location" name="location" required>
-                <option value="">Выберите местоположение</option>
+            <label for="recipe_type">Вид блюда:</label>
+            <select id="recipe_type" name="recipe_type" required>
+                <option value="">Выберите вид блюда</option>
                 <?php
                 include 'db.php';
-                $locationSql = "SELECT * FROM locations";
-                $locationResult = $conn->query($locationSql);
-                while ($location = $locationResult->fetch_assoc()) {
-                    echo "<option value='" . htmlspecialchars($location['name']) . "'>" . htmlspecialchars($location['name']) . "</option>";
+                $recipe_typeSql = "SELECT * FROM recipe_type";
+                $recipe_typeResult = $conn->query($recipe_typeSql);
+                while ($recipe_type = $recipe_typeResult->fetch_assoc()) {
+                    echo "<option value='" . htmlspecialchars($recipe_type['name']) . "'>" . htmlspecialchars($recipe_type['name']) . "</option>";
                 }
                 ?>
             </select>

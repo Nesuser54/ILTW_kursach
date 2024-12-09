@@ -57,7 +57,7 @@ if (isset($_SESSION['user_id'])) {
     }
 }
 
-if (isset($_POST['request_traveler']) && $userRole === 'user') {
+if (isset($_POST['request_publisher']) && $userRole === 'user') {
     $userId = $_SESSION['user_id'];
 
     // Проверка на наличие активной заявки
@@ -89,96 +89,96 @@ if (isset($_GET['delete'])) {
     $deleteId = intval($_GET['delete']);
 
     // Получаем user_id поста
-    $postSql = "SELECT user_id FROM posts WHERE id = ?";
-    $postStmt = $conn->prepare($postSql);
-    $postStmt->bind_param("i", $deleteId);
-    $postStmt->execute();
-    $postResult = $postStmt->get_result();
+    $recipesSql = "SELECT user_id FROM recipes WHERE id = ?";
+    $recipesStmt = $conn->prepare($recipesSql);
+    $recipesStmt->bind_param("i", $deleteId);
+    $recipesStmt->execute();
+    $recipeResult = $recipesStmt->get_result();
 
-    if ($postResult->num_rows > 0) {
-        $postRow = $postResult->fetch_assoc();
+    if ($recipeResult->num_rows > 0) {
+        $recipeRow = $recipeResult->fetch_assoc();
 
         // Проверяем, является ли пользователь администратором или владельцем поста
         if (isset($_SESSION['user_id'])) {
-            if ($postRow['user_id'] == $_SESSION['user_id'] || $_SESSION['role'] == 'admin') {
+            if ($recipeRow['user_id'] == $_SESSION['user_id'] || $_SESSION['role'] == 'admin') {
                 // Если совпадает, удаляем пост
-                $deleteSql = "DELETE FROM posts WHERE id = ?";
+                $deleteSql = "DELETE FROM recipes WHERE id = ?";
                 $deleteStmt = $conn->prepare($deleteSql);
                 $deleteStmt->bind_param("i", $deleteId);
                 $deleteStmt->execute();
                 $deleteStmt->close();
 
                 // Перенаправление после удаления
-                header("Location: view_posts.php?message=deleted");
+                header("Location: view_recipes.php?message=deleted");
                 exit();
             } else {
                 // Если не совпадает, выдаем ошибку прав доступа
-                header("Location: view_posts.php?message=access_denied");
+                header("Location: view_recipes.php?message=access_denied");
                 exit();
             }
         }
     } else {
         // Если пост не найден
-        header("Location: view_posts.php?message=post_not_found");
+        header("Location: view_recipes.php?message=recipe_not_found");
         exit();
     }
 }
 
 // Обработка лайка
 if (isset($_GET['like']) && isset($_SESSION['user_id'])) {
-    $likePostId = intval($_GET['like']);
+    $likerecipeId = intval($_GET['like']);
     $userId = $_SESSION['user_id'];
 
     // Проверяем, уже ли пользователь лайкнул этот пост
-    $checkLikeSql = "SELECT * FROM likes WHERE user_id = ? AND post_id = ?";
+    $checkLikeSql = "SELECT * FROM likes WHERE user_id = ? AND recipe_id = ?";
     $checkLikeStmt = $conn->prepare($checkLikeSql);
-    $checkLikeStmt->bind_param("ii", $userId, $likePostId);
+    $checkLikeStmt->bind_param("ii", $userId, $likerecipeId);
     $checkLikeStmt->execute();
     $likeResult = $checkLikeStmt->get_result();
 
     if ($likeResult->num_rows == 0) {
         // Если лайка еще нет, добавляем его
-        $insertLikeSql = "INSERT INTO likes (user_id, post_id) VALUES (?, ?)";
+        $insertLikeSql = "INSERT INTO likes (user_id, recipe_id) VALUES (?, ?)";
         $insertLikeStmt = $conn->prepare($insertLikeSql);
-        $insertLikeStmt->bind_param("ii", $userId, $likePostId);
+        $insertLikeStmt->bind_param("ii", $userId, $likerecipeId);
         $insertLikeStmt->execute();
         $insertLikeStmt->close();
     }
 
     // Перенаправление после лайка
-    header("Location: view_posts.php");
+    header("Location: view_recipes.php");
     exit();
 }
 
 // Обработка удаления лайка
 if (isset($_GET['unlike']) && isset($_SESSION['user_id'])) {
-    $unlikePostId = intval($_GET['unlike']);
+    $unlikerecipeId = intval($_GET['unlike']);
     $userId = $_SESSION['user_id'];
 
     // Удаление лайка
-    $deleteLikeSql = "DELETE FROM likes WHERE user_id = ? AND post_id = ?";
+    $deleteLikeSql = "DELETE FROM likes WHERE user_id = ? AND recipe_id = ?";
     $deleteLikeStmt = $conn->prepare($deleteLikeSql);
-    $deleteLikeStmt->bind_param("ii", $userId, $unlikePostId);
+    $deleteLikeStmt->bind_param("ii", $userId, $unlikerecipeId);
     $deleteLikeStmt->execute();
     $deleteLikeStmt->close();
 
     // Перенаправление после удаления лайка
-    header("Location: view_posts.php");
+    header("Location: view_recipes.php");
     exit();
 }
 
 // Получение коэффициентов из базы данных
-$sql = "SELECT weight_likes, weight_location, weight_author FROM ranking_weights WHERE id = 1";
+$sql = "SELECT weight_likes, weight_recipe_type, weight_author FROM ranking_weights WHERE id = 1";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     $weight_author = $row['weight_author'];
-    $weight_location = $row['weight_location'];
+    $weight_recipe_type = $row['weight_recipe_type'];
     $weight_likes = $row['weight_likes'];
 } else {
     $weight_author = 0.5;
-    $weight_location = 0.3;
+    $weight_recipe_type = 0.3;
     $weight_likes = 0.2;
 }
 
@@ -191,21 +191,21 @@ try {
     // Получение user_id из сессии
     $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
-    $sql = "SELECT posts.*, users.username, 
-            (SELECT COUNT(*) FROM likes WHERE post_id = posts.id) AS likes_count,
-            (SELECT COUNT(*) FROM likes WHERE user_id = ? AND post_id = posts.id) AS user_liked,
-            (SELECT COUNT(*) FROM likes l INNER JOIN posts p ON l.post_id = p.id 
+    $sql = "SELECT recipes.*, users.username, 
+            (SELECT COUNT(*) FROM likes WHERE recipe_id = recipes.id) AS likes_count,
+            (SELECT COUNT(*) FROM likes WHERE user_id = ? AND recipe_id = recipes.id) AS user_liked,
+            (SELECT COUNT(*) FROM likes l INNER JOIN recipes p ON l.recipe_id = p.id 
              WHERE l.user_id IN (SELECT user_id FROM likes WHERE user_id = ?)
-             AND p.user_id = posts.user_id) AS user_favorite_count,
+             AND p.user_id = recipes.user_id) AS user_favorite_count,
             (SELECT COUNT(*) FROM likes l 
-             JOIN posts p ON l.post_id = p.id 
-             WHERE l.user_id = ? AND p.location = posts.location) AS liked_location_count
-        FROM posts 
-        JOIN users ON posts.user_id = users.id 
-        WHERE (title LIKE ? OR content LIKE ? OR location LIKE ? OR users.username LIKE ?)
+             JOIN recipes p ON l.recipe_id = p.id 
+             WHERE l.user_id = ? AND p.recipe_type = recipes.recipe_type) AS liked_recipe_type_count
+        FROM recipes 
+        JOIN users ON recipes.user_id = users.id 
+        WHERE (title LIKE ? OR recipe_text LIKE ? OR recipe_type LIKE ? OR users.username LIKE ?)
     ";
 
-//  (SELECT COUNT(*) FROM post_images WHERE post_id = posts.id) AS image_count,
+//  (SELECT COUNT(*) FROM recipe_images WHERE recipe_id = recipes.id) AS image_count,
 
     // Добавляем фильтр по дате, если указано
     if ($date) {
@@ -215,7 +215,7 @@ try {
     // Сортировка по количеству лайков от любимых пользователей и дате создания
     $sql .= "ORDER BY 
         (user_favorite_count * ?) +
-        (liked_location_count * ?) +
+        (liked_recipe_type_count * ?) +
         (likes_count * ?) DESC, created_At DESC";
 
     $stmt = $conn->prepare($sql);
@@ -229,7 +229,7 @@ try {
 
      // Добавляем веса
      $params[] = $weight_author;
-     $params[] = $weight_location; 
+     $params[] = $weight_recipe_type; 
      $params[] = $weight_likes;    
 
      $types = "iiisssssddd";
@@ -262,7 +262,7 @@ try {
 </head>
 <style>
     /* Основной стиль для картинок */
-.post-image {
+.recipe-image {
     width: 150px;  /* Фиксированная ширина */
     height: 150px; /* Фиксированная высота */
     object-fit: cover; /* Обрезка изображения по центру, сохраняя пропорции */
@@ -309,10 +309,10 @@ table th, table td {
                 <?php elseif ($message === 'error'): ?>
                     <p style="color: red;">Произошла ошибка при создании публикации.</p>
                 <?php elseif ($message === 'deleted'): ?>
-                    <p style="color: orange;">Рецепт успешно удален!</p>
+                    <p style="color: green;">Рецепт успешно удален!</p>
                 <?php elseif ($message === 'access_denied'): ?>
                     <p style="color: red;">У вас нет прав для удаления этого рецепта.</p>
-                <?php elseif ($message === 'post_not_found'): ?>
+                <?php elseif ($message === 'recipe_not_found'): ?>
                     <p style="color: red;">Рецепт не найден.</p>
                 <?php elseif ($message === 'login'): ?>
                     <p style="color: green;">Авторизация прошла успешно</p>
@@ -335,35 +335,35 @@ table th, table td {
 
         <?php if (isset($_SESSION['user_id'])): ?>
             
-            <?php if ($userRole === 'traveler' || $userRole === 'admin'): ?>
-                <a href="add_post.php" class="add-post-btn">Добавить рецепт</a>
+            <?php if ($userRole === 'publisher' || $userRole === 'admin'): ?>
+                <a href="add_recipe.php" class="add-recipe-btn">Добавить рецепт</a>
             <?php endif; ?>
             <?php if ($userRole === 'user'): ?>
-            <a href="#" class="add-post-btn" id="requestTravelerRole">Запросить роль путешественника</a>
+            <a href="#" class="add-recipe-btn" id="requestpublisherRole">Запросить роль путешественника</a>
             <?php endif; ?>
         <?php else: ?>
-            <a href="login.php" class="add-post-btn">Войти</a>
-            <a href="register.php" class="add-post-btn">Регистрация</a>
+            <a href="login.php" class="add-recipe-btn">Войти</a>
+            <a href="register.php" class="add-recipe-btn">Регистрация</a>
         <?php endif; ?>
         <?php if (isset($_SESSION['user_id']) && $userRole === 'admin'): ?>
-            <a href="view_role_requests.php" class="add-post-btn">Посмотреть заявки на роль</a>
-            <a href="add_location.php" class="add-post-btn">Добавить местоположение</a>
+            <a href="view_role_requests.php" class="add-recipe-btn">Посмотреть заявки на роль</a>
+            <a href="add_recipe_type.php" class="add-recipe-btn">Добавить вид блюда</a>
         <?php endif; ?>
         <?php if (isset($_SESSION['user_id'])): ?>
             <!-- <h2>Привет, <?php echo htmlspecialchars($username); ?>!</h2> -->
-            <a href="view_favorites.php" class="add-post-btn">Посмотреть избранные рецепты</a>
+            <a href="view_favorites.php" class="add-recipe-btn">Посмотреть избранные рецепты</a>
         <?php endif; ?>
         <?php
         // Проверка, что пользователь вошел в аккаунт
         if (isset($_SESSION['user_id'])) {
             // Показываем кнопки для настроек и выхода
-            echo '<a href="setting.php" class="add-post-btn">Настройки</a>';
-            echo '<a href="logout.php" class="add-post-btn">Выход</a>';
+            echo '<a href="setting.php" class="add-recipe-btn">Настройки</a>';
+            echo '<a href="logout.php" class="add-recipe-btn">Выход</a>';
         }
         ?>
 
         <!-- Форма поиска -->
-        <form action="view_posts.php" method="GET" class="search">
+        <form action="view_recipes.php" method="GET" class="search">
             <input type="text" name="search"
                 placeholder="Поиск рецептов"
                 value="<?php echo htmlspecialchars($search); ?>">
@@ -374,14 +374,14 @@ table th, table td {
         <table>
             <thead>
                 <tr>
-                    <th>Заголовок</th>
-                    <th>Местоположение</th>
-                    <th>Содержимое</th>
-                    <th>Дата создания</th>
+                    <th>Название</th>
+                    <th>Вид блюда</th>
+                    <th>Рецепт</th>
+                    <th>Дата</th>
                     <th>Автор</th>
                     <th>Изображения</th>
-                    <th>Лайки</th>
-                    <th>Действия</th>
+                    <th>&#9829; и 💬</th>
+                    <th>Удалить</th>
                 </tr>
             </thead>
             <tbody>
@@ -390,25 +390,25 @@ table th, table td {
                     while ($row = $result->fetch_assoc()) {
                         echo '<tr>';
                         echo "<td>" . htmlspecialchars($row['title']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['location']) . "</td>";
-                        echo "<td>" . nl2br(htmlspecialchars($row['content'])) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['recipe_type']) . "</td>";
+                        echo "<td>" . nl2br(htmlspecialchars($row['recipe_text'])) . "</td>";
                         echo "<td>" . htmlspecialchars($row['created_at']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['username']) . "</td>";
 
                         // Получение изображений для текущего поста
   
                         // Получение изображений для текущего поста
-                        $post_id = $row['id'];
-                        $image_sql = "SELECT image FROM post_images WHERE post_id = ?";
+                        $recipe_id = $row['id'];
+                        $image_sql = "SELECT image FROM recipe_images WHERE recipe_id = ?";
                         $image_stmt = $conn->prepare($image_sql);
-                        $image_stmt->bind_param("i", $post_id);
+                        $image_stmt->bind_param("i", $recipe_id);
                         $image_stmt->execute();
                         $image_result = $image_stmt->get_result();
 
                         if ($image_result->num_rows > 0) {
                             echo '<td>';
                             while ($image_row = $image_result->fetch_assoc()) {
-                                echo '<img src="data:image/jpeg;base64,' . base64_encode($image_row['image']) . '" alt="Изображение" class="post-image">';
+                                echo '<img src="data:image/jpeg;base64,' . base64_encode($image_row['image']) . '" alt="Изображение" class="recipe-image">';
                             }
                             echo '</td>';
                         } else {
@@ -416,7 +416,7 @@ table th, table td {
                         }
 
                         // Получаем количество комментариев для поста
-                        $commentsCountQuery = "SELECT COUNT(*) AS comments_count FROM comments WHERE post_id = " . $row['id'];
+                        $commentsCountQuery = "SELECT COUNT(*) AS comments_count FROM comments WHERE recipe_id = " . $row['id'];
                         $commentsCountResult = mysqli_query($conn, $commentsCountQuery);
                         $commentsCount = mysqli_fetch_assoc($commentsCountResult)['comments_count'];
 
@@ -439,9 +439,9 @@ table th, table td {
                         // Секция с комментариями
                         echo "<div class='comment-btn-container'>";
                         echo "<span class='comment-count'>" . $commentsCount . "</span> ";  // Счетчик комментариев с пробелом
-                        echo "<a href='comments.php?post_id=" . $row['id'] . "' class='comment-btn' title='Комментарии'>💬</a>";
+                        echo "<a href='comments.php?recipe_id=" . $row['id'] . "' class='comment-btn' title='Комментарии'>💬</a>";
                         echo "</div>";
-                        echo "<a href='view_likes.php?post_id=" . $row['id'] . "' class='view-likes-btn' title='Посмотреть, кто лайкнул'>👥</a>";
+                        echo "<a href='view_likes.php?recipe_id=" . $row['id'] . "' class='view-likes-btn' title='Посмотреть, кто лайкнул'>👥</a>";
 
                         echo "</td>";
 
@@ -476,7 +476,7 @@ table th, table td {
         </table>
 
         <script>
-            document.getElementById('requestTravelerRole').addEventListener('click', function(event) {
+            document.getElementById('requestpublisherRole').addEventListener('click', function(event) {
             event.preventDefault(); // Предотвращаем переход по ссылке
 
             // Создаем форму для отправки запроса
@@ -484,7 +484,7 @@ table th, table td {
             form.method = 'POST';
             var input = document.createElement('input');
             input.type = 'hidden';
-            input.name = 'request_traveler';
+            input.name = 'request_publisher';
             input.value = '1'; // Можно установить любое значение
 
             form.appendChild(input);

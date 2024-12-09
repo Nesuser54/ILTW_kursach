@@ -66,14 +66,14 @@ nav a:hover {
     background-color: #0d8bf0;
 }
 
-.post-image {
+.recipe-image {
     max-width: 100%; /* Ограничиваем ширину до 100% от родительского элемента */
     height: auto; /* Сохраняем пропорции */
     display: inline-block; /* Убираем отступы снизу */
     margin: 0 auto; /* Центрируем картинку */
 }
 
-.add-post-btn {
+.add-recipe-btn {
     cursor: pointer;
     background-color: #4caf50;
     color: white;
@@ -87,7 +87,7 @@ nav a:hover {
 }
 
 /* Убираем увеличение кнопки при наведении */
-.add-post-btn:hover {
+.add-recipe-btn:hover {
     background-color: #45a049;
     transform: none; /* Убедитесь, что нет эффекта масштабирования */
 }
@@ -141,6 +141,7 @@ table tr:hover {
 .modal {
     display: none;
     position: fixed;
+    align-items: center;
     z-index: 1;
     left: 0;
     top: 0;
@@ -153,9 +154,11 @@ table tr:hover {
 .modal-content {
     margin: auto;
     display: block;
-    width: 80%;
+    align-items: center;
+    width: 100%;
     max-width: 700px;
 }
+
 
 #modalImage {
     width: 100%;
@@ -180,7 +183,7 @@ table tr:hover {
 }
 
 /* Стиль для кнопок */
-button, .add-post-btn, .like-btn, .unlike-btn {
+button, .add-recipe-btn, .like-btn, .unlike-btn {
     border: none;
     border-radius: 5px;
     padding: 10px 20px;
