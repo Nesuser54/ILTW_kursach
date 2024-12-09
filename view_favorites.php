@@ -224,10 +224,10 @@ th:nth-child(2), td:nth-child(7) {
 </div>
 
 <script>
-// Получаем модальное окно
-var modal = document.getElementById("myModal");
+        // Получаем модальное окно
+        var modal = document.getElementById("myModal");
 
-// Получаем изображение, которое нужно открыть в модальном окне
+// Получаем все изображения, которые должны открываться в модальном окне
 var img = document.querySelectorAll("img"); // выбираем все изображения
 
 // Получаем элемент <span>, который закрывает модальное окно
@@ -248,6 +248,12 @@ img.forEach(function(image) {
 span.onclick = function() {
     modal.style.display = "none";
 };
+
+// Чтобы окно не было открыто при загрузке страницы
+window.onload = function() {
+    modal.style.display = "none";
+};
+
 </script>
 
 </body>

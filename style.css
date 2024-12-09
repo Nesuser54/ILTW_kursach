@@ -138,10 +138,20 @@ table tr:hover {
 }
 
 /* Модальные окна */
+
+.modal img {
+    display: block;
+    max-width: 100%;  /* Ограничиваем размер изображения */
+    margin: 0 auto;   /* Центрируем изображение по горизонтали */
+    margin-top: 75px;
+    height: 600px; /* Фиксированная высота */
+    object-fit: cover; /* Обрезка изображения по центру, сохраняя пропорции */
+}
+
+
 .modal {
     display: none;
     position: fixed;
-    align-items: center;
     z-index: 1;
     left: 0;
     top: 0;
@@ -149,38 +159,30 @@ table tr:hover {
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.9);
-}
-
-.modal-content {
-    margin: auto;
-    display: block;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    width: 100%;
-    max-width: 700px;
 }
 
-
-#modalImage {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
+/* Модальное изображение */
+.modal-content {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain; /* Обеспечивает сохранение пропорций изображения */
+    margin: auto; /* Центрирует изображение по вертикали и горизонтали */
 }
 
+/* Кнопка закрытия */
 .close {
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
     position: absolute;
     top: 15px;
     right: 35px;
-    color: #fff;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.close:hover,
-.close:focus {
-    color: #bbb;
     cursor: pointer;
 }
+
 
 /* Стиль для кнопок */
 button,  .like-btn, .unlike-btn {

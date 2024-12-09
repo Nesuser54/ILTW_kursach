@@ -287,6 +287,10 @@ input[type="submit"] {
     margin-bottom: 0px; /* Отступ снизу */
 }
 
+th:nth-child(2), td:nth-child(3) {
+    text-align: left;
+}
+
 th:nth-child(2), td:nth-child(7) {
     min-width: 42px; /* Минимальная ширина второго столбца */
 }
@@ -391,10 +395,18 @@ th:nth-child(2), td:nth-child(7) {
                 <?php
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
+
+                        $recipe_text = htmlspecialchars($row['recipe_text']);
+
+// Заменяем слова "Ингредиенты" и "Приготовление" на жирные
+$recipe_text = str_replace("Ингредиенты", "<strong>Ингредиенты</strong>", $recipe_text);
+$recipe_text = str_replace("Приготовление", "<strong>Приготовление</strong>", $recipe_text);
+
                         echo '<tr>';
                         echo "<td>" . htmlspecialchars($row['title']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['recipe_type']) . "</td>";
-                        echo "<td>" . nl2br(htmlspecialchars($row['recipe_text'])) . "</td>";
+                        echo "<td>" . nl2br($recipe_text) . "</td>";
+
                         echo "<td>" . htmlspecialchars($row['created_at']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['username']) . "</td>";
 
@@ -504,30 +516,36 @@ th:nth-child(2), td:nth-child(7) {
         </div>
 
         <script>
-            // Получаем модальное окно
-        var modal = document.getElementById("myModal");
+        // Получаем модальное окно
+var modal = document.getElementById("myModal");
 
-        // Получаем изображение, которое нужно открыть в модальном окне
-        var img = document.querySelectorAll("img"); // выбираем все изображения
+// Получаем все изображения, которые должны открываться в модальном окне
+var img = document.querySelectorAll("img"); // выбираем все изображения
 
-        // Получаем элемент <span>, который закрывает модальное окно
-        var span = document.getElementsByClassName("close")[0];
+// Получаем элемент <span>, который закрывает модальное окно
+var span = document.getElementsByClassName("close")[0];
 
-        // Для каждого изображения добавляем обработчик клика
-        img.forEach(function(image) {
-            image.onclick = function() {
-                modal.style.display = "block"; // Показываем модальное окно
-                var modalImg = document.getElementById("img01");
-                var captionText = document.getElementById("caption");
-                modalImg.src = this.src; // Устанавливаем src изображения в модальном окне
-                captionText.innerHTML = this.alt; // Устанавливаем alt как описание
-            };
-        });
+// Для каждого изображения добавляем обработчик клика
+img.forEach(function(image) {
+    image.onclick = function() {
+        modal.style.display = "block"; // Показываем модальное окно
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+        modalImg.src = this.src; // Устанавливаем src изображения в модальном окне
+        captionText.innerHTML = this.alt; // Устанавливаем alt как описание
+    };
+});
 
-        // Когда пользователь нажимает на <span> (кнопка закрытия), скрыть модальное окно
-        span.onclick = function() {
-            modal.style.display = "none";
-        };
+// Когда пользователь нажимает на <span> (кнопка закрытия), скрыть модальное окно
+span.onclick = function() {
+    modal.style.display = "none";
+};
+
+// Чтобы окно не было открыто при загрузке страницы
+window.onload = function() {
+    modal.style.display = "none";
+};
+
 
         </script>
 
