@@ -1,129 +1,402 @@
+/* Основной стиль */
 body {
-    font-family: Arial, sans-serif;
-    margin: 10px; /* Убираем отступы по умолчанию */
-    background-color: #f4f4f4;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fc;
+    margin: 0;
+    padding: 0;
     color: #333;
-    position: relative; /* Для позиционирования аватарки */
-}
- 
-.header {
-    display: flex;
-    justify-content: space-between; /* Раздвигает элементы по горизонтали */
-    align-items: center; /* Выравнивание по вертикали */
-    padding: 10px 20px; /* Отступы вокруг заголовка */
-    /* background-color: #fff; Фоновый цвет для контраста */
-    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); Тень для заголовка */
 }
 
-.user-avatar {
-    width: 50px; /* Ширина аватарки */
-    height: 50px; /* Высота аватарки */
-    border-radius: 50%; /* Круглая аватарка */
-    border: 2px solid #fff; /* Обводка */
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Тень */
+
+/* Общие контейнеры */
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
 }
 
 h1 {
+    font-size: 2.5rem;
+    color: #2d2d2d;
     text-align: center;
-    color: #2c3e50;
+    margin-bottom: 30px;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-th, td {
-    padding: 10px;
-    border: 1px solid #ccc;
+h2 {
+    padding: 15px;
+    margin: 0 auto;  
+    margin-left: 0px;
+    font-size: 1.8rem;
+    color: #4caf50;
     text-align: left;
 }
 
-th {
-    background-color: #2c3e50;
-    color: white;
-}
-
-tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-.search {
-    margin-bottom: 20px;
-    text-align: center;
+.user-avatar {
+    max-width: 100px; /* Ограничиваем максимальную ширину */
+    height: auto; /* Сохраняем пропорции */
+    border-radius: 50%; /* Делает изображение круглым */
 }
 
 img {
-    max-width: 100px;
-    margin: 5px;
+    max-width: 150px; /* Ограничиваем ширину картинки */
+    height: auto; /* Сохраняем пропорции */
+    display: inline-block; /* Убираем возможные отступы снизу */
+    margin: 0 auto; /* Центрируем картинку */
 }
 
-form {
-    background: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-label {
-    display: block;
-    margin: 10px 0 5px;
-}
-
-input[type="text"],
-input[type="password"],
-textarea,
-input[type="file"] {
-    width: 100%;
+/* Стили для навигации */
+nav {
+    background-color: #2196f3;
     padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
-input[type="submit"] {
-    background-color: #2c3e50;
+nav a {
     color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    width: 100%;
-}
-
-input[type="submit"]:hover {
-    background-color: #34495e;
-}
-
-a {
-    display: block;
-    text-align: center;
-    margin-bottom: 20px;
-    color: #2c3e50;
     text-decoration: none;
-    font-size: 18px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s;
 }
 
-a:hover {
-    text-decoration: underline;
+nav a:hover {
+    background-color: #0d8bf0;
+}
+
+.post-image {
+    max-width: 100%; /* Ограничиваем ширину до 100% от родительского элемента */
+    height: auto; /* Сохраняем пропорции */
+    display: inline-block; /* Убираем отступы снизу */
+    margin: 0 auto; /* Центрируем картинку */
 }
 
 .add-post-btn {
-    display: inline-block;
-    padding: 10px 15px;
-    margin: 20px 0;
-    background-color: #2c3e50;
+    cursor: pointer;
+    background-color: #4caf50;
     color: white;
+    padding: 10px 20px;
     text-decoration: none;
     border-radius: 5px;
-    text-align: center;
+    transition: background-color 0.3s; /* Убираем увеличение */
+    display: inline-block; /* Чтобы кнопка оставалась в строке */
+    margin-bottom: 10px; /* Отступ снизу для кнопок, чтобы они не накладывались */
+    margin-right: 5px; /* Отступ между кн   опками */
 }
 
+/* Убираем увеличение кнопки при наведении */
 .add-post-btn:hover {
-    background-color: #34495e;
+    background-color: #45a049;
+    transform: none; /* Убедитесь, что нет эффекта масштабирования */
+}
+
+/* Стили для сообщений */
+.message {
+    color: #d32f2f;
+    padding: 3px;
+    margin-bottom: 20px;
+    text-align: left;
+    margin-left: 5px;
+    margin-right: 1000px;
+}
+
+/* Стили таблицы */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    border: 1px solid #ddd; /* Внешняя граница таблицы */
+}
+
+table th, table td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd; /* Горизонтальные линии */
+    border-right: 1px solid #ddd; /* Вертикальные линии */
+}
+
+/* Убираем последнюю правую границу */
+table th:last-child, 
+table td:last-child {
+    border-right: none;
+}
+
+table th {
+    background-color: #2196f3;
+    color: white;
+    text-align: center; /* Выравнивание текста по центру */
+}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+table tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Модальные окна */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+}
+
+#modalImage {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    cursor: pointer;
+}
+
+/* Стиль для кнопок */
+button, .add-post-btn, .like-btn, .unlike-btn {
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+}
+
+/* Кнопки для регистрации, возврата на главную */
+.form-container a, .form-container input[type="submit"] {
+    background-color: #4caf50;
+    color: white;
+    padding: 12px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 15px;
+    width: 100%;
+    text-align: center;
+    transition: background-color 0.3s;
+    box-sizing: border-box;
+}
+
+/* Изменение при наведении на кнопку */
+.form-container a:hover, .form-container input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+
+/* Форма поиска */
+.search {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search input[type="text"], .search input[type="date"] {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+}
+
+input[type="submit"] {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: 10px; /* Отступ снизу */
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Общие стили для блока лайков */
+.likes-column {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 16px;
+    padding: 10px;
+}
+
+/* Стили для количества лайков */
+.likes-count {
+    font-weight: bold;
+    color: #333;
+    margin-right: 8px;
+}
+
+/* Стили для кнопки "сердечко" */
+.like-button {
+    font-size: 18px;
+    text-decoration: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* Сердечко в состоянии "не лайкнуто" */
+.like-button.like {
+    color: #ccc;
+}
+
+.like-button.like:hover {
+    color: #ff9999;
+    transform: scale(1.2);
+}
+
+/* Сердечко в состоянии "лайкнуто" */
+.like-button.unlike {
+    color: #ff4d4d;
+}
+
+.like-button.unlike:hover {
+    color: #ff1a1a;
+    transform: scale(1.2);
+}
+
+.like-button.static-like {
+    color: #ccc; /* Цвет для неактивного сердечка */
+    font-size: 24px;
+    cursor: not-allowed; /* Убираем курсор на этом значке, чтобы показать, что его нельзя нажать */
+}
+
+/* Стили для кнопки просмотра лайков */
+.view-likes-btn {
+    margin-left: 8px;
+    font-size: 18px;
+    text-decoration: none;
+    color: #2196F3;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.view-likes-btn:hover {
+    color: #1976D2;
+    transform: scale(1.1);
+}
+
+/* Стили для мусорного ведра */
+.delete-btn {
+    color: #666; /* Цвет иконки по умолчанию */
+    text-decoration: none;
+    font-size: 20px;
+    padding: 5px;
+}
+
+.delete-btn:hover {
+    color: red; /* Красный цвет при наведении */
+    transition: color 0.3s ease;
+}
+
+.delete-btn i {
+    vertical-align: middle; /* Центрирование иконки */
+}
+
+/* Стиль для неактивной кнопки мусорного ведра */
+.delete-btn.disabled {
+    color: #ccc; /* Цвет для неактивной кнопки */
+    pointer-events: none; /* Запрещает клики */
+    cursor: not-allowed; /* Указывает, что кнопка неактивна */
+}
+
+/* Стили для комментариев */
+.comment {
+    border: 1px solid #ccc;            /* Легкая граница, чуть темнее */
+    border-radius: 10px;                /* Скругленные углы */
+    padding: 15px;                      /* Отступы внутри */
+    margin-bottom: 20px;                /* Отступ снизу */
+    background-color: #f1f1f1;          /* Мягкий, но более насыщенный светлый фон */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);  /* Легкая тень для выделения */
+    display: flex;
+    justify-content: space-between;     /* Расположение контента и мета-информации */
+    align-items: flex-start;
+}
+
+.comment-content {
+    flex: 1;
+    font-size: 16px;
+    line-height: 1.5;
+    padding-left: 15px; 
+    color: #333;                        /* Темный цвет для текста */
+    margin-right: 20px;                 /* Отступ между текстом и мета-информацией */
+}
+
+.comment-meta {
+    color: #777;                        /* Серый цвет для мета-данных, но с оттенком темнее */
+    font-size: 14px;
+    text-align: right;                  /* Выравнивание мета-данных по правому краю */
+}
+
+.comment-meta small {
+    display: block;                     /* Мета-данные на отдельной строке */
+    margin-top: 5px;                    /* Отступ сверху */
+}
+
+.comment button {
+    background-color: #e64a19;          /* Оранжево-красный фон кнопки удаления */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.comment button:hover {
+    background-color: #c13500;          /* Темный оттенок при наведении на кнопку */
+}
+
+.comment .delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.comment .delete-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.comment .delete-btn:hover {
+    opacity: 0.7;
+}
+
+.comment-btn {
+    text-decoration: none;  /* Убираем подчеркивание */
+    color: inherit;         /* Наследуем цвет от родительского элемента */
+}
+
+.comment-btn:hover {
+    text-decoration: none;  /* Убираем подчеркивание при наведении */
 }

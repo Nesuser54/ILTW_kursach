@@ -9,7 +9,7 @@ $message = '';
 
 
 $selectedLanguage = $_COOKIE['language'] ?? 'ru';
-$greetingMessage = ($selectedLanguage === 'eng') ? "Welcome back, $username!" : "Добро пожаловать обратно, $username!";
+
 
 
 if (isset($_SESSION['user_id'])) {
@@ -82,6 +82,7 @@ if (isset($_POST['request_traveler']) && $userRole === 'user') {
 
     $checkRequestStmt->close();
 }
+
 
 // Обработка удаления записи
 if (isset($_GET['delete'])) {
@@ -255,269 +256,277 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Дневник путешественника</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-    /* Стиль для модального окна */
-.modal {
-    display: none; /* Скрыто по умолчанию */
-    position: fixed;
-    z-index: 1; /* Слой поверх всего */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0, 0, 0); /* Полупрозрачный фон */
-    background-color: rgba(0, 0, 0, 0.9); /* Черный с прозрачностью */
-}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-/* Модальное изображение */
-.modal-content {
-    margin: auto;
-    display: block;
-    width: 80%;
-    max-width: 700px;
-}
-
-/* Кнопка закрытия */
-.close {
-    position: absolute;
-    top: 15px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.close:hover,
-.close:focus {
-    color: #bbb;
-    text-decoration: none;
-    cursor: pointer;
-}
-</style>
+    
 </head>
-<body>
-<h1>Дневник путешественника</h1>
-    <?php if (isset($_SESSION['user_id'])): ?>
-         <!-- Отображение аватарки пользователя -->
-         <div class="header">
-        <h2  style="color: <?php echo ($selectedLanguage === 'eng') ? 'red' : 'green'; ?>;">
-        <?php echo ($selectedLanguage === 'eng') ? "Welcome back, " . htmlspecialchars($username) . "!" : "Добро пожаловать обратно, " . htmlspecialchars($username) . "!"; ?>
-    </h2>
-    <img src="<?php echo htmlspecialchars($avatar); ?>" alt="Аватар" class="user-avatar">
-    </div>
-    <?php endif; ?>
+<style>
+    /* Основной стиль для картинок */
+.post-image {
+    width: 150px;  /* Фиксированная ширина */
+    height: 150px; /* Фиксированная высота */
+    object-fit: cover; /* Обрезка изображения по центру, сохраняя пропорции */
+    display: inline-block; /* Размещение изображений в одну линию */
+    margin: 5px; /* Небольшие отступы между изображениями */
+}
 
-    <!-- Сообщение о результате создания поста -->
-    <?php if ($message): ?>
-        <div class="message">
-            <?php if ($message === 'success'): ?>
-                <p style="color: green;">Пост успешно создан!</p>
-            <?php elseif ($message === 'error'): ?>
-                <p style="color: red;">Произошла ошибка при создании поста.</p>
-            <?php elseif ($message === 'deleted'): ?>
-                <p style="color: orange;">Пост успешно удален!</p>
-            <?php elseif ($message === 'access_denied'): ?>
-                <p style="color: red;">У вас нет прав для удаления этого поста.</p>
-            <?php elseif ($message === 'post_not_found'): ?>
-                <p style="color: red;">Пост не найден.</p>
-            <?php elseif ($message === 'login'): ?>
-                <p style="color: green;">Авторизация прошла успешно</p>
-            <?php elseif ($message === 'logout'): ?>
-                <p style="color: green;">Выход из аккаунта произошел успешно</p>
-            <?php elseif ($message === 'role_requested'): ?>
-                <p style="color: green;">Запрос на изменение роли отправлен!</p>
+/* Стили для изображения в таблице */
+table td {
+    text-align: center; /* Центрирование контента внутри ячеек */
+}
+
+/* Стили для таблицы */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+</style>
+    <body>
+        <h1>Мамины рецепты</h1>
+        <?php if (isset($_SESSION['user_id'])): ?>
+            <!-- Отображение аватарки пользователя -->
+            <img src="<?php echo htmlspecialchars($avatar); ?>" alt="Аватар" class="user-avatar">
+            <div class="header">
+                <h2 style="color: <?php echo ($selectedLanguage === 'eng') ? 'red' : 'green'; ?>;">
+                    <?php echo ($selectedLanguage === 'eng') ? "Welcome back, " . htmlspecialchars($username) . "!" : "Добро пожаловать обратно, " . htmlspecialchars($username) . "!"; ?>
+                </h2>
+            </div>
+        <?php endif; ?>
+
+
+        <!-- Сообщение о результате создания поста -->
+        <?php if ($message): ?>
+            <div class="message">
+                <?php if ($message === 'success'): ?>
+                    <p style="color: green;">Рецепт успешно опубликован!</p>
+                <?php elseif ($message === 'error'): ?>
+                    <p style="color: red;">Произошла ошибка при создании публикации.</p>
+                <?php elseif ($message === 'deleted'): ?>
+                    <p style="color: orange;">Рецепт успешно удален!</p>
+                <?php elseif ($message === 'access_denied'): ?>
+                    <p style="color: red;">У вас нет прав для удаления этого рецепта.</p>
+                <?php elseif ($message === 'post_not_found'): ?>
+                    <p style="color: red;">Рецепт не найден.</p>
+                <?php elseif ($message === 'login'): ?>
+                    <p style="color: green;">Авторизация прошла успешно</p>
+                <?php elseif ($message === 'logout'): ?>
+                    <p style="color: green;">Выход из аккаунта произошел успешно</p>
+                <?php elseif ($message === 'role_requested'): ?>
+                    <p style="color: green;">Запрос на изменение роли отправлен!</p>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Отображение уведомлений -->
+        <?php if (!empty($notifications)): ?>
+            <div class="notifications">
+                <?php foreach ($notifications as $notification): ?>
+                    <script>alert('<?php echo $notification; ?>');</script>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($_SESSION['user_id'])): ?>
+            
+            <?php if ($userRole === 'traveler' || $userRole === 'admin'): ?>
+                <a href="add_post.php" class="add-post-btn">Добавить рецепт</a>
             <?php endif; ?>
-        </div>
-    <?php endif; ?>
-
-    <!-- Отображение уведомлений -->
-    <?php if (!empty($notifications)): ?>
-        <div class="notifications">
-            <?php foreach ($notifications as $notification): ?>
-                <script>alert('<?php echo $notification; ?>');</script>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
-
-    <?php if (isset($_SESSION['user_id'])): ?>
-        <a href="logout.php" class="add-post-btn">Выход</a>
-        <a href="setting.php" class="add-post-btn">Настройки</a>
-        <?php if ($userRole === 'traveler' || $userRole === 'admin'): ?>
-            <a href="add_post.php" class="add-post-btn">Добавить пост</a>
+            <?php if ($userRole === 'user'): ?>
+            <a href="#" class="add-post-btn" id="requestTravelerRole">Запросить роль путешественника</a>
+            <?php endif; ?>
+        <?php else: ?>
+            <a href="login.php" class="add-post-btn">Войти</a>
+            <a href="register.php" class="add-post-btn">Регистрация</a>
         <?php endif; ?>
-        <?php if ($userRole === 'user'): ?>
-        <a href="#" class="add-post-btn" id="requestTravelerRole">Запросить роль путешественника</a>
+        <?php if (isset($_SESSION['user_id']) && $userRole === 'admin'): ?>
+            <a href="view_role_requests.php" class="add-post-btn">Посмотреть заявки на роль</a>
+            <a href="add_location.php" class="add-post-btn">Добавить местоположение</a>
         <?php endif; ?>
-    <?php else: ?>
-        <a href="login.php" class="add-post-btn">Войти</a>
-        <a href="register.php" class="add-post-btn">Регистрация</a>
-    <?php endif; ?>
-    <?php if (isset($_SESSION['user_id']) && $userRole === 'admin'): ?>
-        <a href="view_role_requests.php" class="add-post-btn">Посмотреть заявки на роль</a>
-        <a href="add_location.php" class="add-post-btn">Добавить местоположение</a>
-    <?php endif; ?>
-    <?php if (isset($_SESSION['user_id'])): ?>
-        <!-- <h2>Привет, <?php echo htmlspecialchars($username); ?>!</h2> -->
-        <a href="view_favorites.php" class="add-post-btn">Посмотреть избранные посты</a>
-    <?php endif; ?>
-    <!-- Форма поиска -->
-    <form action="view_posts.php" method="GET" class="search">
-        <input type="text" name="search"
-            placeholder="Поиск по заголовку, содержимому, местоположению или имени пользователя"
-            value="<?php echo htmlspecialchars($search); ?>">
-        Поиск по дате: <input type="date" name="date" value="<?php echo htmlspecialchars($date); ?>">
-        <input type="submit" value="Поиск">
-    </form>
+        <?php if (isset($_SESSION['user_id'])): ?>
+            <!-- <h2>Привет, <?php echo htmlspecialchars($username); ?>!</h2> -->
+            <a href="view_favorites.php" class="add-post-btn">Посмотреть избранные рецепты</a>
+        <?php endif; ?>
+        <?php
+        // Проверка, что пользователь вошел в аккаунт
+        if (isset($_SESSION['user_id'])) {
+            // Показываем кнопки для настроек и выхода
+            echo '<a href="setting.php" class="add-post-btn">Настройки</a>';
+            echo '<a href="logout.php" class="add-post-btn">Выход</a>';
+        }
+        ?>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Заголовок</th>
-                <th>Местоположение</th>
-                <th>Содержимое</th>
-                <th>Дата создания</th>
-                <th>Автор</th>
-                <th>Изображения</th>
-                <th>Лайки</th>
-                <th>Действия</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo '<tr>';
-                    echo "<td>" . htmlspecialchars($row['title']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['location']) . "</td>";
-                    echo "<td>" . nl2br(htmlspecialchars($row['content'])) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['created_at']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['username']) . "</td>";
+        <!-- Форма поиска -->
+        <form action="view_posts.php" method="GET" class="search">
+            <input type="text" name="search"
+                placeholder="Поиск рецептов"
+                value="<?php echo htmlspecialchars($search); ?>">
+            Поиск по дате: <input type="date" name="date" value="<?php echo htmlspecialchars($date); ?>">
+            <input type="submit" value="Поиск">
+        </form>
 
-                    // Получение изображений для текущего поста
-                    $post_id = $row['id'];
-                    $image_sql = "SELECT image FROM post_images WHERE post_id = ?";
-                    $image_stmt = $conn->prepare($image_sql);
-                    $image_stmt->bind_param("i", $post_id);
-                    $image_stmt->execute();
-                    $image_result = $image_stmt->get_result();
+        <table>
+            <thead>
+                <tr>
+                    <th>Заголовок</th>
+                    <th>Местоположение</th>
+                    <th>Содержимое</th>
+                    <th>Дата создания</th>
+                    <th>Автор</th>
+                    <th>Изображения</th>
+                    <th>Лайки</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo '<tr>';
+                        echo "<td>" . htmlspecialchars($row['title']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['location']) . "</td>";
+                        echo "<td>" . nl2br(htmlspecialchars($row['content'])) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['created_at']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['username']) . "</td>";
 
-                    if ($image_result->num_rows > 0) {
-                        echo '<td>';
-                        while ($image_row = $image_result->fetch_assoc()) {
-                            echo '<img src="data:image/jpeg;base64,' . base64_encode($image_row['image']) . '" alt="Изображение">';
-                        }
-                        echo '</td>';
-                    } else {
-                        echo "<td>Изображения не найдены</td>";
-                    }
+                        // Получение изображений для текущего поста
+  
+                        // Получение изображений для текущего поста
+                        $post_id = $row['id'];
+                        $image_sql = "SELECT image FROM post_images WHERE post_id = ?";
+                        $image_stmt = $conn->prepare($image_sql);
+                        $image_stmt->bind_param("i", $post_id);
+                        $image_stmt->execute();
+                        $image_result = $image_stmt->get_result();
 
-                    // Лайки
-                    echo "<td>" . htmlspecialchars($row['likes_count']) . " ";
-                    if (isset($_SESSION['user_id'])) {
-                        if ($row['user_liked'] > 0) {
-                            echo "<span style='color: green;'>Вы лайкнули</span>";
-                            echo " | <a href='?unlike=" . $row['id'] . "' class='unlike-btn'>Убрать лайк</a>";
+                        if ($image_result->num_rows > 0) {
+                            echo '<td>';
+                            while ($image_row = $image_result->fetch_assoc()) {
+                                echo '<img src="data:image/jpeg;base64,' . base64_encode($image_row['image']) . '" alt="Изображение" class="post-image">';
+                            }
+                            echo '</td>';
                         } else {
-                            echo "<a href='?like=" . $row['id'] . "' class='like-btn'>Лайкнуть</a>";
+                            echo "<td>Изображения не найдены</td>";
                         }
-                        if ($row['user_id'] == $_SESSION['user_id']) {
-                            echo " | <a href='view_likes.php?post_id=" . $row['id'] . "'>Посмотреть лайки</a>";
-                        }
-                    }
-                    echo "</td>";
 
-                    // Проверка, если текущий пользователь является автором поста или администратором
-                    if (isset($_SESSION['user_id'])) {
-                        if ($row['user_id'] == $_SESSION['user_id'] || $userRole === 'admin') {
-                            echo "<td><a href='?delete=" . $row['id'] . "' onclick=\"return confirm('Вы уверены, что хотите удалить?');\">Удалить</a></td>";
+                        // Получаем количество комментариев для поста
+                        $commentsCountQuery = "SELECT COUNT(*) AS comments_count FROM comments WHERE post_id = " . $row['id'];
+                        $commentsCountResult = mysqli_query($conn, $commentsCountQuery);
+                        $commentsCount = mysqli_fetch_assoc($commentsCountResult)['comments_count'];
+
+                        // Отображаем количество лайков и комментариев для всех пользователей
+                        echo "<td class='likes-column'>";
+                        echo "<span class='likes-count'>" . htmlspecialchars($row['likes_count']) . "</span> ";  // Количество лайков
+
+                        // Если пользователь не авторизован, показываем статичный значок сердечка
+                        if (!isset($_SESSION['user_id'])) {
+                            echo "<span class='like-button static-like' title='Лайкнуть'>&#9829;</span>"; // Статичное серое сердечко для неавторизованных
+                        } else {
+                            // Если пользователь авторизован, показываем кнопки лайков
+                            if ($row['user_liked'] > 0) {
+                                echo "<a href='?unlike=" . $row['id'] . "' class='like-button unlike' title='Убрать лайк'>&#10084;</a>"; // Убрать лайк
+                            } else {
+                                echo "<a href='?like=" . $row['id'] . "' class='like-button like' title='Лайкнуть'>&#9825;</a>"; // Лайкнуть
+                            }
+                        }
+
+                        // Секция с комментариями
+                        echo "<div class='comment-btn-container'>";
+                        echo "<span class='comment-count'>" . $commentsCount . "</span> ";  // Счетчик комментариев с пробелом
+                        echo "<a href='comments.php?post_id=" . $row['id'] . "' class='comment-btn' title='Комментарии'>💬</a>";
+                        echo "</div>";
+                        echo "<a href='view_likes.php?post_id=" . $row['id'] . "' class='view-likes-btn' title='Посмотреть, кто лайкнул'>👥</a>";
+
+                        echo "</td>";
+
+
+
+
+                        // Проверка, если текущий пользователь является автором поста или администратором
+                        if (isset($_SESSION['user_id'])) {
+                            if ($row['user_id'] == $_SESSION['user_id'] || $userRole === 'admin') {
+                                echo "<td>
+                                        <a href='?delete=" . $row['id'] . "' 
+                                        onclick=\"return confirm('Вы уверены, что хотите удалить?');\" 
+                                        class='delete-btn'>
+                                            <i class='fa fa-trash'></i>
+                                        </a>
+                                    </td>";
+                            } else {
+                                echo "<td>Нет доступа</td>";
+                            }
                         } else {
                             echo "<td>Нет доступа</td>";
                         }
-                    } else {
-                        echo "<td>Нет доступа</td>";
                     }
-                    echo '</tr>';
+                } else {
+                    echo "<tr><td colspan='8'>Нет рецептов, соответствующих вашему запросу.</td></tr>";
                 }
-            } else {
-                echo "<tr><td colspan='8'>Нет постов, соответствующих вашему запросу.</td></tr>";
-            }
 
-            $stmt->close();
-            $conn->close();
-            ?>
-        </tbody>
-    </table>
+                $stmt->close();
+                $conn->close();
+                ?>
+            </tbody>
+        </table>
 
-    <script>
-document.getElementById('requestTravelerRole').addEventListener('click', function(event) {
-    event.preventDefault(); // Предотвращаем переход по ссылке
-
-    // Создаем форму для отправки запроса
-    var form = document.createElement('form');
-    form.method = 'POST';
-    var input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = 'request_traveler';
-    input.value = '1'; // Можно установить любое значение
-
-    form.appendChild(input);
-    document.body.appendChild(form); // Добавляем форму в документ
-    form.submit(); // Отправляем форму
-});
-</script>
-
-
-    <!-- <?php if (isset($_SESSION['user_id'])): ?>
         <script>
-            <?php if (isset($greetingMessage)): ?>
-                alert("<?php echo addslashes($greetingMessage); ?>");
-            <?php endif; ?>
+            document.getElementById('requestTravelerRole').addEventListener('click', function(event) {
+            event.preventDefault(); // Предотвращаем переход по ссылке
+
+            // Создаем форму для отправки запроса
+            var form = document.createElement('form');
+            form.method = 'POST';
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'request_traveler';
+            input.value = '1'; // Можно установить любое значение
+
+            form.appendChild(input);
+            document.body.appendChild(form); // Добавляем форму в документ
+            form.submit(); // Отправляем форму
+            });
+        </script> 
+
+        <!-- Модальное окно -->
+        <div id="myModal" class="modal">
+            <span class="close">&times;</span>
+            <img class="modal-content" id="img01">
+            <div id="caption"></div>
+        </div>
+
+        <script>
+            // Получаем модальное окно
+        var modal = document.getElementById("myModal");
+
+        // Получаем изображение, которое нужно открыть в модальном окне
+        var img = document.querySelectorAll("img"); // выбираем все изображения
+
+        // Получаем элемент <span>, который закрывает модальное окно
+        var span = document.getElementsByClassName("close")[0];
+
+        // Для каждого изображения добавляем обработчик клика
+        img.forEach(function(image) {
+            image.onclick = function() {
+                modal.style.display = "block"; // Показываем модальное окно
+                var modalImg = document.getElementById("img01");
+                var captionText = document.getElementById("caption");
+                modalImg.src = this.src; // Устанавливаем src изображения в модальном окне
+                captionText.innerHTML = this.alt; // Устанавливаем alt как описание
+            };
+        });
+
+        // Когда пользователь нажимает на <span> (кнопка закрытия), скрыть модальное окно
+        span.onclick = function() {
+            modal.style.display = "none";
+        };
+
         </script>
-    <?php endif; ?> -->
 
-    <!-- <?php if (isset($_SESSION['user_id'])): ?>
-        <h2 style="color: <?php echo ($selectedLanguage === 'eng') ? 'red' : 'green'; ?>;">
-            <?php echo ($selectedLanguage === 'eng') ? "Welcome back, " . htmlspecialchars($username) . "!" : "Добро пожаловать обратно, " . htmlspecialchars($username) . "!"; ?>
-        </h2>
-    <?php endif; ?> -->
-
-<!-- Модальное окно -->
-<div id="myModal" class="modal">
-    <span class="close">&times;</span>
-    <img class="modal-content" id="img01">
-    <div id="caption"></div>
-</div>
-
-<script>
-    // Получаем модальное окно
-var modal = document.getElementById("myModal");
-
-// Получаем изображение, которое нужно открыть в модальном окне
-var img = document.querySelectorAll("img"); // выбираем все изображения
-
-// Получаем элемент <span>, который закрывает модальное окно
-var span = document.getElementsByClassName("close")[0];
-
-// Для каждого изображения добавляем обработчик клика
-img.forEach(function(image) {
-    image.onclick = function() {
-        modal.style.display = "block"; // Показываем модальное окно
-        var modalImg = document.getElementById("img01");
-        var captionText = document.getElementById("caption");
-        modalImg.src = this.src; // Устанавливаем src изображения в модальном окне
-        captionText.innerHTML = this.alt; // Устанавливаем alt как описание
-    };
-});
-
-// Когда пользователь нажимает на <span> (кнопка закрытия), скрыть модальное окно
-span.onclick = function() {
-    modal.style.display = "none";
-};
-
-</script>
-
-</body>
-
+    </body>
 </html>

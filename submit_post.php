@@ -76,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: view_posts.php?message=success");
         exit(); // Завершаем выполнение скрипта
     } else {
-        echo "Ошибка при создании поста: " . mysqli_error($link);
+        echo "Ошибка при создании публикации: " . mysqli_error($link);
     }
 }
 ?>

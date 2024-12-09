@@ -2,8 +2,6 @@
 include 'db.php'; // Подключение к базе данных
 session_start();
 
-
-
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: view_posts.php"); // Перенаправление, если не админ
     exit();
@@ -23,7 +21,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
         
         // Присвоение роли "traveler" запрашивающему пользователю
         $userIdSql = "SELECT user_id FROM role_requests WHERE id = ?";
-        $userIdStmt = $conn->prepare($udserIdSql);
+        $userIdStmt = $conn->prepare($userIdSql);
         $userIdStmt->bind_param("i", $requestId);
         $userIdStmt->execute();
         $userIdResult = $userIdStmt->get_result();
@@ -116,14 +114,131 @@ $result = $stmt->get_result();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Заявки на роль</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+       /* Общий стиль страницы */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fc;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+/* Стиль заголовка */
+h1 {
+    font-size: 2.5rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Стиль для кнопки "Вернуться на главную страницу" */
+a.add-post-btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+
+        a.add-post-btn:hover {
+            background-color: #0056b3;
+        }
+
+/* Центрирование таблицы */
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Стиль заголовков таблицы */
+table th {
+    background-color: #2196f3;
+    color: white;
+    padding: 12px 15px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+/* Стиль строк таблицы */
+table td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Стилизация кнопок действий (одобрить/отклонить) */
+.action-btns a {
+    font-size: 1.5rem;
+    margin: 0 10px;
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.action-btns a:hover {
+    transform: scale(1.2);
+}
+
+.action-btns .approve {
+    color: #28a745; /* Зеленый цвет для одобрения */
+}
+
+.action-btns .deny {
+    color: #dc3545; /* Красный цвет для отклонения */
+}
+
+/* Стиль для пустой таблицы */
+table td[colspan="4"] {
+    text-align: center;
+    font-style: italic;
+    color: #888;
+}
+
+/* Мобильные стили */
+@media (max-width: 768px) {
+    table {
+        width: 100%;
+    }
+
+    .add-post-btn {
+        width: 100%;
+        font-size: 1rem;
+    }
+}
+
+
+
+    </style>
 </head>
 <body>
     <h1>Заявки на роль</h1>
-    
+    <a href="view_posts.php" class="add-post-btn">Вернуться на главную страницу</a>
     <table>
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Пользователь</th>
                 <th>Дата создания</th>
                 <th>Действия</th>
@@ -133,24 +248,21 @@ $result = $stmt->get_result();
             <?php if ($result->num_rows > 0): ?>
                 <?php while ($row = $result->fetch_assoc()): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($row['id']); ?></td>
                         <td><?php echo htmlspecialchars($row['username']); ?></td>
                         <td><?php echo htmlspecialchars($row['created_at']); ?></td>
-                        <td>
-                            <a href="?action=approve&id=<?php echo $row['id']; ?>">Одобрить</a>
-                            <a href="?action=deny&id=<?php echo $row['id']; ?>">Отклонить</a>
+                        <td class="action-btns">
+                            <a href="?action=approve&id=<?php echo $row['id']; ?>" title="Одобрить">&#128077;</a> <!-- Смайлик зеленой галочки -->
+                            <a href="?action=deny&id=<?php echo $row['id']; ?>" title="Отклонить">&#10060;</a> <!-- Смайлик красного креста -->
                         </td>
                     </tr>
                 <?php endwhile; ?>
             <?php else: ?>
                 <tr>
-                    <td x>Нет заявок на роль.</td>
+                    <td colspan="4">Нет заявок на роль.</td>
                 </tr>
             <?php endif; ?>
         </tbody>
     </table>
-
-    <a href="view_posts.php" class="add-post-btn">Вернуться к постам</a>
 </body>
 </html>
 

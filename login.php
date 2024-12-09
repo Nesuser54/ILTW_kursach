@@ -54,37 +54,98 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         body {
             display: flex;
             justify-content: center;
-            /* Центрируем содержимое по горизонтали */
             align-items: center;
-            /* Центрируем содержимое по вертикали */
             height: 100vh;
-            /* Высота на весь экран */
             margin: 0;
-            /* Убираем отступы по умолчанию */
+            background-color: #f4f4f4;
         }
 
         .form-container {
             text-align: center;
-            /* Центрируем текст внутри контейнера */
             width: 100%;
-            /* Ширина 100% */
             max-width: 400px;
-            /* Максимальная ширина контейнера */
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-family: 'Arial', sans-serif;
+            color: #333;
         }
 
         .form-group {
-            margin-bottom: 20px;
-            /* Отступ между полями */
+            margin-bottom: 15px;
         }
 
         input[type="text"],
         input[type="password"] {
             width: 100%;
-            /* Ширина полей на 100% */
-            padding: 10px;
-            /* Внутренние отступы */
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
             box-sizing: border-box;
-            /* Учитываем отступы в ширину */
+            margin-bottom: 10px;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #4caf50;
+            outline: none;
+        }
+
+        label {
+            font-size: 14px;
+            color: #555;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .form-container a {
+            display: inline-block;
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 15px;
+            width: 100%;
+            text-align: center;
+            transition: background-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-container a:hover {
+            background-color: #45a049;
+        }
+
+        .form-container input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-container input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .form-container .error {
+            color: red;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -93,8 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <div class="form-container">
         <h1>Вход</h1>
-        <?php if (isset($error))
-            echo "<p style='color:red;'>$error</p>"; ?>
+        <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
         <form action="login.php" method="POST">
             <div class="form-group">
                 <input type="text" name="username" placeholder="Имя пользователя" required>
@@ -110,8 +170,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="submit" value="Войти">
         </form>
 
-        <a class="add-post-btn" href="register.php">Зарегистрироваться</a>
+        <a href="register.php">Нет аккаунта? Зарегистрироваться</a>
+
+        <!-- Кнопка возвращения на главную страницу -->
+        <a href="view_posts.php">Вернуться на главную</a>
     </div>
+
 </body>
 
 </html>

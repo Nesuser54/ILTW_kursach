@@ -102,56 +102,168 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Настройки</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 1rem;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        select, input[type="file"], input[type="number"], input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .message {
+            text-align: center;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;  
+            color: #721c24;
+        }
+
+        a.add-post-btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+
+        a.add-post-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .message_error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 5px;
+}
+
+/* Стили для успешных сообщений */
+.message_success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 5px;
+}
+    </style>
 </head>
 
 <body>
 
-    <form action="setting.php" method="POST">
-        <label for="language">Выберите язык приветствия:</label>
-        <select name="language" id="language">
-            <?php foreach ($languages as $code => $name): ?>
-                <option value="<?php echo $code; ?>" <?php echo ($selectedLanguage === $code) ? 'selected' : ''; ?>>
-                    <?php echo $name; ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-        <input type="submit" value="Сохранить">
-    </form>
-    <br>
-
-    <!-- Форма для загрузки аватарки -->
-    <form action="setting.php" method="POST" enctype="multipart/form-data">
-        <label for="avatar">Загрузить аватарку:</label>
-        <input type="file" name="avatar" id="avatar" accept="image/*" required>
-        <input type="submit" value="Сохранить аватарку">
-    </form>
-    <br>
-
-    <?php if (isset($_SESSION['user_id']) && $userRole === 'admin'): ?>
-        <form method="POST" action="update_weights.php">
-            <label for="weight_author">Коэффициент авторов:</label>
-            <input type="number" step="0.1" name="weight_author" id="weight_author" value="<?php echo $weight_author; ?>"
-                required>
-
-            <label for="weight_location">Коэффициент местоположения:</label>
-            <input type="number" step="0.1" name="weight_location" id="weight_location"
-                value="<?php echo $weight_location; ?>" required>
-
-            <label for="weight_likes">Коэффициент количества лайков:</label>
-            <input type="number" step="0.1" name="weight_likes" id="weight_likes" value="<?php echo $weight_likes; ?>"
-                required>
-
+    <div class="container">
+        <h1>Настройки</h1>
+        <a href="view_posts.php" class="add-post-btn">Вернуться на главную страницу</a>
+   
+        <!-- Форма для выбора языка -->
+        <form action="setting.php" method="POST">
+            <label for="language">Выберите язык приветствия:</label>
+            <select name="language" id="language">
+                <?php foreach ($languages as $code => $name): ?>
+                    <option value="<?php echo $code; ?>" <?php echo ($selectedLanguage === $code) ? 'selected' : ''; ?>>
+                        <?php echo $name; ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
             <input type="submit" value="Сохранить">
         </form>
-    <?php endif; ?>
-    <?php if ($error): ?>
-        <div class="error"><?php echo $error; ?></div>
-    <?php endif; ?>
-    <?php if ($success): ?>
-        <div class="success"><?php echo $success; ?></div>
-    <?php endif; ?>
 
-    <a href="view_posts.php" class="add-post-btn">Вернуться к постам</a>
+        <!-- Форма для загрузки аватарки -->
+        <form action="setting.php" method="POST" enctype="multipart/form-data">
+            <label for="avatar">Загрузить аватарку:</label>
+            <input type="file" name="avatar" id="avatar" accept="image/*" required>
+            <input type="submit" value="Сохранить">
+        </form>
+
+        <?php if (isset($_SESSION['user_id']) && $userRole === 'admin'): ?>
+            <!-- Форма для изменения коэффициентов -->
+            <form method="POST" action="update_weights.php">
+                <label for="weight_author">Коэффициент авторов:</label>
+                <input type="number" step="0.1" name="weight_author" id="weight_author" value="<?php echo $weight_author; ?>" required>
+
+                <label for="weight_location">Коэффициент местоположения:</label>
+                <input type="number" step="0.1" name="weight_location" id="weight_location" value="<?php echo $weight_location; ?>" required>
+
+                <label for="weight_likes">Коэффициент количества лайков:</label>
+                <input type="number" step="0.1" name="weight_likes" id="weight_likes" value="<?php echo $weight_likes; ?>" required>
+
+                <input type="submit" value="Сохранить">
+            </form>
+        <?php endif; ?>
+        <?php if (isset($error)): ?>
+            <div class="message_error"><?php echo $error; ?></div>
+        <?php endif; ?>
+
+        <?php if (isset($success)): ?>
+            <div class="message_success"><?php echo $success; ?></div>
+        <?php endif; ?>
+        
+    </div>
+
 </body>
 
 </html>

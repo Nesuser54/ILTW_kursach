@@ -48,23 +48,99 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <style>
         body {
             display: flex;
-            justify-content: center; 
+            justify-content: center;
             align-items: center;
-            height: 100vh; 
-            margin: 0; 
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
         }
+
         .form-container {
             text-align: center;
             width: 100%;
             max-width: 400px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        input[type="text"], input[type="password"] {
-            width: 100%; 
-            padding: 10px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             box-sizing: border-box;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #4caf50;
+            outline: none;
+        }
+
+        label {
+            font-size: 14px;
+            color: #555;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .form-container a {
+            display: inline-block;
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 15px;
+            width: 100%;
+            text-align: center;
+            transition: background-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-container a:hover {
+            background-color: #45a049;
+        }
+
+        .form-container input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-container input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .form-container .error {
+            color: red;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -80,9 +156,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="form-group">
                 <input type="password" name="password" placeholder="Пароль" required>
             </div>
-            <input type="submit" value="Зарегистрироваться">
+            <input type="submit" value="Зарегистрироваться" class="add-post-btn">
         </form>
-        <a href="login.php" class="add-post-btn"> Войти</a>
+        <a href="login.php" class="add-post-btn"> Уже есть аккаунт? Войти</a>
+        <!-- Кнопка возвращения на главную страницу -->
+        <a class="add-post-btn" href="view_posts.php">Вернуться на главную</a>
     </div>
 </body>
 </html>

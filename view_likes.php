@@ -3,22 +3,21 @@ include 'db.php'; // Подключение к базе данных
 include 'auth.php';
 // session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
+// if (!isset($_SESSION['user_id'])) {
+//     header("Location: login.php");
+//     exit();
+// }
 
 $post_id = isset($_GET['post_id']) ? intval($_GET['post_id']) : 0;
 
-// Получение пользователей, поставивших лайки
-$sql = "SELECT users.username FROM likes 
+// Получение пользователей, поставивших лайки с их ролями
+$sql = "SELECT users.username, users.role FROM likes 
         JOIN users ON likes.user_id = users.id 
         WHERE likes.post_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $post_id);
 $stmt->execute();
 $result = $stmt->get_result();
-
 ?>
 
 <!DOCTYPE html>
@@ -26,37 +25,126 @@ $result = $stmt->get_result();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Лайки на посте</title>
+    <title>Лайки на рецепте</title>
     <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-<h1>Лайки на посте</h1>
-<a href="view_posts.php">Назад к постам</a>
-
-<table>
-    <thead>
-        <tr>
-            <th>Пользователь</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo '<tr>';
-                echo "<td>" . htmlspecialchars($row['username']) . "</td>";
-                echo '</tr>';
-            }
-        } else {
-            echo "<tr><td colspan='1'>Нет лайков на этом посте.</td></tr>";
+    <style>
+        /* Основной стиль для страницы */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #007bff;
         }
 
-        $stmt->close();
-        $conn->close();
-        ?>
-    </tbody>
-</table>
+        /* Стили для таблицы */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: #555;
+        }
+
+        td {
+            color: #333;
+        }
+
+        /* Равные ширины столбцов (50% на каждый) */
+        th, td {
+            width: 50%;
+        }
+
+        /* Стили для кнопки */
+        a.add-post-btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 12px 25px;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 30px;
+            font-size: 16px;
+        }
+
+        a.add-post-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Центрирование таблицы на странице */
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        /* Стиль для пустых ячеек */
+        .no-likes {
+            text-align: center;
+            font-style: italic;
+            color: #888;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Лайки на рецепте</h1>
+    <a class="add-post-btn" onclick="window.history.back()">Вернуться назад</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Пользователь</th>
+                <th>Роль</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo '<tr>';
+                    echo "<td>" . htmlspecialchars($row['username']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['role']) . "</td>";
+                    echo '</tr>';
+                }
+            } else {
+                echo "<tr><td colspan='2' class='no-likes'>Нет лайков на этом рецепте.</td></tr>";
+            }
+
+            $stmt->close();
+            $conn->close();
+            ?>
+        </tbody>
+    </table>
+</div>
 
 </body>
 </html>
