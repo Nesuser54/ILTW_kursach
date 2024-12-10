@@ -90,7 +90,6 @@ try {
 <style>
     a.add-recipe-btn {
             display: inline-block;
-            background-color: #007bff;
             color: white;
             padding: 10px 20px;
             text-align: center;
@@ -99,9 +98,7 @@ try {
             margin-top: 20px;
         }
 
-        a.add-recipe-btn:hover {
-            background-color: #0056b3;
-        }
+       
 
     /* Основной стиль для картинок */
 .recipe-image {

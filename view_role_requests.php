@@ -113,6 +113,7 @@ $result = $stmt->get_result();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Заявки на роль</title>
+    <link rel="stylesheet" href="style.css">
     <style>
         /* Общий стиль страницы */
         body {
@@ -136,26 +137,12 @@ $result = $stmt->get_result();
         }
 
         /* Кнопка возврата */
-        a.add-recipe-btn {
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 1rem;
-            transition: background-color 0.3s ease;
-            margin-bottom: 20px;
-        }
-
-        a.add-recipe-btn:hover {
-            background-color: #0056b3;
-        }
-
+      
         /* Таблица */
         table {
             width: 90%;
             max-width: 1200px;
-            margin: 20px 0;
+            
             border-collapse: collapse;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             border-radius: 12px;
@@ -169,7 +156,7 @@ $result = $stmt->get_result();
         }
 
         table th {
-            background-color: #007bff;
+            
             color: #fff;
             font-size: 1.1rem;
         }

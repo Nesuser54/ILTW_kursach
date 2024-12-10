@@ -265,7 +265,6 @@ try {
 </head>
 <style>
 
-
 /* Стили для изображения в таблице */
 table td {
     text-align: center; /* Центрирование контента внутри ячеек */
@@ -295,6 +294,8 @@ th:nth-child(2), td:nth-child(7) {
     min-width: 42px; /* Минимальная ширина второго столбца */
 }
 
+
+
 </style>
     <body>
         <h1>Мамины рецепты</h1>
@@ -302,7 +303,7 @@ th:nth-child(2), td:nth-child(7) {
             <!-- Отображение аватарки пользователя -->
             <img src="<?php echo htmlspecialchars($avatar); ?>" alt="Аватар" class="user-avatar">
             <div class="header">
-                <h2 style="color: <?php echo 'green'; ?>;">
+                <h2>
                     <?php echo  "Добро пожаловать, " . htmlspecialchars($username) . "!"; ?>
                 </h2>
             </div>

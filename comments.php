@@ -41,6 +41,11 @@
 
     </head>
     <style>
+
+body {
+    
+    margin-bottom: 107px;
+}
     form {
         position: relative;
         display: flex;
@@ -50,6 +55,12 @@
         margin-left: 10px;        /* Отступ от левого края */
     }
 
+
+    h1 {
+            
+            text-align: center;
+            margin-bottom: 10px;
+        }
     .char-count {
         font-size: 12px;
         color: #888;
@@ -74,7 +85,7 @@
     }
 
     form button {
-        background-color: #4CAF50;
+        background-color: #f5a623;
         color: white;
         padding: 10px 20px;
         border: none;
@@ -84,7 +95,7 @@
     }
 
     form button:hover {
-        background-color: #45a049;
+        background-color: #d87f19;
     }
 
     .msg {
@@ -92,7 +103,6 @@
     }
     a.add-recipe-btn {
             display: inline-block;
-            background-color: #007bff;
             color: white;
             padding: 10px 20px;
             text-align: center;
@@ -100,9 +110,7 @@
             text-decoration: none;
             margin-top: 20px;
         }
-        a.add-recipe-btn:hover {
-            background-color: #0056b3;
-        }
+        
 
     </style>
     <body>

@@ -61,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_recipe_type_id
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Управление видами блюд</title>
+    <link rel="stylesheet" href="style.css">
     <style>
         body {
     font-family: Arial, sans-serif;
@@ -84,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_recipe_type_id
 
 h1 {
     color: #333;
-    font-size: 24px;
+    font-size: 2rem;
     margin-bottom: 20px;
     text-align: center;
 }
@@ -146,7 +147,6 @@ h1 {
 
         a.add-recipe-btn {
             display: inline-block;
-            background-color: #007bff;
             color: white;
             padding: 10px 20px;
             text-align: center;
@@ -155,9 +155,6 @@ h1 {
             margin-bottom: 20px;
         }
 
-        a.add-recipe-btn:hover {
-            background-color: #0056b3;
-        }
     </style>
 </head>
 <body>

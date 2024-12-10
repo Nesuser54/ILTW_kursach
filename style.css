@@ -1,10 +1,22 @@
 /* Основной стиль */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7fc;
+    background: linear-gradient(to bottom, #f1e1d0, #d0c4a1);
+    /* теплый градиент */
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    color: #333;
+}
+
+h1 {
+    font-family: 'Georgia', serif;
+    font-size: 3rem;
+    text-align: center;
+    color: #6a4e23;
+    /* теплый коричневый */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    /* тень для глубины */
+    margin-top: 20px;
+    margin-bottom: -20px;
 }
 
 
@@ -15,21 +27,41 @@ body {
     padding: 20px;
 }
 
-h1 {
-    font-size: 2.5rem;
-    color: #2d2d2d;
-    text-align: center;
-    margin-bottom: 30px;
-}
+
 
 h2 {
-    padding: 15px;
-    margin: 0 auto;
-    margin-left: 0px;
-    font-size: 1.8rem;
-    color: #4caf50;
+    padding: 15px 20px;
+    /* Внутренние отступы */
+    margin: 20px 0;
+    /* Только вертикальные отступы */
+    margin-left: 1px;
+    font-size: 1.6rem;
+    /* Размер шрифта */
+    color: #d87f19;
+    /* Цвет текста */
     text-align: left;
+    /* Выравнивание текста по левому краю */
+    background-color: #fef7e5;
+    /* Светлый фон */
+    border-left: 5px solid #d87f19;
+    /* Левый бордюр для акцента */
+    border-radius: 0 8px 8px 0;
+    /* Скругленные углы справа */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Лёгкая тень для объёма */
+    font-family: 'Arial', sans-serif;
+    /* Шрифт */
+    display: inline-block;
+    /* Подстраивает ширину под содержимое */
+    max-width: 90%;
+    /* Ограничение ширины для длинных текстов */
+    position: relative;
+    /* Оставляет в потоке документа */
 }
+
+
+
+
 
 .user-avatar {
     width: 100px;
@@ -68,20 +100,20 @@ nav a:hover {
 
 
 .add-recipe-btn {
-    cursor: pointer;
-    background-color: #4caf50;
+    background-color: #d87f19;
     color: white;
-    padding: 10px 20px;
+    padding: 10px 15px;
     text-decoration: none;
     border-radius: 5px;
-    transition: background-color 0.3s;
-    /* Убираем увеличение */
-    display: inline-block;
-    /* Чтобы кнопка оставалась в строке */
-
-    margin-left: 5px;
-    /* Отступ между кн   опками */
+    transition: background-color 0.3s ease;
 }
+
+.add-recipe-btn:hover {
+    background-color: #f5a623;
+}
+
+
+
 
 /* Основной стиль для картинок */
 .recipe-image {
@@ -96,11 +128,6 @@ nav a:hover {
 
 
 /* Убираем увеличение кнопки при наведении */
-.add-recipe-btn:hover {
-    background-color: #45a049;
-    transform: none;
-    /* Убедитесь, что нет эффекта масштабирования */
-}
 
 /* Стили для кнопок */
 
@@ -168,9 +195,9 @@ table th,
 table td {
     padding: 15px;
     text-align: center;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #545454;
     /* Горизонтальные линии */
-    border-right: 1px solid #ddd;
+    border-right: 1px solid #545454;
     /* Вертикальные линии */
 }
 
@@ -181,9 +208,10 @@ table td:last-child {
 }
 
 table th {
-    background-color: #2196f3;
+    background-color: #e7a738;
     color: white;
     text-align: center;
+    font-size: 18px;
     /* Выравнивание текста по центру */
 }
 
@@ -191,9 +219,7 @@ table tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
-table tr:hover {
-    background-color: #f5f5f5;
-}
+
 
 /* Модальные окна */
 
@@ -261,7 +287,7 @@ button,
 /* Кнопки для регистрации, возврата на главную */
 .form-container a,
 .form-container input[type="submit"] {
-    background-color: #4caf50;
+    background-color: #f5a623;
     color: white;
     padding: 12px 20px;
     text-decoration: none;
@@ -277,7 +303,7 @@ button,
 /* Изменение при наведении на кнопку */
 .form-container a:hover,
 .form-container input[type="submit"]:hover {
-    background-color: #45a049;
+    background-color: #d87f19;
 }
 
 
@@ -299,7 +325,7 @@ button,
 }
 
 input[type="submit"] {
-    background-color: #4caf50;
+    background-color: #f5a623;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -311,7 +337,7 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-    background-color: #45a049;
+    background-color: #d87f19;
 }
 
 /* Основной стиль для картинок */
@@ -355,26 +381,29 @@ input[type="submit"]:hover {
 
 /* Сердечко в состоянии "не лайкнуто" */
 .like-button.like {
-    color: #ccc;
+    font-size: 24px;
+    color: #000000;
 }
 
 .like-button.like:hover {
-    color: #ff9999;
-    transform: scale(1.2);
+    color: #ff0000;
+    transform: scale(1.7);
 }
 
 /* Сердечко в состоянии "лайкнуто" */
 .like-button.unlike {
+
     color: #ff4d4d;
 }
 
 .like-button.unlike:hover {
-    color: #ff1a1a;
-    transform: scale(1.2);
+    color: #545454;
+    transform: scale(1.7);
 }
 
 .like-button.static-like {
-    color: #ccc;
+    color: #ff4d4d;
+
     /* Цвет для неактивного сердечка */
     font-size: 24px;
     cursor: not-allowed;

@@ -49,12 +49,18 @@ if (isset($_GET['id'])) {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
+h1 {
+    font-size: 2.5rem;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
 
 
 /* Кнопка возврата */
 a.add-recipe-btn {
             display: inline-block;
-            background-color: #007bff;
             color: white;
             padding: 10px 20px;
             text-align: center;
@@ -64,9 +70,6 @@ a.add-recipe-btn {
             margin-bottom: 10px;
         }
 
-        a.add-recipe-btn:hover {
-            background-color: #0056b3;
-        }
 
 /* Сообщения об ошибках */
 .message .message-text {
@@ -148,6 +151,21 @@ textarea {
 }
 
 
+.submit-btn {
+    padding: 12px 24px;
+    background-color: #f5a623;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #d87f19;
+}
+
 /* Добавляем отступы между элементами формы */
 .recipe-form input[type="file"] {
     padding: 8px;
@@ -226,7 +244,7 @@ small {
             <label for="images">Прикрепить файл(если файл не будет выбран, на рецепте останется предыдущее изображение):</label>
             <input type="file" id="images" name="images[]" accept=".jpg,.jpeg,.png,.gif">
 
-            <input type="submit" value="Обновить рецепт">
+            <input type="submit" value="Обновить рецепт" class="submit-btn">
         </form>
     </div>
 </body>

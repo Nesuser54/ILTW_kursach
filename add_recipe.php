@@ -7,21 +7,6 @@
     <link rel="stylesheet" href="style.css"> 
 </head>
 <style>
- a.add-recipe-btn {
-            display: inline-block;
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            border-radius: 5px;
-            text-decoration: none;
-            margin-top: 10px;
-            margin-bottom: -30px; /* Уменьшили отступ */
-        }
-
-        a.add-recipe-btn:hover {
-            background-color: #0056b3;
-        }
 
     /* Общие стили для страницы */
 body {
@@ -30,7 +15,11 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    display: flex;
+    margin-bottom: 40px;
 }
+
+
 
 /* Контейнер для всего контента */
 .container {
@@ -46,14 +35,18 @@ body {
 
 /* Заголовок */
 h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     text-align: center;
     color: #333;
     margin-bottom: 20px;
 }
 /* Стиль для сообщений об ошибках */
 .message {
-    margin: 20px 0;
+    margin: 7px 0;
+}
+
+.message:empty {
+    display: none;
 }
 
 .message-text {
@@ -81,7 +74,6 @@ label {
 /* Поля ввода */
 input[type="text"],
 textarea,
-
 input[type="file"] {
     width: 99%;
     padding: 10px;
@@ -105,10 +97,21 @@ textarea {
     resize: none;  
 }
 
+a.add-recipe-btn {
+            display: inline-block;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 4px;
+            margin-bottom: 4px;
+        }
+
 /* Кнопка отправки */
 .submit-btn {
     padding: 12px 24px;
-    background-color: #4CAF50;
+    background-color: #f5a623;
     color: white;
     border: none;
     border-radius: 5px;
@@ -118,7 +121,18 @@ textarea {
 }
 
 .submit-btn:hover {
-    background-color: #45a049;
+    background-color: #d87f19;
+}
+
+table th {
+    background-color: #e7a738;
+    color: white;
+    text-align: center;
+    /* Выравнивание текста по центру */
+}
+
+table tr:nth-child(even) {
+    background-color: #e7a738;
 }
 
 </style>

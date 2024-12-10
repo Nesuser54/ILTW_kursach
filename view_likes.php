@@ -36,10 +36,9 @@ $result = $stmt->get_result();
         }
         
         h1 {
-            font-size: 2rem;
+            
             text-align: center;
-            margin-bottom: 20px;
-            color: #007bff;
+            margin-bottom: 10px;
         }
 
         /* Стили для таблицы */
@@ -73,7 +72,6 @@ $result = $stmt->get_result();
         /* Стили для кнопки */
         a.add-recipe-btn {
             display: inline-block;
-            background-color: #007bff;
             color: white;
             padding: 12px 25px;
             text-align: center;
@@ -81,10 +79,6 @@ $result = $stmt->get_result();
             text-decoration: none;
             margin-top: 30px;
             font-size: 16px;
-        }
-
-        a.add-recipe-btn:hover {
-            background-color: #0056b3;
         }
 
         /* Центрирование таблицы на странице */

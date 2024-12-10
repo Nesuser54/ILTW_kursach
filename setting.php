@@ -126,7 +126,7 @@ try {
         h1 {
             text-align: center;
             margin-bottom: 20px;
-            font-size: 1.8rem;
+            font-size: 2.5rem;
             color: #333;
         }
 
@@ -151,16 +151,7 @@ try {
             box-sizing: border-box;
         }
 
-        input[type="submit"] {
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
+        
 
         .message {
             text-align: center;
@@ -183,8 +174,7 @@ try {
 
         a.add-recipe-btn {
             display: inline-block;
-            background-color: #007bff;
-            color: white;
+          
             padding: 10px 20px;
             text-align: center;
             border-radius: 5px;
@@ -193,9 +183,7 @@ try {
             margin-bottom: 10px;
         }
 
-        a.add-recipe-btn:hover {
-            background-color: #0056b3;
-        }
+        
 
         .message_error {
     background-color: #f8d7da;

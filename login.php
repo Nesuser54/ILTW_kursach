@@ -109,13 +109,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         .form-container a {
             display: inline-block;
-            background-color: #4caf50;
+            background-color: #d87f19;
             color: white;
             padding: 12px 20px;
             text-decoration: none;
             border-radius: 5px;
             font-size: 16px;
-            margin-top: 15px;
+            margin-top: 5px;
             width: 100%;
             text-align: center;
             transition: background-color 0.3s;
@@ -123,11 +123,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .form-container a:hover {
-            background-color: #45a049;
+            background-color: #f5a623;
         }
 
         .form-container input[type="submit"] {
-            background-color: #4caf50;
             color: white;
             padding: 12px 20px;
             font-size: 16px;
@@ -137,11 +136,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             cursor: pointer;
             transition: background-color 0.3s;
             box-sizing: border-box;
+            margin-top: 0px;
+            margin-bottom: 20px;
         }
 
-        .form-container input[type="submit"]:hover {
-            background-color: #45a049;
-        }
+       
 
         .form-container .error {
             color: red;
