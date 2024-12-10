@@ -1,17 +1,34 @@
 <?php
 include 'db.php';
 include 'auth.php';
-// session_start();
+
+function cleanUnusedAvatars($uploadsDir, $conn) {
+    // Получаем список всех файлов в папке uploads
+    $files = scandir($uploadsDir);
+    $files = array_diff($files, ['.', '..']); // Убираем системные записи '.' и '..'
+
+    // Получаем все аватарки, используемые в базе данных
+    $usedAvatars = [];
+    $result = $conn->query("SELECT avatar FROM users WHERE avatar IS NOT NULL");
+    while ($row = $result->fetch_assoc()) {
+        $usedAvatars[] = basename($row['avatar']); // Извлекаем только имя файла
+    }
+    // Удаляем файлы, которые не используются
+    foreach ($files as $file) {
+        if (!in_array($file, $usedAvatars)) {
+            $filePath = $uploadsDir . '/' . $file;
+            if (is_file($filePath)) {
+                unlink($filePath);
+            }
+        }
+    }
+}
 
 try {
-
-    
     $userRole = $_SESSION['role'] ?? 'user';
-
     // Проверка на наличие сообщений
     $error = $_SESSION['error'] ?? null;
     $success = $_SESSION['success'] ?? null;
-
     // Сбрасываем сообщения после отображения
     unset($_SESSION['error']);
     unset($_SESSION['success']);
@@ -31,14 +48,12 @@ try {
     }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        
-
         // Обработка загрузки аватарки
         if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == 0) {
             $userId = $_SESSION['user_id'];
             $avatarFile = $_FILES['avatar'];
-            $avatarPath = 'uploads/' . basename($avatarFile['name']);
-
+            $uploadsDir = 'uploads';
+            $avatarPath = $uploadsDir . '/' . basename($avatarFile['name']);
             // Проверка типа файла
             $fileType = strtolower(pathinfo($avatarPath, PATHINFO_EXTENSION));
             if (!in_array($fileType, ['jpg', 'jpeg', 'png', 'gif'])) {
@@ -46,22 +61,24 @@ try {
                 header("Location: setting.php");
                 exit();
             }
-
             // Проверка размера файла
-            $maxFileSize = 100 * 1024 * 1024; // 8 МБ
+            $maxFileSize = 8 * 1024 * 1024; // 8 МБ
             if ($avatarFile['size'] > $maxFileSize) {
                 $_SESSION['error'] = "Размер файла превышает 8 МБ. Пожалуйста, загрузите меньший файл";
                 header("Location: setting.php");
                 exit();
             }
-
             // Перемещение файла
             if (move_uploaded_file($avatarFile['tmp_name'], $avatarPath)) {
+                // Сохраняем путь к аватарке в базе данных
                 $updateAvatarSql = "UPDATE users SET avatar = ? WHERE id = ?";
                 $stmt = $conn->prepare($updateAvatarSql);
                 $stmt->bind_param("si", $avatarPath, $userId);
                 $stmt->execute();
                 $stmt->close();
+                // Очистка неиспользуемых аватарок
+                cleanUnusedAvatars($uploadsDir, $conn);
+
                 $_SESSION['success'] = "Аватарка успешно обновлена";
             } else {
                 $_SESSION['error'] = "Ошибка при загрузке файла";

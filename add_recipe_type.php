@@ -1,7 +1,6 @@
 <?php
 include 'db.php'; // Подключение к базе данных
 include 'auth.php';
-// session_start();
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: view_recipes.php?message=access_denied");
