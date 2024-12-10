@@ -388,7 +388,7 @@ th:nth-child(2), td:nth-child(7) {
                     <th>Автор</th>
                     <th>Внешний вид</th>
                     <th>&#9829; и 💬</th>
-                    <th>Удалить</th>
+                    <th>Действия</th>
                 </tr>
             </thead>
             <tbody>
@@ -397,11 +397,11 @@ th:nth-child(2), td:nth-child(7) {
                     while ($row = $result->fetch_assoc()) {
 
                         $recipe_text = htmlspecialchars($row['recipe_text']);
-
+ 
 // Заменяем слова "Ингредиенты" и "Приготовление" на жирные
 $recipe_text = str_replace("Ингредиенты", "<strong>Ингредиенты</strong>", $recipe_text);
 $recipe_text = str_replace("Приготовление", "<strong>Приготовление</strong>", $recipe_text);
-
+ 
                         echo '<tr>';
                         echo "<td>" . htmlspecialchars($row['title']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['recipe_type']) . "</td>";
@@ -454,7 +454,10 @@ $recipe_text = str_replace("Приготовление", "<strong>Пригото
                         // Секция с комментариями
                         echo "<div class='comment-btn-container'>";
                         echo "<span class='comment-count'>" . $commentsCount . "</span> ";  // Счетчик комментариев с пробелом
-                        echo "<a href='comments.php?recipe_id=" . $row['id'] . "' class='comment-btn' title='Комментарии'>💬</a>";
+                        echo "<a href='comments.php?recipe_id=" . $row['id'] . "' 
+                        class='comment-btn'
+                        title='Комментарии'> 
+                        <i class='fa fa-comments'></i></a>";
                         echo "</div>";
                         echo "<a href='view_likes.php?recipe_id=" . $row['id'] . "' class='view-likes-btn' title='Посмотреть, кто лайкнул'>👥</a>";
 
@@ -464,13 +467,19 @@ $recipe_text = str_replace("Приготовление", "<strong>Пригото
 
 
                         // Проверка, если текущий пользователь является автором поста или администратором
+                        // Проверка, если текущий пользователь является автором поста или администратором
                         if (isset($_SESSION['user_id'])) {
                             if ($row['user_id'] == $_SESSION['user_id'] || $userRole === 'admin') {
                                 echo "<td>
+                                        <a href='edit_recipe.php?id=" . $row['id'] . "' 
+                                        class='edit-btn' title='Редактировать'>
+                                        <i class='fa fa-cogs'></i> <!-- Значок гаечного ключа -->
+                                        </a>
                                         <a href='?delete=" . $row['id'] . "' 
                                         onclick=\"return confirm('Вы уверены, что хотите удалить?');\" 
-                                        class='delete-btn'>
-                                            <i class='fa fa-trash'></i>
+                                        class='delete-btn'
+                                        title='Удалить'>
+                                        <i class='fa fa-trash'></i> <!-- Значок мусорки -->
                                         </a>
                                     </td>";
                             } else {
@@ -478,8 +487,9 @@ $recipe_text = str_replace("Приготовление", "<strong>Пригото
                             }
                         } else {
                             echo "<td>Нет доступа</td>";
+}
+
                         }
-                    }
                 } else {
                     echo "<tr><td colspan='8'>Нет рецептов, соответствующих вашему запросу.</td></tr>";
                 }
@@ -536,7 +546,7 @@ img.forEach(function(image) {
     };
 });
 
-// Когда пользователь нажимает на <span> (кнопка закрытия), скрыть модальное окно
+    // Когда пользователь нажимает на <span> (кнопка закрытия), скрыть модальное окно
 span.onclick = function() {
     modal.style.display = "none";
 };

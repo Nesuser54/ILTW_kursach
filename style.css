@@ -24,7 +24,7 @@ h1 {
 
 h2 {
     padding: 15px;
-    margin: 0 auto;  
+    margin: 0 auto;
     margin-left: 0px;
     font-size: 1.8rem;
     color: #4caf50;
@@ -32,9 +32,11 @@ h2 {
 }
 
 .user-avatar {
-    width: 100px; /* Ограничиваем максимальную ширину */
-    height:  100px;
-    border-radius: 50%; /* Делает изображение круглым */
+    width: 100px;
+    /* Ограничиваем максимальную ширину */
+    height: 100px;
+    border-radius: 50%;
+    /* Делает изображение круглым */
     display: block;
     object-fit: cover;
 }
@@ -72,24 +74,75 @@ nav a:hover {
     padding: 10px 20px;
     text-decoration: none;
     border-radius: 5px;
-    transition: background-color 0.3s; /* Убираем увеличение */
-    display: inline-block; /* Чтобы кнопка оставалась в строке */
-    
-    margin-left: 5px; /* Отступ между кн   опками */
-}
-    /* Основной стиль для картинок */
-    .recipe-image {
-        max-width: 150px;
-        width: 150px;  /* Фиксированная ширина */
-        height: 150px; /* Фиксированная высота */
-        object-fit: cover; /* Обрезка изображения по центру, сохраняя пропорции */
-    }
+    transition: background-color 0.3s;
+    /* Убираем увеличение */
+    display: inline-block;
+    /* Чтобы кнопка оставалась в строке */
 
-   
+    margin-left: 5px;
+    /* Отступ между кн   опками */
+}
+
+/* Основной стиль для картинок */
+.recipe-image {
+    max-width: 150px;
+    width: 150px;
+    /* Фиксированная ширина */
+    height: 150px;
+    /* Фиксированная высота */
+    object-fit: cover;
+    /* Обрезка изображения по центру, сохраняя пропорции */
+}
+
+
 /* Убираем увеличение кнопки при наведении */
 .add-recipe-btn:hover {
     background-color: #45a049;
-    transform: none; /* Убедитесь, что нет эффекта масштабирования */
+    transform: none;
+    /* Убедитесь, что нет эффекта масштабирования */
+}
+
+/* Стили для кнопок */
+
+a.edit-btn {
+    text-decoration: none;
+    /* Убираем подчеркивание */
+    background-color: transparent;
+    /* Убираем фоновый цвет */
+    color: inherit;
+    /* Используем цвет текста, который установлен для родительского элемента */
+    border: none;
+    /* Убираем рамку */
+    cursor: pointer;
+    /* Устанавливаем курсор как указатель */
+}
+
+/* Убираем синий цвет при наведении */
+
+.edit-btn:hover {
+    color: blue;
+    /* Красный цвет при наведении */
+    transition: color 0.3s ease;
+}
+
+
+a.comment-btn {
+    text-decoration: none;
+    /* Убираем подчеркивание */
+    background-color: transparent;
+    /* Убираем фоновый цвет */
+    color: inherit;
+    /* Используем цвет текста, который установлен для родительского элемента */
+    border: none;
+    /* Убираем рамку */
+    cursor: pointer;
+    /* Устанавливаем курсор как указатель */
+}
+
+.comment-btn:hover {
+    color: green;
+    /* Красный цвет при наведении */
+    transition: color 0.3s ease;
 }
 
 /* Стили для сообщений */
@@ -107,18 +160,22 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
-    border: 1px solid #ddd; /* Внешняя граница таблицы */
+    border: 1px solid #ddd;
+    /* Внешняя граница таблицы */
 }
 
-table th, table td {
+table th,
+table td {
     padding: 15px;
     text-align: center;
-    border-bottom: 1px solid #ddd; /* Горизонтальные линии */
-    border-right: 1px solid #ddd; /* Вертикальные линии */
+    border-bottom: 1px solid #ddd;
+    /* Горизонтальные линии */
+    border-right: 1px solid #ddd;
+    /* Вертикальные линии */
 }
 
 /* Убираем последнюю правую границу */
-table th:last-child, 
+table th:last-child,
 table td:last-child {
     border-right: none;
 }
@@ -126,7 +183,8 @@ table td:last-child {
 table th {
     background-color: #2196f3;
     color: white;
-    text-align: center; /* Выравнивание текста по центру */
+    text-align: center;
+    /* Выравнивание текста по центру */
 }
 
 table tr:nth-child(even) {
@@ -141,11 +199,15 @@ table tr:hover {
 
 .modal img {
     display: block;
-    max-width: 100%;  /* Ограничиваем размер изображения */
-    margin: 0 auto;   /* Центрируем изображение по горизонтали */
+    max-width: 100%;
+    /* Ограничиваем размер изображения */
+    margin: 0 auto;
+    /* Центрируем изображение по горизонтали */
     margin-top: 75px;
-    height: 600px; /* Фиксированная высота */
-    object-fit: cover; /* Обрезка изображения по центру, сохраняя пропорции */
+    height: 600px;
+    /* Фиксированная высота */
+    object-fit: cover;
+    /* Обрезка изображения по центру, сохраняя пропорции */
 }
 
 
@@ -168,8 +230,10 @@ table tr:hover {
 .modal-content {
     max-width: 90%;
     max-height: 90%;
-    object-fit: contain; /* Обеспечивает сохранение пропорций изображения */
-    margin: auto; /* Центрирует изображение по вертикали и горизонтали */
+    object-fit: contain;
+    /* Обеспечивает сохранение пропорций изображения */
+    margin: auto;
+    /* Центрирует изображение по вертикали и горизонтали */
 }
 
 /* Кнопка закрытия */
@@ -185,7 +249,9 @@ table tr:hover {
 
 
 /* Стиль для кнопок */
-button,  .like-btn, .unlike-btn {
+button,
+.like-btn,
+.unlike-btn {
     border: none;
     border-radius: 5px;
     padding: 10px 20px;
@@ -193,7 +259,8 @@ button,  .like-btn, .unlike-btn {
 }
 
 /* Кнопки для регистрации, возврата на главную */
-.form-container a, .form-container input[type="submit"] {
+.form-container a,
+.form-container input[type="submit"] {
     background-color: #4caf50;
     color: white;
     padding: 12px 20px;
@@ -208,7 +275,8 @@ button,  .like-btn, .unlike-btn {
 }
 
 /* Изменение при наведении на кнопку */
-.form-container a:hover, .form-container input[type="submit"]:hover {
+.form-container a:hover,
+.form-container input[type="submit"]:hover {
     background-color: #45a049;
 }
 
@@ -221,7 +289,8 @@ button,  .like-btn, .unlike-btn {
     align-items: center;
 }
 
-.search input[type="text"], .search input[type="date"] {
+.search input[type="text"],
+.search input[type="date"] {
     padding: 10px;
     font-size: 1rem;
     border-radius: 5px;
@@ -237,19 +306,23 @@ input[type="submit"] {
     border-radius: 5px;
     cursor: pointer;
     display: inline-block;
-    margin-bottom: 10px; /* Отступ снизу */
+    margin-bottom: 10px;
+    /* Отступ снизу */
 }
 
 input[type="submit"]:hover {
     background-color: #45a049;
 }
 
-    /* Основной стиль для картинок */
-    .recipe-image {
-        width: 150px;  /* Фиксированная ширина */
-        height: 150px; /* Фиксированная высота */
-        object-fit: cover; /* Обрезка изображения по центру, сохраняя пропорции */
-    }
+/* Основной стиль для картинок */
+.recipe-image {
+    width: 150px;
+    /* Фиксированная ширина */
+    height: 150px;
+    /* Фиксированная высота */
+    object-fit: cover;
+    /* Обрезка изображения по центру, сохраняя пропорции */
+}
 
 /* Общие стили для блока лайков */
 .likes-column {
@@ -301,9 +374,11 @@ input[type="submit"]:hover {
 }
 
 .like-button.static-like {
-    color: #ccc; /* Цвет для неактивного сердечка */
+    color: #ccc;
+    /* Цвет для неактивного сердечка */
     font-size: 24px;
-    cursor: not-allowed; /* Убираем курсор на этом значке, чтобы показать, что его нельзя нажать */
+    cursor: not-allowed;
+    /* Убираем курсор на этом значке, чтобы показать, что его нельзя нажать */
 }
 
 /* Стили для кнопки просмотра лайков */
@@ -322,38 +397,51 @@ input[type="submit"]:hover {
 
 /* Стили для мусорного ведра */
 .delete-btn {
-    color: #666; /* Цвет иконки по умолчанию */
+    color: #666;
+    /* Цвет иконки по умолчанию */
     text-decoration: none;
     font-size: 20px;
     padding: 5px;
 }
 
 .delete-btn:hover {
-    color: red; /* Красный цвет при наведении */
+    color: red;
+    /* Красный цвет при наведении */
     transition: color 0.3s ease;
 }
 
 .delete-btn i {
-    vertical-align: middle; /* Центрирование иконки */
+    vertical-align: middle;
+    /* Центрирование иконки */
 }
 
 /* Стиль для неактивной кнопки мусорного ведра */
 .delete-btn.disabled {
-    color: #ccc; /* Цвет для неактивной кнопки */
-    pointer-events: none; /* Запрещает клики */
-    cursor: not-allowed; /* Указывает, что кнопка неактивна */
+    color: #ccc;
+    /* Цвет для неактивной кнопки */
+    pointer-events: none;
+    /* Запрещает клики */
+    cursor: not-allowed;
+    /* Указывает, что кнопка неактивна */
 }
 
 /* Стили для комментариев */
 .comment {
-    border: 1px solid #ccc;            /* Легкая граница, чуть темнее */
-    border-radius: 10px;                /* Скругленные углы */
-    padding: 15px;                      /* Отступы внутри */
-    margin-bottom: 20px;                /* Отступ снизу */
-    background-color: #f1f1f1;          /* Мягкий, но более насыщенный светлый фон */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);  /* Легкая тень для выделения */
+    border: 1px solid #ccc;
+    /* Легкая граница, чуть темнее */
+    border-radius: 10px;
+    /* Скругленные углы */
+    padding: 15px;
+    /* Отступы внутри */
+    margin-bottom: 20px;
+    /* Отступ снизу */
+    background-color: #f1f1f1;
+    /* Мягкий, но более насыщенный светлый фон */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    /* Легкая тень для выделения */
     display: flex;
-    justify-content: space-between;     /* Расположение контента и мета-информации */
+    justify-content: space-between;
+    /* Расположение контента и мета-информации */
     align-items: flex-start;
 }
 
@@ -361,24 +449,31 @@ input[type="submit"]:hover {
     flex: 1;
     font-size: 16px;
     line-height: 1.5;
-    padding-left: 15px; 
-    color: #333;                        /* Темный цвет для текста */
-    margin-right: 20px;                 /* Отступ между текстом и мета-информацией */
+    padding-left: 15px;
+    color: #333;
+    /* Темный цвет для текста */
+    margin-right: 20px;
+    /* Отступ между текстом и мета-информацией */
 }
 
 .comment-meta {
-    color: #777;                        /* Серый цвет для мета-данных, но с оттенком темнее */
+    color: #777;
+    /* Серый цвет для мета-данных, но с оттенком темнее */
     font-size: 14px;
-    text-align: right;                  /* Выравнивание мета-данных по правому краю */
+    text-align: right;
+    /* Выравнивание мета-данных по правому краю */
 }
 
 .comment-meta small {
-    display: block;                     /* Мета-данные на отдельной строке */
-    margin-top: 5px;                    /* Отступ сверху */
+    display: block;
+    /* Мета-данные на отдельной строке */
+    margin-top: 5px;
+    /* Отступ сверху */
 }
 
 .comment button {
-    background-color: #e64a19;          /* Оранжево-красный фон кнопки удаления */
+    background-color: #e64a19;
+    /* Оранжево-красный фон кнопки удаления */
     color: white;
     border: none;
     padding: 5px 10px;
@@ -389,7 +484,8 @@ input[type="submit"]:hover {
 }
 
 .comment button:hover {
-    background-color: #c13500;          /* Темный оттенок при наведении на кнопку */
+    background-color: #c13500;
+    /* Темный оттенок при наведении на кнопку */
 }
 
 .comment .delete-btn {
@@ -406,13 +502,4 @@ input[type="submit"]:hover {
 
 .comment .delete-btn:hover {
     opacity: 0.7;
-}
-
-.comment-btn {
-    text-decoration: none;  /* Убираем подчеркивание */
-    color: inherit;         /* Наследуем цвет от родительского элемента */
-}
-
-.comment-btn:hover {
-    text-decoration: none;  /* Убираем подчеркивание при наведении */
 }
