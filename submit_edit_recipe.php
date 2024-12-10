@@ -31,6 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
+ 
+
     $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
     $images = [];
 

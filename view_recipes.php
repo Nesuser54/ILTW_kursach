@@ -294,7 +294,14 @@ th:nth-child(2), td:nth-child(7) {
     min-width: 42px; /* Минимальная ширина второго столбца */
 }
 
-
+.message {
+    color: #d32f2f;
+    padding: 3px;
+    margin-bottom: 20px;
+    text-align: left;
+    margin-left: 5px;
+    margin-right: 1000px;
+}   
 
 </style>
     <body>
