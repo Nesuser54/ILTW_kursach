@@ -17,7 +17,7 @@ if (isset($_SESSION['user_id'])) {
 
     if ($userResult->num_rows > 0) {
         $userRow = $userResult->fetch_assoc();
-        $avatar = $userRow['avatar'] ? $userRow['avatar'] : 'uploads/avatar.png';
+        $avatar = $userRow['avatar'] ? $userRow['avatar'] : 'default/avatar.png';
         $_SESSION['username'] = $userRow['username'];
         $_SESSION['role'] = $userRow['role'] ?? 'user';
     }
@@ -39,7 +39,7 @@ if (isset($_SESSION['user_id'])) {
 
         if ($userResult->num_rows > 0) {
             $userRow = $userResult->fetch_assoc();
-            $avatar = $userRow['avatar'] ? $userRow['avatar'] : 'uploads/avatar.png';
+            $avatar = $userRow['avatar'] ? $userRow['avatar'] : 'default/avatar.png';
             $_SESSION['username'] = $userRow['username'];
             $_SESSION['role'] = $userRow['role'] ?? 'user';
         }
