@@ -17,4 +17,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: comments.php?recipe_id=" . $recipe_id);
     exit();
 }
-?>

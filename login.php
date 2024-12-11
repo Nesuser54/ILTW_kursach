@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'db.php'; // Подключение к базе данных
+include 'db.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = trim($_POST['username']);
@@ -20,12 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['username'] = $user['username'];
             $_SESSION['role'] = $user['role'];
             if ($rememberMe) {
-                // Генерация токена
-                $token = bin2hex(random_bytes(16));
-                setcookie('auth_token', $token, time() + 3600, "/"); 
-                
 
-                // Сохраните токен в базе данных для текущего пользователя
+                $token = bin2hex(random_bytes(16));
+                setcookie('auth_token', $token, time() + 3600, "/");
+
                 $updateTokenSql = "UPDATE users SET auth_token = ? WHERE id = ?";
                 $updateTokenStmt = $conn->prepare($updateTokenSql);
                 $updateTokenStmt->bind_param("si", $token, $_SESSION['user_id']);
@@ -140,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             margin-bottom: 20px;
         }
 
-       
+
 
         .form-container .error {
             color: red;
@@ -171,7 +169,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <a href="register.php">Нет аккаунта? Зарегистрироваться</a>
 
-        <!-- Кнопка возвращения на главную страницу -->
         <a href="view_recipes.php">Вернуться на главную</a>
     </div>
 

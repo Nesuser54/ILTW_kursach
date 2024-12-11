@@ -1,18 +1,16 @@
 <?php
-include 'db.php'; // Подключение к базе данных
+include 'db.php';
 
-$error = ""; // Переменная для хранения сообщения об ошибке
+$error = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-    // Валидация длины имени пользователя и пароля
     if (strlen($username) < 6 || strlen($password) < 6) {
         $error = "Имя пользователя и пароль должны содержать минимум 6 символов.";
     } else {
-        // Проверяем, существует ли уже пользователь с таким именем
         $checkSql = "SELECT * FROM users WHERE username = ?";
         $checkStmt = $conn->prepare($checkSql);
         $checkStmt->bind_param("s", $username);
@@ -41,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <title>Регистрация</title>
@@ -135,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             margin-bottom: 20px;
         }
 
-       
+
 
         .form-container .error {
             color: red;
@@ -148,8 +147,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     </style>
 </head>
+
 <body>
-    
+
     <div class="form-container">
         <h1>Регистрация</h1>
         <?php if ($error) echo "<p style='color:red;'>$error</p>"; ?>
@@ -163,8 +163,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="submit" value="Зарегистрироваться" class="add-recipe-btn">
         </form>
         <a href="login.php" class="add-recipe-btn"> Уже есть аккаунт? Войти</a>
-        <!-- Кнопка возвращения на главную страницу -->
         <a class="add-recipe-btn" href="view_recipes.php">Вернуться на главную</a>
     </div>
 </body>
+
 </html>

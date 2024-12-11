@@ -1,12 +1,10 @@
 <?php
-// Подключение к базе данных
+
 include 'db.php';
 
-// Получаем ID рецепта из URL
 if (isset($_GET['id'])) {
     $recipe_id = $_GET['id'];
 
-    // Запрос к базе данных для получения данных рецепта
     $sql = "SELECT * FROM recipes WHERE id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $recipe_id);
@@ -27,6 +25,7 @@ if (isset($_GET['id'])) {
 
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,168 +33,146 @@ if (isset($_GET['id'])) {
     <link rel="stylesheet" href="style.css">
 </head>
 <style>
-    /* Общие стили для страницы */
+    .container {
+        width: 90%;
+        max-width: 800px;
+        margin: 0 auto;
+        margin-top: 30px;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
 
+    h1 {
+        font-size: 2.5rem;
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+    }
 
-/* Контейнер для всего контента */
-.container {
-    width: 90%;
-    max-width: 800px;
-    margin: 0 auto;
-    margin-top: 30px;
-    padding: 30px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-}
+    a.add-recipe-btn {
+        display: inline-block;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        border-radius: 5px;
+        text-decoration: none;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
 
-h1 {
-    font-size: 2.5rem;
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-}
+    .message .message-text {
+        padding: 15px;
+        background-color: #f8d7da;
+        color: #721c24;
+        border-radius: 5px;
+        font-size: 1rem;
+        border: 1px solid #f5c6cb;
+        text-align: center;
+    }
 
+    .recipe-form {
+        display: grid;
+        gap: 20px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #fafafa;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
+    label {
 
-/* Кнопка возврата */
-a.add-recipe-btn {
-            display: inline-block;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            border-radius: 5px;
-            text-decoration: none;
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
+        font-size: 1.1rem;
+        color: #333;
+        font-weight: 600;
+    }
 
-
-/* Сообщения об ошибках */
-.message .message-text {
-    padding: 15px;
-    background-color: #f8d7da;
-    color: #721c24;
-    border-radius: 5px;
-    font-size: 1rem;
-    border: 1px solid #f5c6cb;
-    text-align: center;
-}
-
-/* Форма редактирования рецепта */
-.recipe-form {
-    display: grid;
-    gap: 20px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #fafafa;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Метки для полей */
-label {
-
-    font-size: 1.1rem;
-    color: #333;
-    font-weight: 600;
-}
-
-/* Поля ввода */
-input[type="text"],
-textarea {
-    width: 96%;
-    padding: 12px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #ffffff;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
+    input[type="text"],
+    textarea {
+        width: 96%;
+        padding: 12px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ffffff;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
 
 
 
-select{
-    width: 100%;
-    padding: 12px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #ffffff;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
+    select {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ffffff;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
 
-input[type="file"] {
-    width: 98%;
-    padding: 12px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #ffffff;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
+    input[type="file"] {
+        width: 98%;
+        padding: 12px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #ffffff;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
 
-/* Поля ввода при фокусе */
-input[type="text"]:focus,
-textarea:focus,
-select:focus,
-input[type="file"]:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
-}
+    input[type="text"]:focus,
+    textarea:focus,
+    select:focus,
+    input[type="file"]:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+    }
 
-/* Текстовое поле */
-textarea {
-    height: 150px;
-    resize: none;
-}
+    textarea {
+        height: 150px;
+        resize: none;
+    }
 
 
-.submit-btn {
-    padding: 12px 24px;
-    background-color: #f5a623;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+    .submit-btn {
+        padding: 12px 24px;
+        background-color: #f5a623;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
 
-.submit-btn:hover {
-    background-color: #d87f19;
-}
+    .submit-btn:hover {
+        background-color: #d87f19;
+    }
 
-/* Добавляем отступы между элементами формы */
-.recipe-form input[type="file"] {
-    padding: 8px;
-}
+    .recipe-form input[type="file"] {
+        padding: 8px;
+    }
 
-/* Общий стиль для сообщений об ошибках */
-.message {
-    margin-bottom: 20px;
-}
+    .message {
+        margin-bottom: 20px;
+    }
 
-/* Стили для мелких элементов (например, ошибки) */
-small {
-    font-size: 0.9rem;
-    color: #888;
-    display: block;
-    margin-top: -10px;
-}
-
-/* Базовые стили для ссылки */
-
-
+    small {
+        font-size: 0.9rem;
+        color: #888;
+        display: block;
+        margin-top: -10px;
+    }
 </style>
+
 <body>
     <div class="container">
         <h1>Редактировать рецепт</h1>
 
-        <!-- Кнопка возврата на главную страницу -->
         <a href="view_recipes.php" class="add-recipe-btn">Вернуться на главную страницу</a>
 
-        <!-- Сообщения об ошибках -->
         <div class="message">
             <?php if (isset($_GET['message'])): ?>
                 <div class="message-text">
@@ -218,7 +195,6 @@ small {
             <?php endif; ?>
         </div>
 
-        <!-- Форма для редактирования рецепта -->
         <form action="submit_edit_recipe.php" method="POST" enctype="multipart/form-data" class="recipe-form">
             <input type="hidden" name="recipe_id" value="<?= $recipe['id'] ?>">
 
@@ -229,17 +205,18 @@ small {
             <textarea id="recipe_text" name="recipe_text" required><?= htmlspecialchars($recipe['recipe_text']) ?></textarea>
 
             <label for="recipe_type">Вид блюда:</label>
-            <select id="recipe_type" name="recipe_type" required>
+            <select id="recipe_type" name="recipe_type_id" required>
                 <option value="">Выберите вид блюда</option>
                 <?php
-                $recipe_typeSql = "SELECT * FROM recipe_type";
+                $recipe_typeSql = "SELECT id, name FROM recipe_type";
                 $recipe_typeResult = $conn->query($recipe_typeSql);
                 while ($recipe_type = $recipe_typeResult->fetch_assoc()) {
-                    $selected = ($recipe['recipe_type'] == $recipe_type['name']) ? 'selected' : '';
-                    echo "<option value='" . htmlspecialchars($recipe_type['name']) . "' $selected>" . htmlspecialchars($recipe_type['name']) . "</option>";
+                    $selected = ($recipe['recipe_type_id'] == $recipe_type['id']) ? 'selected' : '';
+                    echo "<option value='" . htmlspecialchars($recipe_type['id']) . "' $selected>" . htmlspecialchars($recipe_type['name']) . "</option>";
                 }
                 ?>
             </select>
+
 
             <label for="images">Прикрепить файл(если файл не будет выбран, на рецепте останется предыдущее изображение):</label>
             <input type="file" id="images" name="images[]" accept=".jpg,.jpeg,.png,.gif">
@@ -248,4 +225,5 @@ small {
         </form>
     </div>
 </body>
+
 </html>

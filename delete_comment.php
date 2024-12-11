@@ -6,7 +6,6 @@ $comment_id = $_GET['id'] ?? null;
 $recipe_id = $_GET['recipe_id'] ?? null;
 
 if ($comment_id && $recipe_id) {
-    // Проверяем права
     $sql = "SELECT * FROM comments WHERE id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $comment_id);
@@ -24,4 +23,3 @@ if ($comment_id && $recipe_id) {
 
 header("Location: comments.php?recipe_id=" . $recipe_id);
 exit();
-?>

@@ -1,10 +1,9 @@
 <?php
-include 'db.php'; // Подключение к базе данных
+include 'db.php';
 include 'auth.php';
 
 $recipe_id = isset($_GET['recipe_id']) ? intval($_GET['recipe_id']) : 0;
 
-// Получение пользователей, поставивших лайки с их ролями
 $sql = "SELECT users.username, users.role, likes.liked_at FROM likes 
         JOIN users ON likes.user_id = users.id 
         WHERE likes.recipe_id = ?";
@@ -16,13 +15,13 @@ $result = $stmt->get_result();
 
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Лайки на рецепте</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Основной стиль для страницы */
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f7fc;
@@ -34,14 +33,13 @@ $result = $stmt->get_result();
             height: 100vh;
             color: #333;
         }
-        
+
         h1 {
-            
+
             text-align: center;
             margin-bottom: 10px;
         }
 
-        /* Стили для таблицы */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -49,7 +47,8 @@ $result = $stmt->get_result();
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        th, td {
+        th,
+        td {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
@@ -64,12 +63,11 @@ $result = $stmt->get_result();
             color: #333;
         }
 
-        /* Равные ширины столбцов (50% на каждый) */
-        th, td {
+        th,
+        td {
             width: 33%;
         }
 
-        /* Стили для кнопки */
         a.add-recipe-btn {
             display: inline-block;
             color: white;
@@ -81,7 +79,6 @@ $result = $stmt->get_result();
             font-size: 16px;
         }
 
-        /* Центрирование таблицы на странице */
         .container {
             width: 90%;
             max-width: 1000px;
@@ -92,7 +89,6 @@ $result = $stmt->get_result();
             border-radius: 8px;
         }
 
-        /* Стиль для пустых ячеек */
         .no-likes {
             text-align: center;
             font-style: italic;
@@ -103,54 +99,54 @@ $result = $stmt->get_result();
 
 <body>
 
-<div class="container">
-    <h1>Лайки на рецепте</h1>
-    <a href="view_recipes.php" class="add-recipe-btn">Вернуться на главную страницу</a>
+    <div class="container">
+        <h1>Лайки на рецепте</h1>
+        <a href="view_recipes.php" class="add-recipe-btn">Вернуться на главную страницу</a>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Пользователь</th>
-                <th>Роль</th>
-                <th>Дата</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    // Преобразуем роль в читаемый формат
-                    switch ($row['role']) {
-                        case 'admin':
-                            $role = 'Админ';
-                            break;
-                        case 'publisher':
-                            $role = 'Публикатор';
-                            break;
-                        case 'user':
-                            $role = 'Пользователь';
-                            break;
-                        default:
-                            $role = 'Неизвестная роль';
-                            break;
+        <table>
+            <thead>
+                <tr>
+                    <th>Пользователь</th>
+                    <th>Роль</th>
+                    <th>Дата</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        switch ($row['role']) {
+                            case 'admin':
+                                $role = 'Админ';
+                                break;
+                            case 'publisher':
+                                $role = 'Публикатор';
+                                break;
+                            case 'user':
+                                $role = 'Пользователь';
+                                break;
+                            default:
+                                $role = 'Неизвестная роль';
+                                break;
+                        }
+
+                        echo '<tr>';
+                        echo "<td>" . htmlspecialchars($row['username']) . "</td>";
+                        echo "<td>" . htmlspecialchars($role) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['liked_at']) . "</td>";
+                        echo '</tr>';
                     }
-
-                    echo '<tr>';
-                    echo "<td>" . htmlspecialchars($row['username']) . "</td>";
-                    echo "<td>" . htmlspecialchars($role) . "</td>"; // Выводим роль
-                    echo "<td>" . htmlspecialchars($row['liked_at']) . "</td>";
-                    echo '</tr>';
+                } else {
+                    echo "<tr><td colspan='3' class='no-likes'>Нет лайков на этом рецепте.</td></tr>";
                 }
-            } else {
-                echo "<tr><td colspan='3' class='no-likes'>Нет лайков на этом рецепте.</td></tr>";
-            }
 
-            $stmt->close();
-            $conn->close();
-            ?>
-        </tbody>
-    </table>
-</div>
+                $stmt->close();
+                $conn->close();
+                ?>
+            </tbody>
+        </table>
+    </div>
 
 </body>
+
 </html>

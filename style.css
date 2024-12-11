@@ -1,534 +1,404 @@
-/* Основной стиль */
 body {
-    background: linear-gradient(to bottom, #f1e1d0, #d0c4a1);
-    /* теплый градиент */
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
+  background: linear-gradient(to bottom, #f1e1d0, #d0c4a1);
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 h1 {
-    font-family: 'Georgia', serif;
-    font-size: 3rem;
-    text-align: center;
-    color: #6a4e23;
-    /* теплый коричневый */
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    /* тень для глубины */
-    margin-top: 20px;
-    margin-bottom: -20px;
+  font-family: "Georgia", serif;
+  font-size: 3rem;
+  text-align: center;
+  color: #6a4e23;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  margin-top: 20px;
+  margin-bottom: -20px;
 }
 
-
-/* Общие контейнеры */
 .container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
 }
-
-
 
 h2 {
-    padding: 15px 20px;
-    /* Внутренние отступы */
-    margin: 20px 0;
-    /* Только вертикальные отступы */
-    margin-left: 1px;
-    font-size: 1.6rem;
-    /* Размер шрифта */
-    color: #d87f19;
-    /* Цвет текста */
-    text-align: left;
-    /* Выравнивание текста по левому краю */
-    background-color: #fef7e5;
-    /* Светлый фон */
-    border-left: 5px solid #d87f19;
-    /* Левый бордюр для акцента */
-    border-radius: 0 8px 8px 0;
-    /* Скругленные углы справа */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* Лёгкая тень для объёма */
-    font-family: 'Arial', sans-serif;
-    /* Шрифт */
-    display: inline-block;
-    /* Подстраивает ширину под содержимое */
-    max-width: 90%;
-    /* Ограничение ширины для длинных текстов */
-    position: relative;
-    /* Оставляет в потоке документа */
+  padding: 15px 20px;
+  margin: 20px 0;
+  margin-left: 1px;
+  font-size: 1.6rem;
+  color: #d87f19;
+  text-align: left;
+  background-color: #fef7e5;
+  border-left: 5px solid #d87f19;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: "Arial", sans-serif;
+  display: inline-block;
+  max-width: 90%;
+  position: relative;
 }
-
-
-
-
 
 .user-avatar {
-    width: 100px;
-    /* Ограничиваем максимальную ширину */
-    height: 100px;
-    border-radius: 50%;
-    /* Делает изображение круглым */
-    display: block;
-    object-fit: cover;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
 }
 
-
-
-/* Стили для навигации */
 nav {
-    background-color: #2196f3;
-    padding: 10px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+  background-color: #2196f3;
+  padding: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 nav a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s;
 }
 
 nav a:hover {
-    background-color: #0d8bf0;
+  background-color: #0d8bf0;
 }
 
-
-
 .add-recipe-btn {
-    background-color: #d87f19;
-    color: white;
-    padding: 10px 15px;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+  background-color: #d87f19;
+  color: white;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
 .add-recipe-btn:hover {
-    background-color: #f5a623;
+  background-color: #f5a623;
 }
 
-
-
-
-/* Основной стиль для картинок */
 .recipe-image {
-    max-width: 150px;
-    width: 150px;
-    /* Фиксированная ширина */
-    height: 150px;
-    /* Фиксированная высота */
-    object-fit: cover;
-    /* Обрезка изображения по центру, сохраняя пропорции */
+  max-width: 150px;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
 }
-
-
-/* Убираем увеличение кнопки при наведении */
-
-/* Стили для кнопок */
 
 a.edit-btn {
-    text-decoration: none;
-    /* Убираем подчеркивание */
-    background-color: transparent;
-    /* Убираем фоновый цвет */
-    color: inherit;
-    /* Используем цвет текста, который установлен для родительского элемента */
-    border: none;
-    /* Убираем рамку */
-    cursor: pointer;
-    /* Устанавливаем курсор как указатель */
+  text-decoration: none;
+  background-color: transparent;
+  color: inherit;
+  border: none;
+  cursor: pointer;
 }
-
-/* Убираем синий цвет при наведении */
 
 .edit-btn:hover {
-    color: blue;
-    /* Красный цвет при наведении */
-    transition: color 0.3s ease;
+  color: blue;
+  transition: color 0.3s ease;
 }
 
-
 a.comment-btn {
-    text-decoration: none;
-    /* Убираем подчеркивание */
-    background-color: transparent;
-    /* Убираем фоновый цвет */
-    color: inherit;
-    /* Используем цвет текста, который установлен для родительского элемента */
-    border: none;
-    /* Убираем рамку */
-    cursor: pointer;
-    /* Устанавливаем курсор как указатель */
+  text-decoration: none;
+  background-color: transparent;
+  color: inherit;
+  border: none;
+  cursor: pointer;
 }
 
 .comment-btn:hover {
-    color: green;
-    /* Красный цвет при наведении */
-    transition: color 0.3s ease;
+  color: green;
+  transition: color 0.3s ease;
 }
 
-/* Стили для сообщений */
 .message {
-    color: #d32f2f;
-    padding: 3px;
-    margin-bottom: 20px;
-    text-align: left;
-    margin-left: 5px;
-    margin-right: 1000px;
+  color: #d32f2f;
+  padding: 3px;
+  margin-bottom: 20px;
+  text-align: left;
+  margin-left: 5px;
+  margin-right: 1000px;
 }
 
-/* Стили таблицы */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    border: 1px solid #ddd;
-    /* Внешняя граница таблицы */
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  border: 1px solid #ddd;
 }
 
 table th,
 table td {
-    padding: 15px;
-    text-align: center;
-    border-bottom: 1px solid #545454;
-    /* Горизонтальные линии */
-    border-right: 1px solid #545454;
-    /* Вертикальные линии */
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #545454;
+  border-right: 1px solid #545454;
 }
 
-/* Убираем последнюю правую границу */
 table th:last-child,
 table td:last-child {
-    border-right: none;
+  border-right: none;
 }
 
 table th {
-    background-color: #e7a738;
-    color: white;
-    text-align: center;
-    font-size: 18px;
-    /* Выравнивание текста по центру */
+  background-color: #e7a738;
+  color: white;
+  text-align: center;
+  font-size: 18px;
 }
 
 table tr:nth-child(even) {
-    background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
-
-
-
-/* Модальные окна */
 
 .modal img {
-    display: block;
-    max-width: 100%;
-    /* Ограничиваем размер изображения */
-    margin: 0 auto;
-    /* Центрируем изображение по горизонтали */
-    margin-top: 75px;
-    height: 600px;
-    /* Фиксированная высота */
-    object-fit: cover;
-    /* Обрезка изображения по центру, сохраняя пропорции */
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+  margin-top: 75px;
+  height: 600px;
+  object-fit: cover;
 }
-
 
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Модальное изображение */
 .modal-content {
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain;
-    /* Обеспечивает сохранение пропорций изображения */
-    margin: auto;
-    /* Центрирует изображение по вертикали и горизонтали */
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  margin: auto;
 }
 
-/* Кнопка закрытия */
 .close {
-    color: white;
-    font-size: 30px;
-    font-weight: bold;
-    position: absolute;
-    top: 15px;
-    right: 35px;
-    cursor: pointer;
+  color: white;
+  font-size: 30px;
+  font-weight: bold;
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  cursor: pointer;
 }
 
-
-/* Стиль для кнопок */
 button,
 .like-btn,
 .unlike-btn {
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
 }
 
-/* Кнопки для регистрации, возврата на главную */
 .form-container a,
 .form-container input[type="submit"] {
-    background-color: #f5a623;
-    color: white;
-    padding: 12px 20px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 16px;
-    margin-top: 15px;
-    width: 100%;
-    text-align: center;
-    transition: background-color 0.3s;
-    box-sizing: border-box;
+  background-color: #f5a623;
+  color: white;
+  padding: 12px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-top: 15px;
+  width: 100%;
+  text-align: center;
+  transition: background-color 0.3s;
+  box-sizing: border-box;
 }
 
-/* Изменение при наведении на кнопку */
 .form-container a:hover,
 .form-container input[type="submit"]:hover {
-    background-color: #d87f19;
+  background-color: #d87f19;
 }
 
-
-/* Форма поиска */
 .search {
-    margin-top: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .search input[type="text"],
 .search input[type="date"] {
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: 5px;
-    margin-right: 10px;
-    border: 1px solid #ddd;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 5px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
 }
 
 input[type="submit"] {
-    background-color: #f5a623;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: inline-block;
-    margin-bottom: 10px;
-    /* Отступ снизу */
+  background-color: #f5a623;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-block;
+  margin-bottom: 10px;
 }
 
 input[type="submit"]:hover {
-    background-color: #d87f19;
+  background-color: #d87f19;
 }
 
-/* Основной стиль для картинок */
-.recipe-image {
-    width: 150px;
-    /* Фиксированная ширина */
-    height: 150px;
-    /* Фиксированная высота */
-    object-fit: cover;
-    /* Обрезка изображения по центру, сохраняя пропорции */
-}
-
-/* Общие стили для блока лайков */
 .likes-column {
-    text-align: center;
-    vertical-align: middle;
-    font-size: 16px;
-    padding: 10px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 16px;
+  padding: 10px;
 }
 
-/* Стили для количества лайков */
 .likes-count {
-    font-weight: bold;
-    color: #333;
+  font-weight: bold;
+  color: #333;
 }
 
 .comment-count {
-    font-weight: bold;
-    color: #333;
+  font-weight: bold;
+  color: #333;
 }
 
-/* Стили для кнопки "сердечко" */
 .like-button {
-    font-size: 18px;
-    text-decoration: none;
-    border: none;
-    background: none;
-    cursor: pointer;
-    transition: transform 0.3s ease, color 0.3s ease;
+  font-size: 18px;
+  text-decoration: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
-/* Сердечко в состоянии "не лайкнуто" */
 .like-button.like {
-    font-size: 24px;
-    color: #000000;
+  font-size: 24px;
+  color: #000000;
 }
 
 .like-button.like:hover {
-    color: #ff0000;
-    transform: scale(1.7);
+  color: #ff0000;
+  transform: scale(1.7);
 }
 
-/* Сердечко в состоянии "лайкнуто" */
 .like-button.unlike {
-
-    color: #ff4d4d;
+  color: #ff4d4d;
 }
 
 .like-button.unlike:hover {
-    color: #545454;
-    transform: scale(1.7);
+  color: #545454;
+  transform: scale(1.7);
 }
 
 .like-button.static-like {
-    color: #ff4d4d;
-
-    /* Цвет для неактивного сердечка */
-    font-size: 24px;
-    cursor: not-allowed;
-    /* Убираем курсор на этом значке, чтобы показать, что его нельзя нажать */
+  color: #ff4d4d;
+  font-size: 24px;
+  cursor: not-allowed;
 }
 
-/* Стили для кнопки просмотра лайков */
 .view-likes-btn {
-    margin-left: 8px;
-    font-size: 18px;
-    text-decoration: none;
-    color: #2196F3;
-    transition: transform 0.3s ease, color 0.3s ease;
+  margin-left: 8px;
+  font-size: 18px;
+  text-decoration: none;
+  color: #2196f3;
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .view-likes-btn:hover {
-    color: #1976D2;
-    transform: scale(1.1);
+  color: #1976d2;
+  transform: scale(1.1);
 }
 
-/* Стили для мусорного ведра */
 .delete-btn {
-    color: #666;
-    /* Цвет иконки по умолчанию */
-    text-decoration: none;
-    font-size: 20px;
-    padding: 5px;
+  color: #666;
+  text-decoration: none;
+  font-size: 20px;
+  padding: 5px;
 }
 
 .delete-btn:hover {
-    color: red;
-    /* Красный цвет при наведении */
-    transition: color 0.3s ease;
+  color: red;
+  transition: color 0.3s ease;
 }
 
 .delete-btn i {
-    vertical-align: middle;
-    /* Центрирование иконки */
+  vertical-align: middle;
 }
 
-/* Стиль для неактивной кнопки мусорного ведра */
 .delete-btn.disabled {
-    color: #ccc;
-    /* Цвет для неактивной кнопки */
-    pointer-events: none;
-    /* Запрещает клики */
-    cursor: not-allowed;
-    /* Указывает, что кнопка неактивна */
+  color: #ccc;
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
-/* Стили для комментариев */
 .comment {
-    border: 1px solid #ccc;
-    /* Легкая граница, чуть темнее */
-    border-radius: 10px;
-    /* Скругленные углы */
-    padding: 15px;
-    /* Отступы внутри */
-    margin-bottom: 20px;
-    /* Отступ снизу */
-    background-color: #f1f1f1;
-    /* Мягкий, но более насыщенный светлый фон */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    /* Легкая тень для выделения */
-    display: flex;
-    justify-content: space-between;
-    /* Расположение контента и мета-информации */
-    align-items: flex-start;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+  background-color: #f1f1f1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .comment-content {
-    flex: 1;
-    font-size: 16px;
-    line-height: 1.5;
-    padding-left: 15px;
-    color: #333;
-    /* Темный цвет для текста */
-    margin-right: 20px;
-    /* Отступ между текстом и мета-информацией */
+  flex: 1;
+  font-size: 16px;
+  line-height: 1.5;
+  padding-left: 15px;
+  color: #333;
+  margin-right: 20px;
 }
 
 .comment-meta {
-    color: #777;
-    /* Серый цвет для мета-данных, но с оттенком темнее */
-    font-size: 14px;
-    text-align: right;
-    /* Выравнивание мета-данных по правому краю */
+  color: #777;
+  font-size: 14px;
+  text-align: right;
 }
 
 .comment-meta small {
-    display: block;
-    /* Мета-данные на отдельной строке */
-    margin-top: 5px;
-    /* Отступ сверху */
+  display: block;
+  margin-top: 5px;
 }
 
 .comment button {
-    background-color: #e64a19;
-    /* Оранжево-красный фон кнопки удаления */
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+  background-color: #e64a19;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
 .comment button:hover {
-    background-color: #c13500;
-    /* Темный оттенок при наведении на кнопку */
+  background-color: #c13500;
 }
 
 .comment .delete-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
 }
 
 .comment .delete-icon {
-    width: 20px;
-    height: 20px;
+  width: 20px;
+  height: 20px;
 }
 
 .comment .delete-btn:hover {
-    opacity: 0.7;
+  opacity: 0.7;
 }

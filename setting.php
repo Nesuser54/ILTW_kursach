@@ -2,18 +2,17 @@
 include 'db.php';
 include 'auth.php';
 
-function cleanUnusedAvatars($uploadsDir, $conn) {
-    // Получаем список всех файлов в папке uploads
+function cleanUnusedAvatars($uploadsDir, $conn)
+{
     $files = scandir($uploadsDir);
-    $files = array_diff($files, ['.', '..']); // Убираем системные записи '.' и '..'
+    $files = array_diff($files, ['.', '..']);
 
-    // Получаем все аватарки, используемые в базе данных
     $usedAvatars = [];
     $result = $conn->query("SELECT avatar FROM users WHERE avatar IS NOT NULL");
     while ($row = $result->fetch_assoc()) {
-        $usedAvatars[] = basename($row['avatar']); // Извлекаем только имя файла
+        $usedAvatars[] = basename($row['avatar']);
     }
-    // Удаляем файлы, которые не используются
+
     foreach ($files as $file) {
         if (!in_array($file, $usedAvatars)) {
             $filePath = $uploadsDir . '/' . $file;
@@ -26,10 +25,10 @@ function cleanUnusedAvatars($uploadsDir, $conn) {
 
 try {
     $userRole = $_SESSION['role'] ?? 'user';
-    // Проверка на наличие сообщений
+
     $error = $_SESSION['error'] ?? null;
     $success = $_SESSION['success'] ?? null;
-    // Сбрасываем сообщения после отображения
+
     unset($_SESSION['error']);
     unset($_SESSION['success']);
 
@@ -48,35 +47,35 @@ try {
     }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Обработка загрузки аватарки
+
         if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == 0) {
             $userId = $_SESSION['user_id'];
             $avatarFile = $_FILES['avatar'];
             $uploadsDir = 'uploads';
             $avatarPath = $uploadsDir . '/' . basename($avatarFile['name']);
-            // Проверка типа файла
+
             $fileType = strtolower(pathinfo($avatarPath, PATHINFO_EXTENSION));
             if (!in_array($fileType, ['jpg', 'jpeg', 'png', 'gif'])) {
                 $_SESSION['error'] = "Неверный формат файла. Пожалуйста, загрузите изображение";
                 header("Location: setting.php");
                 exit();
             }
-            // Проверка размера файла
-            $maxFileSize = 8 * 1024 * 1024; // 8 МБ
+
+            $maxFileSize = 8 * 1024 * 1024;
             if ($avatarFile['size'] > $maxFileSize) {
                 $_SESSION['error'] = "Размер файла превышает 8 МБ. Пожалуйста, загрузите меньший файл";
                 header("Location: setting.php");
                 exit();
             }
-            // Перемещение файла
+
             if (move_uploaded_file($avatarFile['tmp_name'], $avatarPath)) {
-                // Сохраняем путь к аватарке в базе данных
+
                 $updateAvatarSql = "UPDATE users SET avatar = ? WHERE id = ?";
                 $stmt = $conn->prepare($updateAvatarSql);
                 $stmt->bind_param("si", $avatarPath, $userId);
                 $stmt->execute();
                 $stmt->close();
-                // Очистка неиспользуемых аватарок
+
                 cleanUnusedAvatars($uploadsDir, $conn);
 
                 $_SESSION['success'] = "Аватарка успешно обновлена";
@@ -141,7 +140,10 @@ try {
             margin-bottom: 5px;
         }
 
-        select, input[type="file"], input[type="number"], input[type="submit"] {
+        select,
+        input[type="file"],
+        input[type="number"],
+        input[type="submit"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
@@ -151,7 +153,7 @@ try {
             box-sizing: border-box;
         }
 
-        
+
 
         .message {
             text-align: center;
@@ -168,13 +170,13 @@ try {
         }
 
         .error {
-            background-color: #f8d7da;  
+            background-color: #f8d7da;
             color: #721c24;
         }
 
         a.add-recipe-btn {
             display: inline-block;
-          
+
             padding: 10px 20px;
             text-align: center;
             border-radius: 5px;
@@ -183,24 +185,23 @@ try {
             margin-bottom: 10px;
         }
 
-        
+
 
         .message_error {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-    padding: 5px;
-}
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 5px;
+        }
 
-/* Стили для успешных сообщений */
-.message_success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-    padding: 8px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
+        .message_success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 8px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 
@@ -216,9 +217,7 @@ try {
         <?php if (isset($success)): ?>
             <div class="message_success"><?php echo $success; ?></div>
         <?php endif; ?>
-        
-        
-        <!-- Форма для загрузки аватарки -->
+
         <form action="setting.php" method="POST" enctype="multipart/form-data">
             <label for="avatar">Загрузить аватарку:</label>
             <input type="file" name="avatar" id="avatar" accept="image/*" required>
@@ -226,7 +225,7 @@ try {
         </form>
 
         <?php if (isset($_SESSION['user_id']) && $userRole === 'admin'): ?>
-            <!-- Форма для изменения коэффициентов -->
+
             <form method="POST" action="update_weights.php">
                 <label for="weight_author">Коэффициент авторов:</label>
                 <input type="number" step="0.1" name="weight_author" id="weight_author" value="<?php echo $weight_author; ?>" required>
@@ -240,7 +239,7 @@ try {
                 <input type="submit" value="Сохранить">
             </form>
         <?php endif; ?>
-        
+
     </div>
 
 </body>
