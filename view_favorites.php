@@ -146,12 +146,12 @@ try {
                     echo "<span class='likes-count'>" . htmlspecialchars($row['likes_count']) . "</span> ";
 
                     if (!isset($_SESSION['user_id'])) {
-                        echo "<span class='like-button static-like' title='Лайкнуть'>&#9829;</span>";
+                        echo "<span class='like-button static-like' title='Недоступно'>&#9829;</span>";
                     } else {
                         if ($row['user_liked'] > 0) {
-                            echo "<a href='?unlike=" . $row['id'] . "' class='like-button unlike' title='Убрать лайк'>&#10084;</a>";
+                            echo "<a href='?unlike=" . $row['id'] . "' class='like-button unlike' title='Убрать из избранного'>&#10084;</a>";
                         } else {
-                            echo "<a href='?like=" . $row['id'] . "' class='like-button like' title='Лайкнуть'>&#9825;</a>";
+                            echo "<a href='?like=" . $row['id'] . "' class='like-button like' title='Добавить в избранное'>&#9825;</a>";
                         }
                     }
 
@@ -159,14 +159,14 @@ try {
                     echo "<span class='comment-count'>" . $commentsCount . "</span> ";
                     echo "<a href='comments.php?recipe_id=" . $row['id'] . "' class='comment-btn' title='Комментарии'>💬</a>";
                     echo "</div>";
-                    echo "<a href='view_likes.php?recipe_id=" . $row['id'] . "' class='view-likes-btn' title='Посмотреть, кто лайкнул'>👥</a>";
+                    echo "<a href='view_likes.php?recipe_id=" . $row['id'] . "' class='view-likes-btn' title='Посмотреть, кто добавил в избранное'>👥</a>";
 
                     echo "</td>";
 
                     echo '</tr>';
                 }
             } else {
-                echo "<tr><td colspan='8'>Нет лайкнутых рецептов.</td></tr>";
+                echo "<tr><td colspan='8'>Вы не добавили ни один рецепт в избранные.</td></tr>";
             }
             ?>
         </tbody>

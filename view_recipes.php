@@ -179,8 +179,7 @@ try {
         FROM recipes 
         JOIN users ON recipes.user_id = users.id 
         JOIN recipe_type ON recipes.recipe_type_id = recipe_type.id
-        WHERE (recipes.title LIKE ? OR recipes.recipe_text LIKE ? OR recipe_type.name LIKE ? OR users.username LIKE ?)
-";
+        WHERE (recipes.title LIKE ? OR recipes.recipe_text LIKE ? OR recipe_type.name LIKE ? OR users.username LIKE ?)";
 
     if ($date) {
         $sql .= " AND DATE(created_at) = DATE(?)";
@@ -324,7 +323,7 @@ try {
             <a href="add_recipe.php" class="add-recipe-btn">Добавить рецепт</a>
         <?php endif; ?>
         <?php if ($userRole === 'user'): ?>
-            <a href="#" class="add-recipe-btn" id="requestpublisherRole">Запросить роль путешественника</a>
+            <a href="#" class="add-recipe-btn" id="requestpublisherRole">Запросить роль публикатора</a>
         <?php endif; ?>
     <?php else: ?>
         <a href="login.php" class="add-recipe-btn">Войти</a>
@@ -409,13 +408,13 @@ try {
                     echo "<span class='likes-count'>" . htmlspecialchars($row['likes_count']) . "</span> ";
 
                     if (!isset($_SESSION['user_id'])) {
-                        echo "<span class='like-button static-like' title='Лайкнуть'>&#9829;</span>";
+                        echo "<span class='like-button static-like' title='Недоступно'>&#9829;</span>";
                     } else {
 
                         if ($row['user_liked'] > 0) {
-                            echo "<a href='?unlike=" . $row['id'] . "' class='like-button unlike' title='Убрать лайк'>&#10084;</a>";
+                            echo "<a href='?unlike=" . $row['id'] . "' class='like-button unlike' title='Убрать из избранного'>&#10084;</a>";
                         } else {
-                            echo "<a href='?like=" . $row['id'] . "' class='like-button like' title='Лайкнуть'>&#9825;</a>";
+                            echo "<a href='?like=" . $row['id'] . "' class='like-button like' title='Добавить в избранное'>&#9825;</a>";
                         }
                     }
 
@@ -426,7 +425,7 @@ try {
                         title='Комментарии'> 
                         <i class='fa fa-comments'></i></a>";
                     echo "</div>";
-                    echo "<a href='view_likes.php?recipe_id=" . $row['id'] . "' class='view-likes-btn' title='Посмотреть, кто лайкнул'>👥</a>";
+                    echo "<a href='view_likes.php?recipe_id=" . $row['id'] . "' class='view-likes-btn' title='Посмотреть, кто добавил в избранное'>👥</a>";
 
                     echo "</td>";
 

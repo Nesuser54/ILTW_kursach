@@ -34,7 +34,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
             $updateUserRoleStmt->execute();
             $updateUserRoleStmt->close();
 
-            $notificationMessage = 'Ваша заявка на роль путешественника одобрена.';
+            $notificationMessage = 'Ваша заявка на роль публикатора одобрена.';
             $notificationSql = "INSERT INTO notifications (user_id, message) VALUES (?, ?)";
             $notificationStmt = $conn->prepare($notificationSql);
             $notificationStmt->bind_param("is", $userId, $notificationMessage);

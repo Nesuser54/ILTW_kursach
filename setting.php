@@ -233,7 +233,7 @@ try {
                 <label for="weight_recipe_type">Коэффициент вида блюда:</label>
                 <input type="number" step="0.1" name="weight_recipe_type" id="weight_recipe_type" value="<?php echo $weight_recipe_type; ?>" required>
 
-                <label for="weight_likes">Коэффициент количества лайков:</label>
+                <label for="weight_likes">Коэффициент количества добавления в избранное:</label>
                 <input type="number" step="0.1" name="weight_likes" id="weight_likes" value="<?php echo $weight_likes; ?>" required>
 
                 <input type="submit" value="Сохранить">

@@ -19,7 +19,7 @@ $result = $stmt->get_result();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Лайки на рецепте</title>
+    <title>Пользователи, которые добавили рецепт в избранное</title>
     <link rel="stylesheet" href="style.css">
     <style>
         body {
@@ -100,7 +100,7 @@ $result = $stmt->get_result();
 <body>
 
     <div class="container">
-        <h1>Лайки на рецепте</h1>
+        <h1>Пользователи, которые добавили рецепт в избранное</h1>
         <a href="view_recipes.php" class="add-recipe-btn">Вернуться на главную страницу</a>
 
         <table>
@@ -137,7 +137,7 @@ $result = $stmt->get_result();
                         echo '</tr>';
                     }
                 } else {
-                    echo "<tr><td colspan='3' class='no-likes'>Нет лайков на этом рецепте.</td></tr>";
+                    echo "<tr><td colspan='3' class='no-likes'>Никто не добавил этот рецепт в избранные рецепты.</td></tr>";
                 }
 
                 $stmt->close();
